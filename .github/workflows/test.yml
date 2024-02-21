@@ -36,9 +36,9 @@ jobs:
       with:
         context: .
         provenance: false
-        pull: true
-        push: true
-        tags: yverdon/kablo:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        tags: kablo/kablo:latest
 
     - name: Setup Compose
       run: |
