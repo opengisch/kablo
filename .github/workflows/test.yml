@@ -37,6 +37,7 @@ jobs:
         context: .
         provenance: false
         pull: true
+        push: true
         tags: yverdon/kablo:latest
 
     - name: Setup Compose
