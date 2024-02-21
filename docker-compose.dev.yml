@@ -16,7 +16,8 @@ services:
       # Mount code for live reload
       - .:/code
     depends_on:
-      - "postgres"
+      postgres:
+        condition: service_healthy
     ports:
       - "${DJANGO_DOCKER_PORT}:9000"
 
