@@ -1,21 +1,29 @@
-FROM ghcr.io/osgeo/gdal:ubuntu-full-3.8.3
+# pull official base image
+FROM python:3.12-bookworm
+
+# set work directory
+WORKDIR /code
 
 
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-RUN apt-get -y update \
-  && DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing \
-  --no-install-recommends \
-  build-essential \
-  gettext \
-  python3-pip \
-  python3-dev \
-  python3-setuptools \
-  python3-wheel \
-  python3-cffi \
-  shared-mime-info \
-  tzdata \
-  && ln -fs /usr/share/zoneinfo/Europe/Zurich /etc/localtime \
-  && dpkg-reconfigure -f noninteractive tzdata
+# install dependencies
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    libproj-dev \
+    gdal-bin \
+    gettext \
+    shared-mime-info \
+    tzdata \
+    && ln -fs /usr/share/zoneinfo/Europe/Zurich /etc/localtime \
+    && dpkg-reconfigure -f noninteractive tzdata
+
+# install dependencies
+COPY ./requirements.txt .
+RUN pip install -r requirements.txt
+
 # Copy files in another location to solved windows rights issues
 # These files are only used during build process and by entrypoint.sh for dev
 
