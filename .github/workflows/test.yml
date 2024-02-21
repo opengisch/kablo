@@ -1,0 +1,58 @@
+name: Test
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Create env
+      run: cp .env.example .env
+
+    - name: Load .env file
+      uses: xom9ikk/dotenv@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Django image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        provenance: false
+        pull: true
+        tags: yverdon/kablo:latest
+
+    - name: Setup Compose
+      run: |
+        # start the stack
+        docker compose up --build -d
+
+        # migrate database
+        docker compose exec kablo python manage.py migrate --no-input
+
+#    - name: Run unit tests
+#      run: docker compose exec kablo python manage.py test tests
+
+#    - name: Run integration tests
+#      run: docker compose run integration_tests
+
+    - name: Failure logs
+      if: failure()
+      run: docker-compose logs

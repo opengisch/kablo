@@ -3,7 +3,7 @@ volumes:
 
 services:
   kablo: # Name of this container should not be changed
-    image: qgele
+    image: kablo
     restart: unless-stopped
     build:
       context: ./
