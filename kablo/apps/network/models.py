@@ -76,24 +76,30 @@ class Station(models.Model):
     geom = models.PointField(srid=2056)
 
 
-class Cable(models.Model):
-    station_start = models.ForeignKey(
-        Station, related_name="station_start", on_delete=models.CASCADE
-    )
-    station_end = models.ForeignKey(
-        Station, related_name="station_end", on_delete=models.CASCADE
-    )
-
-    tubes = models.ManyToManyField(Tube)
-
-
 class Node(models.Model):
     pass
 
 
-class Switch(models.Model):
-    pass
+class Reach(models.Model):
+    node_1 = models.ForeignKey(
+        Node, related_name="node_1", blank=True, null=True, on_delete=models.SET_NULL
+    )
+    node_2 = models.ForeignKey(
+        Node, related_name="node_2", blank=True, null=True, on_delete=models.SET_NULL
+    )
 
 
-class Clamp(models.Model):
+class Cable(Reach):
+    tubes = models.ManyToManyField(Tube)
+
+
+class VirtualNode(Node):
+    station = models.ForeignKey(Station, on_delete=models.CASCADE)
+
+
+class Switch(Reach):
+    station = models.ForeignKey(Station, on_delete=models.CASCADE)
+
+
+class Terminal(Node):
     pass
