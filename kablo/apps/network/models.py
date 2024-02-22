@@ -2,7 +2,7 @@ from django.contrib.gis.db import models
 
 
 class NetworkNode(models.Model):
-    geom = models.PointField(srid=2056)
+    pass
 
 
 class TrackSection(models.Model):
@@ -16,30 +16,12 @@ class TrackSection(models.Model):
 
 
 class Track(models.Model):
-    networkSegments = models.ManyToManyField(
-        TrackSection, through="TrackNetworkSegment"
-    )
-
-    geom = models.GeneratedField(
-        expression=F("side") * F("side"),
-        output_field=models.BigIntegerField(),
-        db_persist=True,
-    )
-
-    def save(self, **kwargs):
-        if not self.networkSegments:
-            network_segment = TrackSection.objects.create()
-            network_segment.geom = self.geom
-            network_segment.save()
-
-        super().save(**kwargs)
-
-        self.networkSegments.add(network_segment)
+    networkSegments = models.ManyToManyField(TrackSection, through="TrackTrackSection")
 
 
 class TrackTrackSection(models.Model):
     track = models.ForeignKey(Track, on_delete=models.CASCADE)
-    network_node = models.ForeignKey(NetworkNode, on_delete=models.CASCADE)
+    network_node = models.ForeignKey(TrackSection, on_delete=models.CASCADE)
     index = models.IntegerField()
 
     def save(self, **kwargs):
@@ -57,24 +39,30 @@ class Station(models.Model):
     geom = models.PointField(srid=2056)
 
 
-class Cable(models.Model):
-    station_start = models.ForeignKey(
-        Station, related_name="station_start", on_delete=models.CASCADE
-    )
-    station_end = models.ForeignKey(
-        Station, related_name="station_end", on_delete=models.CASCADE
-    )
-
-    tubes = models.ManyToManyField(Tube)
-
-
 class Node(models.Model):
     pass
 
 
-class Switch(models.Model):
-    pass
+class Reach(models.Model):
+    node_1 = models.ForeignKey(
+        Node, related_name="node_1", blank=True, null=True, on_delete=models.SET_NULL
+    )
+    node_2 = models.ForeignKey(
+        Node, related_name="node_2", blank=True, null=True, on_delete=models.SET_NULL
+    )
 
 
-class Clamp(models.Model):
+class Cable(Reach):
+    tubes = models.ManyToManyField(Tube)
+
+
+class VirtualNode(Node):
+    station = models.ForeignKey(Station, on_delete=models.CASCADE)
+
+
+class Switch(Reach):
+    station = models.ForeignKey(Station, on_delete=models.CASCADE)
+
+
+class Terminal(Node):
     pass
