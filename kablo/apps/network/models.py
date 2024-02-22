@@ -69,18 +69,21 @@ class TrackTrackSection(models.Model):
 
 
 class Tube(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     networkSegments = models.ManyToManyField(TrackSection)
 
 
 class Station(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     geom = models.PointField(srid=2056)
 
 
 class Node(models.Model):
-    pass
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
 
 class Reach(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     node_1 = models.ForeignKey(
         Node, related_name="node_1", blank=True, null=True, on_delete=models.SET_NULL
     )
