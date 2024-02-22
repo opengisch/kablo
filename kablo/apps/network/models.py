@@ -45,13 +45,14 @@ class Track(models.Model):
         )
 
     def save(self, **kwargs):
-
         with transaction.atomic():
-            if not self.track_sections:
+            if True:  # not self.track_sections:
                 track_section = TrackSection.objects.create()
                 track_section.geom = self.geom
                 track_section.save()
                 self.track_sections.add(track_section)
+
+                track_section.save()
             super().save(**kwargs)
 
 
@@ -59,18 +60,12 @@ class TrackTrackSection(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     track = models.ForeignKey(Track, on_delete=models.CASCADE)
     track_section = models.ForeignKey(TrackSection, on_delete=models.CASCADE)
-    index = models.IntegerField()
-
-    def save(self, **kwargs):
-        if not self.index:
-            self.index = len(self.track.track_section)
-
-        super().save(**kwargs)
+    index = models.IntegerField(default=1)
 
 
 class Tube(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    networkSegments = models.ManyToManyField(TrackSection)
+    track_sections = models.ManyToManyField(TrackSection)
 
 
 class Station(models.Model):
