@@ -1,7 +1,7 @@
 import uuid
 
 from django.contrib.gis.db import models
-from django.db import transaction
+from django.db import connection, transaction
 
 from kablo.apps.core.geometry import MergeLines
 
@@ -30,11 +30,39 @@ class TrackSection(models.Model):
     )
 
 
+class TrackManager(models.Manager):
+    def bulk_save_tracks(self, tracks):
+        db_queries_number = len(connection.queries)
+
+        with transaction.atomic():
+
+            db_tracks = Track.objects.bulk_create(tracks)
+
+            # FIXME: remove thoses loops for performance concerns
+            track_sections = [TrackSection(geom=track.geom) for track in db_tracks]
+            track_sections = TrackSection.objects.bulk_create(track_sections)
+            track_track_sections = []
+            i = 0
+            while i < len(db_tracks):
+                track_track_sections.append(
+                    TrackTrackSection(track=tracks[i], track_section=track_sections[i])
+                )
+                i += 1
+            track_track_sections = TrackTrackSection.objects.bulk_create(
+                track_track_sections
+            )
+            queries_for_track = len(connection.queries) - db_queries_number
+
+            print(f"🤖 bulk_save_tracks generated {queries_for_track} DB query(ies)")
+
+        return db_tracks
+
+
 class Track(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     geom = models.LineStringField(srid=2056)
-
     track_sections = models.ManyToManyField(TrackSection, through="TrackTrackSection")
+    objects = TrackManager()
 
     def compute_geom(self):
         return (
@@ -43,17 +71,6 @@ class Track(models.Model):
             .aggregate(geom=MergeLines("geom"))
             .values_list("geom")
         )
-
-    def save(self, **kwargs):
-        with transaction.atomic():
-            if True:  # not self.track_sections:
-                track_section = TrackSection.objects.create()
-                track_section.geom = self.geom
-                track_section.save()
-                self.track_sections.add(track_section)
-
-                track_section.save()
-            super().save(**kwargs)
 
 
 class TrackTrackSection(models.Model):

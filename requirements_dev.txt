@@ -178,6 +178,8 @@ pygments==2.17.2
     # via ipython
 pygraphviz==1.12
     # via -r requirements_dev.in
+pyinstrument==4.6.2
+    # via -r requirements_dev.in
 pyjwt[crypto]==2.8.0
     # via
     #   -r requirements.txt

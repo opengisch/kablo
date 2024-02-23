@@ -1,9 +1,15 @@
 import random
+import sys
 
+from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.db import transaction
+from pyinstrument import Profiler
 
-from kablo.apps.network.models import Track
+from kablo.apps.network.models import Track, TrackSection
+
+profiler = Profiler()
 
 
 class Command(BaseCommand):
@@ -15,28 +21,52 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         """Populate db with testdata"""
-        tracks = []
 
-        x = 2508500
-        y = 1152000
-        line_x = []
-        line_y = []
-        for i in range(5):
-            x += random.randint(1, 5)
-            y += random.randint(1, 5)
-            line_x.append(x)
-            line_y.append(y)
+        if settings.ENV.upper() != "DEV":
+            self.stdout.write(
+                self.style.ERROR("Les fixtures ne peuvent être exécutés qu'en DEV")
+            )
+            sys.exit()
 
-        geom_line_wkt = ",".join([f"{x} {y}" for x, y in zip(line_x, line_y)])
-        geom_line_wkt = f"LineString({geom_line_wkt})"
+        # TODO: reset whole DB one shot ?
+        User = get_user_model()
+        User.objects.all().delete()
+        Track.objects.all().delete()
+        TrackSection.objects.all().delete()
+        # Create superuser
+        User.objects.create_user(
+            email=None,
+            first_name="admin",
+            last_name="admin",
+            username="admin",
+            password="admin",
+            is_staff=True,
+            is_superuser=True,
+        )
 
-        fields = {"geom": geom_line_wkt}
-        track = Track(**fields)
-        tracks.append(track)
+        print(f"🤖 superuser admin/admin created")
 
-        # Create objects in batches
-        Track.objects.bulk_create(tracks, batch_size=10000)
+        tracks_number = 10000
+        linetring_vertex_number = 100
+        tracks_to_create = []
+        for j in range(tracks_number):
+            x = 2508500
+            y = 1152000
+            line_x = []
+            line_y = []
+            for i in range(linetring_vertex_number):
+                x += random.randint(1, 5)
+                y += random.randint(1, 5)
+                line_x.append(x)
+                line_y.append(y)
 
-        # Call 'update_data' to update computed properties
-        # call_command("updatedata")
-        print(f"🤖 testdata added!")
+            geom_line_wkt = ",".join([f"{x} {y}" for x, y in zip(line_x, line_y)])
+            geom_line_wkt = f"LineString({geom_line_wkt})"
+            tracks_to_create.append(Track(geom=geom_line_wkt))
+
+        profiler.start()
+        # Create Tracks in DB
+        Track.objects.bulk_save_tracks(tracks_to_create)
+        profiler.stop()
+        profiler.print()
+        print(f"🤖 {tracks_number} Tracks testdata added!")

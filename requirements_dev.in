@@ -10,3 +10,4 @@ pip-tools
 diffimg
 freezegun
 pygraphviz
+pyinstrument
