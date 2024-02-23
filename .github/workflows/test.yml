@@ -45,8 +45,11 @@ jobs:
         # start the stack
         docker compose up --build -d
 
-        # migrate database
-        docker compose exec kablo python manage.py migrate --no-input
+    - name: Check migrations
+      run: docker compose exec kablo python manage.py makemigrations --check
+
+    - name: Migrate
+      run: docker compose exec kablo python manage.py migrate --no-input
 
 #    - name: Run unit tests
 #      run: docker compose exec kablo python manage.py test tests
