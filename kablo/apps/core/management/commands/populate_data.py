@@ -2,12 +2,11 @@ import random
 import sys
 
 from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from pyinstrument import Profiler
 
-from kablo.apps.network.models import Track, TrackSection
+from kablo.apps.network.models import Cable, Track, TrackSection, Tube
 
 profiler = Profiler()
 
@@ -16,7 +15,7 @@ class Command(BaseCommand):
     help = "Populate db with testdata"
 
     def add_arguments(self, parser):
-        parser.add_argument("-s", "--size", type=int, default=1000)
+        parser.add_argument("-s", "--size", type=int, default=100)
 
     @transaction.atomic
     def handle(self, *args, **options):
@@ -28,25 +27,13 @@ class Command(BaseCommand):
             )
             sys.exit()
 
-        # TODO: reset whole DB one shot ?
-        User = get_user_model()
-        User.objects.all().delete()
+        tracks_number = options["size"]
+
         Track.objects.all().delete()
         TrackSection.objects.all().delete()
-        # Create superuser
-        User.objects.create_user(
-            email=None,
-            first_name="admin",
-            last_name="admin",
-            username="admin",
-            password="admin",
-            is_staff=True,
-            is_superuser=True,
-        )
+        Tube.objects.all().delete()
+        Cable.objects.all().delete()
 
-        print(f"🤖 superuser admin/admin created")
-
-        tracks_number = 10000
         linetring_vertex_number = 100
         tracks_to_create = []
         for j in range(tracks_number):
@@ -66,7 +53,18 @@ class Command(BaseCommand):
 
         profiler.start()
         # Create Tracks in DB
-        Track.objects.bulk_save_tracks(tracks_to_create)
+        tracks = Track.objects.bulk_save_tracks(tracks_to_create)
         profiler.stop()
         profiler.print()
+
         print(f"🤖 {tracks_number} Tracks testdata added!")
+
+        # ONLY FOR TEST, dont' try this at home it WILL hurt your db BADLY
+        profiler.start()
+        for track_section in Track.get_sections(tracks):
+            Tube.objects.create().track_sections.add(track_section)
+
+        for tube in Tube.objects.all():
+            Cable.objects.create().tubes.add(tube)
+        profiler.stop()
+        profiler.print()

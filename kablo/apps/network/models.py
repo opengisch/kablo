@@ -1,7 +1,7 @@
 import uuid
 
 from django.contrib.gis.db import models
-from django.db import connection, transaction
+from django.db import transaction
 
 from kablo.apps.core.geometry import MergeLines
 
@@ -32,7 +32,6 @@ class TrackSection(models.Model):
 
 class TrackManager(models.Manager):
     def bulk_save_tracks(self, tracks):
-        db_queries_number = len(connection.queries)
 
         with transaction.atomic():
 
@@ -51,9 +50,6 @@ class TrackManager(models.Manager):
             track_track_sections = TrackTrackSection.objects.bulk_create(
                 track_track_sections
             )
-            queries_for_track = len(connection.queries) - db_queries_number
-
-            print(f"🤖 bulk_save_tracks generated {queries_for_track} DB query(ies)")
 
         return db_tracks
 
@@ -63,6 +59,9 @@ class Track(models.Model):
     geom = models.LineStringField(srid=2056)
     track_sections = models.ManyToManyField(TrackSection, through="TrackTrackSection")
     objects = TrackManager()
+
+    def get_sections(tracks):
+        return TrackSection.objects.filter(track__in=tracks)
 
     def compute_geom(self):
         return (
