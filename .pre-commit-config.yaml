@@ -1,3 +1,6 @@
+exclude: ^kablo/apps/[^/]+/migrations/
+
+
 repos:
 
   # Fix end of files
