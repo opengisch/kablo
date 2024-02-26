@@ -31,7 +31,7 @@ class TrackSection(models.Model):
 
 
 class TrackManager(models.Manager):
-    def bulk_save_tracks(self, tracks):
+    def bulk_create_tracks(self, tracks):
 
         with transaction.atomic():
 
@@ -52,6 +52,13 @@ class TrackManager(models.Manager):
             )
 
         return db_tracks
+
+    def create_track(self, geom):
+        track = self.create(geom=geom)
+        track_section = TrackSection.objects.create(track.geom)
+        TrackTrackSection.objects.add(track, track_section)
+
+        return track
 
 
 class Track(models.Model):

@@ -57,7 +57,7 @@ class Command(BaseCommand):
 
         profiler.start()
         # Create Tracks in DB
-        tracks = Track.objects.bulk_save_tracks(tracks_to_create)
+        tracks = Track.objects.bulk_create_tracks(tracks_to_create)
         profiler.stop()
         profiler.print()
 
