@@ -15,8 +15,6 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         """Populate db with testdata"""
-        tracks = []
-
         x = 2508500
         y = 1152000
         line_x = []
@@ -31,11 +29,8 @@ class Command(BaseCommand):
         geom_line_wkt = f"LineString({geom_line_wkt})"
 
         fields = {"geom": geom_line_wkt}
-        track = Track(**fields)
-        tracks.append(track)
-
-        # Create objects in batches
-        Track.objects.bulk_create(tracks, batch_size=10000)
+        track = Track.objects.create_track(**fields)
+        track.save()
 
         # Call 'update_data' to update computed properties
         # call_command("updatedata")
