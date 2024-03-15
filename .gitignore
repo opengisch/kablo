@@ -12,3 +12,4 @@ env.yaml
 env.backup
 /media/
 .DS_Store
+.idea

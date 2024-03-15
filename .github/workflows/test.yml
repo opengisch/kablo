@@ -51,6 +51,9 @@ jobs:
     - name: Migrate
       run: docker compose exec kablo python manage.py migrate --no-input
 
+    - name: Populate
+      run: docker compose exec kablo python manage.py populate_users
+
 #    - name: Run unit tests
 #      run: docker compose exec kablo python manage.py test tests
 
