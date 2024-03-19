@@ -70,7 +70,7 @@ docker-compose up --build -d --remove-orphans
 Run tests in a the running container:
 
 ```bash
-docker-compose exec web python manage.py test --settings=kablo.settings_test
+docker compose exec web python manage.py test --settings=kablo.settings_test
 ```
 
 Run a specific test in the running container (adding the `--keepdb` flag speeds up iterations):
