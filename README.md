@@ -1,6 +1,6 @@
-# kablo: Open Source for Electric Newtork Information System
+# kablo: Open Source for Electric Network Information System
 
-POC: Open Source for Electric Newtork Information System
+POC: Open Source for Electric Network Information System
 
 ⚠️ THIS IS ***NOT*** READY FOR PRODUCTION ⚠️
 
@@ -28,20 +28,20 @@ If everything went fine, go to ```localhost:9051``` and you should see the welco
 
 ### Database
 
-1. Create a PostgreSQL database
+1. Create a PostgreSQL database.
 2. Install required extensions:
 
 ```sql
 CREATE EXTENSION postgis;
 ```
 
-3. Edit DB connection in .env file
+3. Edit DB connection in `.env` file
 
 ### Environment variables
 
 :warning: :warning: :warning:
 
-Set the following variables as follow
+Set the following variables as follow:
 
 ```ini
 COMPOSE_FILE=docker-compose.yml
@@ -67,13 +67,13 @@ docker-compose up --build -d --remove-orphans
 
 ### Run the tests from within the docker container
 
-Run tests in a the running container
+Run tests in a the running container:
 
 ```bash
 docker-compose exec web python manage.py test --settings=kablo.settings_test
 ```
 
-Run a specific test in the running container (adding the `--keepdb` flag speeds up iterations)
+Run a specific test in the running container (adding the `--keepdb` flag speeds up iterations):
 
 ```bash
 docker-compose exec web python manage.py test --settings=kablo.settings_test --keepdb kablo.apps.permits.tests.test_a_kablo_case
@@ -133,7 +133,7 @@ docker compose exec web pip install -r requirements.txt
 
 ## Documenting models
 
-In order to generate the model documentation, run
+In order to generate the model documentation, run:
 ```
 docker compose run kablo scripts/generate_models_diagram.sh
 ```
