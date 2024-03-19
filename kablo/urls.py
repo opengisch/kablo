@@ -18,7 +18,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 
-from kablo.apps.core import views as core_views
+from kablo.core import views as core_views
 
 urlpatterns = [
     path("", core_views.home, name="home"),

@@ -97,10 +97,10 @@ ENABLE_2FA = os.getenv("ENABLE_2FA", "false").lower() == "true"
 
 INSTALLED_APPS = [
     # our apps
-    "kablo.apps.core",
-    "kablo.apps.accounts",
-    "kablo.apps.api",
-    "kablo.apps.network",
+    "kablo.core",
+    "kablo.accounts",
+    "kablo.api",
+    "kablo.network",
     # django
     "django.contrib.admin",
     "django.contrib.auth",

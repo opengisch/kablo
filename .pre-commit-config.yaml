@@ -1,4 +1,4 @@
-exclude: ^kablo/apps/[^/]+/migrations/
+exclude: ^kablo/[^/]+/migrations/
 
 
 repos:
