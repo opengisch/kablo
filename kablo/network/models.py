@@ -6,7 +6,7 @@ from django.contrib.gis.geos import GEOSGeometry, LineString
 from django.db import transaction
 from shapely import from_wkb, to_wkb
 
-from kablo.apps.core.geometry import Intersects, SplitLine
+from kablo.core.geometry import Intersects, SplitLine
 
 
 def shapely2geodjango(shapely_geom):

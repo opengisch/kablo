@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class AccountsConfig(AppConfig):
+class NetworkConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "kablo.apps.accounts"
+    name = "kablo.network"

@@ -3,7 +3,7 @@ import random
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
-from kablo.apps.network.models import Track
+from kablo.network.models import Track
 
 
 class Command(BaseCommand):
