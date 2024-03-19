@@ -29,51 +29,66 @@ class Track(models.Model):
 
     @transaction.atomic
     def save(self, **kwargs):
-        is_adding = self._state.adding  # this is altered after
+        # calling the super method causes the state flags to change, so save the original value in advance
+        is_adding = self._state.adding 
         super().save(**kwargs)
         if is_adding:
-            geoms = geodjango2shapely(self.geom)
             order_index = 0
-            for geom in get_parts(geoms):
-                Section.objects.create(
-                    geom=shapely2geodjango(geom), track=self, order_index=order_index
-                )
+            sections = []
+
+            for part_geom in self.geom:
+                section = Section(
+                        geom=part_geom,
+                        track=self,
+                        order_index=order_index,
+                    )
                 order_index += 1
+                sections.append(section)
+
+            Section.objects.bulk_create(sections)
 
     @transaction.atomic
     def split(self, split_line: LineString):
         has_split = False
         order_index = 0
-        for section in (
+        sections_qs = (
             Section.objects.filter(track=self)
             .annotate(intersects=Intersects("geom", split_line))
             .annotate(
-                splits=models.Case(
-                    models.When(intersects=True, then=(SplitLine("geom", split_line))),
+                splitted_geom=models.Case(
+                    models.When(
+                        intersects=True,
+                        then=SplitLine("geom", split_line),
+                    ),
                     output_field=models.GeometryCollectionField(),
-                )
+                ),
             )
             .order_by("order_index")
-        ):
+        )
+
+        for section in sections_qs:
 
             if section.intersects:
                 has_split = True
                 first_section = True
-                for geom in get_parts(geodjango2shapely(section.splits)):
-                    if first_section:
-                        section.geom = shapely2geodjango(geom)
-                        section.order_index = order_index
-                        section.save()
-                        first_section = False
-                    else:
+
+                for splitted_part_idx, splitted_part in enumerate(section.splitted_geom):
+                     if splitted_part_idx == 0:
+                        section.geom = splitted_part_idx
+                     else:
                         order_index += 1
                         section = section.clone()
-                        section.order_index = order_index
-                        section.save()
+
+                    section.order_index = order_index
+                    section.save()
             elif has_split:
                 # update the ordering indexes on following sections
                 section.order_index = order_index
                 section.save()
+           else:
+               # Would be great to say why you skip this case here, to be it's not clear
+               pass
+
             order_index += 1
 
         if has_split:
