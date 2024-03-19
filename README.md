@@ -76,7 +76,7 @@ docker compose exec web python manage.py test --settings=kablo.settings_test
 Run a specific test in the running container (adding the `--keepdb` flag speeds up iterations):
 
 ```bash
-docker-compose exec web python manage.py test --settings=kablo.settings_test --keepdb kablo.apps.permits.tests.test_a_kablo_case
+docker compose exec web python manage.py test --settings=kablo.settings_test --keepdb kablo.apps.permits.tests.test_a_kablo_case
 ```
 
 ### Linting
