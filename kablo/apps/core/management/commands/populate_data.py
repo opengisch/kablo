@@ -26,11 +26,10 @@ class Command(BaseCommand):
             line_y.append(y)
 
         geom_line_wkt = ",".join([f"{x} {y}" for x, y in zip(line_x, line_y)])
-        geom_line_wkt = f"LineString({geom_line_wkt})"
+        geom_line_wkt = f"MultiLineString(({geom_line_wkt}))"
 
         fields = {"geom": geom_line_wkt}
-        track = Track.objects.create_track(**fields)
-        track.save()
+        Track.objects.create(**fields)
 
         # Call 'update_data' to update computed properties
         # call_command("updatedata")
