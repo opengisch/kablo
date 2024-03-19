@@ -70,8 +70,6 @@ class Track(models.Model):
 
             if section.intersects:
                 has_split = True
-                first_section = True
-
                 for split_part_idx, split_part in enumerate(section.splitted_geom):
                     if split_part_idx == 0:
                         section.geom = split_part
@@ -86,7 +84,7 @@ class Track(models.Model):
                 section.order_index = order_index
                 section.save()
             else:
-                # no need to update index if no intersection occured
+                # no need to update index if no intersection occurred
                 pass
 
             order_index += 1
