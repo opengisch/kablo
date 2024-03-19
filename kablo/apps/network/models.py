@@ -1,6 +1,21 @@
 import uuid
 
 from django.contrib.gis.db import models
+from django.contrib.gis.db.models.aggregates import Union
+from django.contrib.gis.geos import GEOSGeometry, LineString
+from django.db import transaction
+from shapely import from_wkb, get_parts, to_wkb
+
+from kablo.apps.core.geometry import Intersects, SplitLine
+
+
+def shapely2geodjango(shapely_geom):
+    hex = to_wkb(shapely_geom, hex=True)
+    return GEOSGeometry(hex)
+
+
+def geodjango2shapely(geodjango_geom):
+    return from_wkb(geodjango_geom.hex)
 
 
 class NetworkNode(models.Model):
@@ -8,9 +23,76 @@ class NetworkNode(models.Model):
     geom = models.PointField(srid=2056)
 
 
-class TrackSection(models.Model):
+class TrackManager(models.Manager):
+    @transaction.atomic
+    def create_track(self, **kwargs):
+        track = super(TrackManager, self).create(**kwargs)
+
+        geoms = geodjango2shapely(track.geom)
+        order_index = 0
+        for geom in get_parts(geoms):
+            Section.objects.create(
+                geom=shapely2geodjango(geom), track=track, order_index=order_index
+            )
+            order_index += 1
+        return track
+
+
+class Track(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    geom = models.MultiLineStringField(srid=2056)
+
+    objects = TrackManager()
+
+    @transaction.atomic
+    def split(self, split_line: LineString):
+        has_split = False
+        order_index = 0
+        # split_line = f"'ST_GeomFromWKB('{split_line.wkb}', 2056)'"
+        for section in (
+            Section.objects.filter(track=self)
+            .annotate(intersects=Intersects("geom", split_line))
+            .annotate(
+                splits=models.Case(
+                    models.When(intersects=True, then=(SplitLine("geom", split_line))),
+                    output_field=models.GeometryCollectionField(),
+                )
+            )
+            .order_by("order_index")
+        ):
+
+            if section.intersects:
+                has_split = True
+                first_section = True
+                for geom in get_parts(geodjango2shapely(section.splits)):
+                    if first_section:
+                        section.geom = shapely2geodjango(geom)
+                        section.order_index = order_index
+                        section.save()
+                        first_section = False
+                    else:
+                        order_index += 1
+                        section = section.clone()
+                        section.order_index = order_index
+                        section.save()
+            elif has_split:
+                # update the ordering indexes on following sections
+                section.order_index = order_index
+                section.save()
+            order_index += 1
+
+        if has_split:
+            self.geom = Section.objects.filter(track=self).aggregate(
+                union=Union("geom")
+            )["union"]
+            self.save()
+
+
+class Section(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     geom = models.LineStringField(srid=2056)
+    track = models.ForeignKey(Track, on_delete=models.CASCADE)
+    order_index = models.IntegerField(default=0, null=False, blank=False)
 
     network_node_start = models.ForeignKey(
         NetworkNode,
@@ -27,32 +109,30 @@ class TrackSection(models.Model):
         on_delete=models.SET_NULL,
     )
 
+    class Meta:
+        unique_together = ("track", "order_index")
 
-class TrackManager(models.Manager):
-    def create_track(self, **kwargs):
-        track = super(TrackManager, self).create(**kwargs)
-        track.track_sections.create(geom=kwargs["geom"])
-        return track
-
-
-class Track(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    geom = models.LineStringField(srid=2056)
-    track_sections = models.ManyToManyField(TrackSection, through="TrackTrackSection")
-
-    objects = TrackManager()
-
-
-class TrackTrackSection(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    track = models.ForeignKey(Track, on_delete=models.CASCADE)
-    track_section = models.ForeignKey(TrackSection, on_delete=models.CASCADE)
-    index = models.IntegerField(default=1)
+    def clone(self):
+        new_kwargs = dict(
+            [
+                (fld.name, getattr(self, fld.name))
+                for fld in self._meta.fields
+                if fld.name != "id"
+            ]
+        )
+        return Section(**new_kwargs)
 
 
 class Tube(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    track_sections = models.ManyToManyField(TrackSection)
+    sections = models.ManyToManyField(Section)
+
+
+class TubeSection(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    tube = models.ForeignKey(Tube, on_delete=models.CASCADE)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE)
+    order_index = models.IntegerField(default=1)
 
 
 class Station(models.Model):
