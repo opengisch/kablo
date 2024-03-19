@@ -29,7 +29,7 @@ class TrackSectionTestCase(TestCase):
 
         fields = {"geom": geom_line_wkt}
 
-        track = Track.objects.create_track(**fields)
+        track = Track.objects.create(**fields)
         sections = Section.objects.filter(track=track)
 
         self.assertEqual(len(sections), 1)

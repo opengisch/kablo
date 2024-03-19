@@ -23,32 +23,27 @@ class NetworkNode(models.Model):
     geom = models.PointField(srid=2056)
 
 
-class TrackManager(models.Manager):
-    @transaction.atomic
-    def create_track(self, **kwargs):
-        track = super(TrackManager, self).create(**kwargs)
-
-        geoms = geodjango2shapely(track.geom)
-        order_index = 0
-        for geom in get_parts(geoms):
-            Section.objects.create(
-                geom=shapely2geodjango(geom), track=track, order_index=order_index
-            )
-            order_index += 1
-        return track
-
-
 class Track(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     geom = models.MultiLineStringField(srid=2056)
 
-    objects = TrackManager()
+    @transaction.atomic
+    def save(self, **kwargs):
+        is_adding = self._state.adding  # this is altered after
+        super().save(**kwargs)
+        if is_adding:
+            geoms = geodjango2shapely(self.geom)
+            order_index = 0
+            for geom in get_parts(geoms):
+                Section.objects.create(
+                    geom=shapely2geodjango(geom), track=self, order_index=order_index
+                )
+                order_index += 1
 
     @transaction.atomic
     def split(self, split_line: LineString):
         has_split = False
         order_index = 0
-        # split_line = f"'ST_GeomFromWKB('{split_line.wkb}', 2056)'"
         for section in (
             Section.objects.filter(track=self)
             .annotate(intersects=Intersects("geom", split_line))
