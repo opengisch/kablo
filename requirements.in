@@ -6,6 +6,7 @@ gunicorn
 psycopg
 requests
 whitenoise
+shapely
 django-simple-history
 djangorestframework
 djangorestframework-gis
