@@ -15,8 +15,8 @@ RUN apt-get update && \
     && ln -fs /usr/share/zoneinfo/Europe/Zurich /etc/localtime \
     && dpkg-reconfigure -f noninteractive tzdata
 
-COPY . /code/
-WORKDIR /code
+COPY . /kablo
+WORKDIR /kablo
 ENV PYTHONUNBUFFERED 1
 
 

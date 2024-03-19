@@ -162,7 +162,7 @@ ROOT_URLCONF = "kablo.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -170,8 +170,6 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                # `allauth` needs this from django
-                "django.template.context_processors.request",
             ],
         },
     },
@@ -281,14 +279,18 @@ DEBUG_TOOLBAR_CONFIG = {
 
 LOGGING = {
     "version": 1,
-    "disable_existing_loggers": False,
+    # "disable_existing_loggers": False,
     "handlers": {
         "console": {
             "level": "INFO",
             "class": "logging.StreamHandler",
         },
     },
+    # see https://stackoverflow.com/a/56773783/1548052
     "loggers": {
+        "django.db.backends": {
+            "level": "DEBUG",
+        },
         "": {
             "handlers": ["console"],
             "level": "ERROR",

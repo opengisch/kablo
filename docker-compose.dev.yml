@@ -10,8 +10,7 @@ services:
     # Runserver for live reload
     command: "python3 manage.py runserver 0.0.0.0:9000"
     volumes:
-      # Mount code for live reload
-      - .:/code
+      - .:/kablo
     depends_on:
       postgres:
         condition: service_healthy
