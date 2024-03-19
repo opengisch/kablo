@@ -6,9 +6,10 @@ services:
     image: kablo
     restart: unless-stopped
     build:
-      context: ./
+      context: .
       target: prod
-    entrypoint: /code/entrypoint.sh
+      dockerfile: kablo/.docker/Dockerfile
+    entrypoint: /kablo/kablo/.docker/entrypoint.sh
     command: "gunicorn kablo.core.wsgi -b :9000 --error-logfile gunicorn_log.log --workers=2 --threads=4 --worker-class=gthread"
     environment:
       DISABLE_MIGRATION_SCRIPT_ON_PRODUCTION:

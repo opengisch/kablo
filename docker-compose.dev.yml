@@ -10,8 +10,7 @@ services:
     # Runserver for live reload
     command: "python3 manage.py runserver 0.0.0.0:9000"
     volumes:
-      # Mount code for live reload
-      - .:/code
+      - .:/kablo
     depends_on:
       postgres:
         condition: service_healthy
@@ -34,6 +33,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    command: ["postgres", "-c", "log_statement=all", "-c", "log_destination=stderr"]
 
   mailhog:
     container_name: mailhog
