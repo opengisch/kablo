@@ -4,7 +4,7 @@ from django.contrib.gis.db import models
 from django.contrib.gis.db.models.aggregates import Union
 from django.contrib.gis.geos import GEOSGeometry, LineString
 from django.db import transaction
-from shapely import from_wkb, get_parts, to_wkb
+from shapely import from_wkb, to_wkb
 
 from kablo.apps.core.geometry import Intersects, SplitLine
 
@@ -30,7 +30,7 @@ class Track(models.Model):
     @transaction.atomic
     def save(self, **kwargs):
         # calling the super method causes the state flags to change, so save the original value in advance
-        is_adding = self._state.adding 
+        is_adding = self._state.adding
         super().save(**kwargs)
         if is_adding:
             order_index = 0
@@ -38,10 +38,10 @@ class Track(models.Model):
 
             for part_geom in self.geom:
                 section = Section(
-                        geom=part_geom,
-                        track=self,
-                        order_index=order_index,
-                    )
+                    geom=part_geom,
+                    track=self,
+                    order_index=order_index,
+                )
                 order_index += 1
                 sections.append(section)
 
@@ -70,12 +70,10 @@ class Track(models.Model):
 
             if section.intersects:
                 has_split = True
-                first_section = True
-
-                for splitted_part_idx, splitted_part in enumerate(section.splitted_geom):
-                     if splitted_part_idx == 0:
-                        section.geom = splitted_part_idx
-                     else:
+                for split_part_idx, split_part in enumerate(section.splitted_geom):
+                    if split_part_idx == 0:
+                        section.geom = split_part
+                    else:
                         order_index += 1
                         section = section.clone()
 
@@ -85,9 +83,9 @@ class Track(models.Model):
                 # update the ordering indexes on following sections
                 section.order_index = order_index
                 section.save()
-           else:
-               # Would be great to say why you skip this case here, to be it's not clear
-               pass
+            else:
+                # no need to update index if no intersection occurred
+                pass
 
             order_index += 1
 
