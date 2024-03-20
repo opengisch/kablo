@@ -53,11 +53,10 @@ class Track(models.Model):
         order_index = 0
         sections_qs = (
             Section.objects.filter(track=self)
-            .annotate(intersects=Intersects("geom", split_line))
             .annotate(
                 splitted_geom=models.Case(
                     models.When(
-                        intersects=True,
+                        models.Q(Intersects("geom", split_line)),
                         then=SplitLine("geom", split_line),
                     ),
                     output_field=models.GeometryCollectionField(),
@@ -68,7 +67,7 @@ class Track(models.Model):
 
         for section in sections_qs:
 
-            if section.intersects:
+            if section.splitted_geom:
                 has_split = True
                 for split_part_idx, split_part in enumerate(section.splitted_geom):
                     if split_part_idx == 0:
