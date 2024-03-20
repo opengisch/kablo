@@ -1,8 +1,7 @@
-import random
-
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
+from kablo.core.utils import wkt_from_line
 from kablo.network.models import Track
 
 
@@ -17,16 +16,8 @@ class Command(BaseCommand):
         """Populate db with testdata"""
         x = 2508500
         y = 1152000
-        line_x = []
-        line_y = []
-        for i in range(5):
-            x += random.randint(1, 5)
-            y += random.randint(1, 5)
-            line_x.append(x)
-            line_y.append(y)
-
-        geom_line_wkt = ",".join([f"{x} {y}" for x, y in zip(line_x, line_y)])
-        geom_line_wkt = f"MultiLineString(({geom_line_wkt}))"
+        line = [(x + 10 * i, y + 10 * i) for i in range(5)]
+        geom_line_wkt = wkt_from_line(line)
 
         fields = {"geom": geom_line_wkt}
         Track.objects.create(**fields)

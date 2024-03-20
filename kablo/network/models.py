@@ -2,20 +2,10 @@ import uuid
 
 from django.contrib.gis.db import models
 from django.contrib.gis.db.models.aggregates import Union
-from django.contrib.gis.geos import GEOSGeometry, LineString
+from django.contrib.gis.geos import LineString
 from django.db import transaction
-from shapely import from_wkb, to_wkb
 
 from kablo.core.geometry import Intersects, SplitLine
-
-
-def shapely2geodjango(shapely_geom):
-    hex = to_wkb(shapely_geom, hex=True)
-    return GEOSGeometry(hex)
-
-
-def geodjango2shapely(geodjango_geom):
-    return from_wkb(geodjango_geom.hex)
 
 
 class NetworkNode(models.Model):
