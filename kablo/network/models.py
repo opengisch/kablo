@@ -110,13 +110,10 @@ class Section(models.Model):
         unique_together = ("track", "order_index")
 
     def clone(self):
-        new_kwargs = dict(
-            [
-                (fld.name, getattr(self, fld.name))
-                for fld in self._meta.fields
-                if fld.name != "id"
-            ]
-        )
+        new_kwargs = dict()
+        for field in self._meta.fields:
+            if field.name != "id":
+                new_kwargs[field.name] = getattr(self, field.name)
         return Section(**new_kwargs)
 
 
