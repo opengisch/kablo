@@ -20,6 +20,10 @@ if ENV not in ["DEV", "PROD"]:
     raise Exception(
         f"Incorrect setting for ENV: `{ENV}`. Expecting one of `DEV` or `PROD`."
     )
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+if ENV == "DEV":
+    DEBUG = True
 
 ROOT_URLCONF = "kablo.urls"
 PREFIX_URL = os.environ.get("PREFIX_URL", "")
@@ -64,10 +68,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-if ENV == "DEV":
-    DEBUG = True
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 
@@ -162,7 +162,7 @@ ROOT_URLCONF = "kablo.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -279,22 +279,14 @@ DEBUG_TOOLBAR_CONFIG = {
 
 LOGGING = {
     "version": 1,
-    # "disable_existing_loggers": False,
+    "disable_existing_loggers": False,
     "handlers": {
         "console": {
-            "level": "INFO",
             "class": "logging.StreamHandler",
         },
     },
-    # see https://stackoverflow.com/a/56773783/1548052
-    "loggers": {
-        "django.db.backends": {
-            "level": "DEBUG",
-        },
-        "": {
-            "handlers": ["console"],
-            "level": "ERROR",
-            "propagate": True,
-        },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
     },
 }
