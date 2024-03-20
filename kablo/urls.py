@@ -19,12 +19,18 @@ from django.contrib import admin
 from django.urls import include, path
 
 from kablo.core import views as core_views
+from kablo.network import views as network_views
 
 urlpatterns = [
     path("", core_views.home, name="home"),
+    path("map/", network_views.map_view, name="map"),
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
+    path("i18n/", include("django.conf.urls.i18n")),
 ]
 
 if settings.DEBUG:
     urlpatterns = [path("__debug__/", include("debug_toolbar.urls"))] + urlpatterns
+
+
+# urlpatterns += i18n_patterns(url(r'^admin/', admin.site.urls))

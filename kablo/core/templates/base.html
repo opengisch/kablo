@@ -1,0 +1,47 @@
+{% load i18n static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+      <title>KABLO</title>
+      <link rel="icon" type="image/x-icon" href="{% static 'core/electricity.svg' %}" />
+      <link href="{% static 'core/style.css' %}" rel="stylesheet">
+      {% block extrahead %}{% endblock extrahead %}
+  </head>
+  <body>
+
+    <!-- Sidebar-->
+    <nav>
+      <img src="{% static 'core/electricity.svg' %}" />
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'map' %}">Map</a>
+      <div class="search">
+        <input placeholder="{% translate 'Search not implemented... ' %}" disabled="disabled">
+      </div>
+      <span class="spacer"></span>
+      <form class="language" action="{% url 'set_language' %}" method="post">
+        {% csrf_token %}
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+        {% get_language_info_list for LANGUAGES as languages %}
+        <select name="language" onchange="this.form.submit()">
+          {% for language in languages %}
+            <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+              {{ language.name_local|title }}
+            </option>
+          {% endfor %}
+        </select>
+      </form>
+      <a href="{% url 'admin:index' %}">{% translate 'Admin' %}</a>
+    </nav>
+
+    <!-- Content -->
+    <main class="{% block main_class %}{% endblock %}">
+    {% block content %}
+    {% endblock content %}
+    </main>
+
+  </body>
+</html>

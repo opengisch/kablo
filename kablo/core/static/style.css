@@ -1,0 +1,153 @@
+body {
+    display: flex;
+    overflow: hidden;
+    height: 100vh;
+    font-family: 'Open Sans', sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: #3c9765
+}
+    a:hover {
+        color: #4db164;
+    }
+
+h1, h2, h3, h4 {
+    border-bottom: solid 1px #aaa;
+    font-weight: 100;
+}
+
+h1 {
+    margin-bottom: 2em;
+}
+h2 {
+    margin-top: 2em;
+}
+
+table {
+    width: 100%;
+    font-size: 0.85em;
+    border-collapse: collapse;
+}
+
+    tbody tr:nth-child(odd) {
+        background-color: #f8f8f8;
+    }
+
+    td, th {
+        border: none;
+        padding: 5px;
+    }
+
+    th {
+        font-style: italic;
+        font-weight: 100;
+    }
+
+.scrollable {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+nav {
+    flex-grow: 0;
+    display: flex;
+    flex-direction: column;
+    border-right: solid 1px #aaa;
+    background-color: #f8f8f8;
+}
+
+    nav > * {
+        padding: 10px;
+        border-bottom: solid 1px #aaa;
+    }
+
+    nav > *:last-child {
+        border-bottom: none;
+    }
+
+    nav > a:hover {
+        background-color: #eee;
+    }
+
+    nav > .spacer {
+        flex-grow: 1
+    }
+
+    nav .search input {
+        border-radius: 20px;
+        border: none;
+        box-shadow: inset rgba(0,0,0,0.3) 0 1px 3px;
+        padding: 5px;
+        background: none;
+
+    }
+
+    nav .language select {
+        border: none;
+        background: none;
+        width: 100%;
+        color: #3c9765;
+        font-size: inherit;
+    }
+    nav .language select:hover {
+        color: #4db164;
+    }
+
+main {
+    flex-grow: 1;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+    main .breadcrumbs {
+        margin-top: 0;
+    }
+
+    main.no-padding {
+        padding: 0;
+    }
+
+    .columns {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        column-gap: 40px;
+        row-gap: 40px;
+    }
+
+    @media (max-width: 800px) {
+        .columns {
+            grid-template-columns: 1fr;
+        }
+    }
+
+
+    .edit-link {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        right: 25px;
+        bottom: 25px;
+        border-radius: 20px;
+        width: 40px;
+        height: 40px;
+        font-size: 25px;
+        font-weight: bold;
+        line-height: 0px;
+        background-color: #3c9765;
+        box-shadow: rgba(0,0,0,0.3) 0px 5px 10px 0px;
+        z-index: 100;
+    }
+
+    .edit-link a {
+        color: #fff;
+    }
+
+    #map {
+        width: 100%;
+        height: 100%;
+    }

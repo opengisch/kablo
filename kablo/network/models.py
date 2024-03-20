@@ -15,6 +15,7 @@ class NetworkNode(models.Model):
 
 class Track(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    identifier = models.TextField(null=True, blank=True)
     geom = models.MultiLineStringField(srid=2056)
 
     @transaction.atomic

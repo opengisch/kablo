@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% load i18n admin_urls admin_modify %}
+
+
+{% block extrahead %}
+{% comment %}TODO: don't hardcode these (instead retrieve from django.contrib.gis.forms.widgets.OpenLayersWidget){% endcomment %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/ol3/4.6.5/ol.css" type="text/css" media="all" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/4.6.5/ol.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/ol-layerswitcher@2.0.0/src/ol-layerswitcher.css" type="text/css" media="all" rel="stylesheet">
+<script src="https://unpkg.com/ol-layerswitcher@2.0.0/dist/ol-layerswitcher.js"></script>
+{% endblock %}
+
+
+{% block main_class %}no-padding{% endblock %}
+
+
+{% block content %}
+
+<div id="map" class="map"></div>
+<script type="text/javascript">
+  var plotsGeojson = {{plots_geojson|safe}};
+  var sectorsGeojsons = {{sectors_geojsons|safe}};
+  {% include "_map_full.js" %}
+</script>
+
+{% endblock content %}

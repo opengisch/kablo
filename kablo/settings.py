@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 # Set environment mode
 ENV = os.getenv("ENV")
@@ -228,7 +229,12 @@ if DEBUG and not CORS_ALLOWED_ORIGINS:
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = "fr-CH"
+LANGUAGE_CODE = "fr-ch"
+LANGUAGES = [
+    ("fr", _("French")),
+    ("en", _("English")),
+]
+
 TIME_ZONE = "Europe/Zurich"
 USE_I18N = True
 USE_L10N = True
