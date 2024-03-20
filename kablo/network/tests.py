@@ -1,17 +1,13 @@
 from django.contrib.gis.geos import LineString
 from django.test import TestCase, override_settings
 
-from .models import Section, Track
+from kablo.core.utils import wkt_from_line
+from kablo.network.models import Section, Track
 
 
 class TrackSectionTestCase(TestCase):
     def setUp(self):
         pass
-
-    @staticmethod
-    def wkt_from_line(line: list[tuple[float, float]]) -> str:
-        geom_line_wkt = ", ".join([f"{x} {y}" for (x, y) in line])
-        return f"MULTILINESTRING (({geom_line_wkt}))"
 
     # see https://stackoverflow.com/a/56773783/1548052
     @override_settings(DEBUG=True)
@@ -20,7 +16,7 @@ class TrackSectionTestCase(TestCase):
         y = 1152000
 
         line = [(x + 10 * i, y + 10 * i) for i in range(5)]
-        geom_line_wkt = self.wkt_from_line(line)
+        geom_line_wkt = wkt_from_line(line)
 
         mid_x = (line[2][0] + line[3][0]) / 2
         mid_y = (line[2][1] + line[3][1]) / 2
