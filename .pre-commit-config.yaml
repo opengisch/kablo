@@ -1,6 +1,3 @@
-exclude: ^kablo/[^/]+/migrations/
-
-
 repos:
 
   # Fix end of files
