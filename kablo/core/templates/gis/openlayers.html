@@ -9,7 +9,7 @@ if( ! document.getElementById('{{ id }}').value ) {
 {% endblock %}
 
 {% block base_layer %}
-const baseLayer = new ol.layer.Tile({
+const base_layer = new ol.layer.Tile({
   source: new ol.source.XYZ({
     url: 'https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.landeskarte-grau-10/default/current/3857/{z}/{x}/{y}.png'
   })
