@@ -101,6 +101,7 @@ INSTALLED_APPS = [
     "kablo.accounts",
     "kablo.api",
     "kablo.network",
+    "kablo.editing",
     # django
     "django.contrib.admin",
     "django.contrib.auth",

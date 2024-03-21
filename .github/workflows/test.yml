@@ -56,7 +56,7 @@ jobs:
       run: docker compose exec kablo python manage.py populate_users
 
     - name: Run unit tests
-      run: docker compose exec kablo python manage.py test kablo.network
+      run: docker compose exec kablo python manage.py test
 
 #    - name: Run integration tests
 #      run: docker compose run integration_tests
