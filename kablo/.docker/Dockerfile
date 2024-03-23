@@ -15,19 +15,21 @@ RUN apt-get update && \
     && ln -fs /usr/share/zoneinfo/Europe/Zurich /etc/localtime \
     && dpkg-reconfigure -f noninteractive tzdata
 
-COPY . /kablo
-WORKDIR /kablo
 ENV PYTHONUNBUFFERED 1
-
 
 FROM base as production
 
 ENV ENV=PROD
+COPY requirements.txt .
 RUN pip install -r requirements.txt
-
+COPY . /kablo
+WORKDIR /kablo
 
 FROM base as dev
 
 ENV ENV=DEV
 ENV PYTHONDONTWRITEBYTECODE 1
+COPY requirements_dev.txt .
 RUN pip install -r requirements_dev.txt
+COPY . /kablo
+WORKDIR /kablo
