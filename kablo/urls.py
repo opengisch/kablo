@@ -17,12 +17,14 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
+from django_oapif.urls import oapif_router
 
 from kablo.core import views as core_views
 
 urlpatterns = [
     path("", core_views.home, name="home"),
     path("admin/", admin.site.urls),
+    path("oapif/", include(oapif_router.urls)),
     path("accounts/", include("allauth.urls")),
 ]
 

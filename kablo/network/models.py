@@ -4,6 +4,7 @@ from django.contrib.gis.db import models
 from django.contrib.gis.db.models.aggregates import Union
 from django.contrib.gis.geos import LineString
 from django.db import transaction
+from django_oapif.decorators import register_oapif_viewset
 
 from kablo.core.geometry import Intersects, SplitLine
 
@@ -13,6 +14,7 @@ class NetworkNode(models.Model):
     geom = models.PointField(srid=2056)
 
 
+@register_oapif_viewset(crs=2056)
 class Track(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     geom = models.MultiLineStringField(srid=2056)

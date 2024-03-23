@@ -12,7 +12,9 @@ asgiref==3.8.0
 beautifulsoup4==4.12.3
     # via -r requirements.in
 certifi==2024.2.2
-    # via requests
+    # via
+    #   pyproj
+    #   requests
 cffi==1.16.0
     # via cryptography
 charset-normalizer==3.3.2
@@ -30,6 +32,7 @@ django==5.0.3
     #   django-allauth
     #   django-cors-headers
     #   django-formtools
+    #   django-oapif
     #   django-oauth-toolkit
     #   django-otp
     #   django-phonenumber-field
@@ -42,6 +45,8 @@ django-cors-headers==4.3.1
     # via -r requirements.in
 django-formtools==2.5.1
     # via django-two-factor-auth
+django-oapif @ git+https://github.com/opengisch/django-oapif.git
+    # via -r requirements.in
 django-oauth-toolkit==2.3.0
     # via -r requirements.in
 django-otp==1.3.0
@@ -54,13 +59,13 @@ django-simple-history==3.5.0
     # via -r requirements.in
 django-two-factor-auth[phonenumbers]==1.16.0
     # via -r requirements.in
-djangorestframework==3.15.0
+djangorestframework==3.14.0
     # via
-    #   -r requirements.in
+    #   django-oapif
     #   django-rest-knox
     #   djangorestframework-gis
-djangorestframework-gis==1.0
-    # via -r requirements.in
+djangorestframework-gis @ git+https://github.com/openwisp/django-rest-framework-gis@4f244d5d8a7ad5b453fd04f64150818d15123e01
+    # via django-oapif
 gunicorn==21.2.0
     # via -r requirements.in
 idna==3.6
@@ -77,16 +82,22 @@ phonenumbers==8.13.32
     # via django-two-factor-auth
 psycopg==3.1.18
     # via -r requirements.in
+psycopg2-binary==2.9.9
+    # via django-oapif
 pycparser==2.21
     # via cffi
 pyjwt[crypto]==2.8.0
-    # via
-    #   django-allauth
-    #   pyjwt
+    # via django-allauth
 pypng==0.20220715.0
     # via qrcode
+pyproj==3.6.1
+    # via django-oapif
 python3-openid==3.2.0
     # via django-allauth
+pytz==2024.1
+    # via djangorestframework
+pyyaml==6.0.1
+    # via django-oapif
 qrcode==7.4.2
     # via django-two-factor-auth
 requests==2.31.0
@@ -106,6 +117,8 @@ typing-extensions==4.10.0
     #   jwcrypto
     #   psycopg
     #   qrcode
+uritemplate==4.1.1
+    # via django-oapif
 urllib3==2.2.1
     # via requests
 whitenoise==6.6.0

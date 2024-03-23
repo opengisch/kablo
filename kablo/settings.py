@@ -101,6 +101,7 @@ INSTALLED_APPS = [
     "kablo.accounts",
     "kablo.api",
     "kablo.network",
+    "django_oapif",
     # django
     "django.contrib.admin",
     "django.contrib.auth",
@@ -109,6 +110,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.gis",
+    "rest_framework",
+    "rest_framework_gis",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
