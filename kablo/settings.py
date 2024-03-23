@@ -98,7 +98,7 @@ ENABLE_2FA = os.getenv("ENABLE_2FA", "false").lower() == "true"
 INSTALLED_APPS = [
     # our apps
     "kablo.core",
-    "kablo.accounts",
+    "kablo.users",
     "kablo.api",
     "kablo.network",
     "kablo.editing",
@@ -204,7 +204,7 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL = "accounts.User"
+AUTH_USER_MODEL = "users.User"
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

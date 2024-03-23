@@ -25,7 +25,7 @@ urlpatterns = [
     path("", core_views.home, name="home"),
     path("admin/", admin.site.urls),
     path("oapif/", include(oapif_router.urls)),
-    path("accounts/", include("allauth.urls")),
+    path("users/", include("allauth.urls")),
 ]
 
 if settings.DEBUG:
