@@ -1,7 +1,8 @@
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
-from kablo.core.utils import wkt_from_line
+from kablo.core.utils import wkt_from_line, wkt_from_multiline
+from kablo.editing.models import TrackSplit
 from kablo.network.models import Track
 
 
@@ -17,10 +18,16 @@ class Command(BaseCommand):
         x = 2508500
         y = 1152000
         line = [(x + 10 * i, y + 10 * i) for i in range(5)]
-        geom_line_wkt = wkt_from_line(line)
+        geom_line_wkt = wkt_from_multiline(line)
 
         fields = {"geom": geom_line_wkt}
         Track.objects.create(**fields)
+
+        # all layers neeed some data to be loaded in QGIS
+        line = [(x - 1000 + 10 * i, y + 10 * i) for i in range(2)]
+        geom_line_wkt = wkt_from_line(line)
+        fields = {"geom": geom_line_wkt, "force_save": True}
+        TrackSplit.objects.create(**fields)
 
         # Call 'update_data' to update computed properties
         # call_command("updatedata")

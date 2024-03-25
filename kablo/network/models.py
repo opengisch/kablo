@@ -58,7 +58,6 @@ class Track(models.Model):
         )
 
         for section in sections_qs:
-
             if section.splitted_geom:
                 has_split = True
                 for split_part_idx, split_part in enumerate(section.splitted_geom):
@@ -67,6 +66,7 @@ class Track(models.Model):
                     else:
                         order_index += 1
                         section = section.clone()
+                        section.geom = split_part
 
                     section.order_index = order_index
                     section.save()

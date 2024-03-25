@@ -11,9 +11,14 @@ from kablo.network.models import Track
 class TrackSplit(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     geom = models.LineStringField(srid=2056)
-    track = models.ForeignKey(Track, null=False, blank=False, on_delete=models.CASCADE)
+    force_save = models.BooleanField(default=False)
 
     @transaction.atomic
     def save(self, **kwargs):
-        if self._state.adding:
-            Track.objects.get(id=self.track.id).split(self.geom)
+        is_adding = self._state.adding
+        super().save(**kwargs)
+        # TODO remove when we don't need data anymore
+        # if self.force_save:
+        if is_adding:
+            for track in Track.objects.filter(geom__intersects=self.geom):
+                track.split(self.geom)
