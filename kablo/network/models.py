@@ -87,6 +87,7 @@ class Track(models.Model):
             self.save()
 
 
+@register_oapif_viewset(crs=2056)
 class Section(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     geom = models.LineStringField(srid=2056)
