@@ -14,9 +14,9 @@ git clone git@github.com:yverdon/kablo.git && cd kablo
 # copy default config
 cp -n .env.example .env
 # start the stack
-docker-compose up --build -d --remove-orphans
+docker compose up --build -d --remove-orphans
 # run the migrations
-docker-compose run web scripts/migrate.sh
+docker compose run kablo scripts/migrate.sh
 ```
 
 As fixtures are not yet available, should you need and superadmin account, please create it as follow: ```python manage.py createsuperuser```
@@ -56,7 +56,7 @@ run migrations, collect static files, compile messages and update integrator per
 
 ```bash
 # update the stack
-docker-compose up --build -d --remove-orphans
+docker compose up --build -d --remove-orphans
 ```
 
 ## Contribution guideline
@@ -104,10 +104,10 @@ To install a new package, add it to `requirements.in`, without pinning it to a
 specific version unless needed. Then run:
 
 ```
-docker-compose exec kablo pip-compile requirements.in
-docker-compose exec kablo pip-compile requirements_dev.in
-docker-compose exec kablo pip install -r requirements.txt
-docker-compose exec kablo pip install -r requirements_dev.txt
+docker compose exec kablo pip-compile requirements.in
+docker compose exec kablo pip-compile requirements_dev.in
+docker compose exec kablo pip install -r requirements.txt
+docker compose exec kablo pip install -r requirements_dev.txt
 ```
 
 Make sure you commit both the `requirements.in` and the `requirements.txt` files.
@@ -158,18 +158,3 @@ Once you provided your token go to `/admin/` to access the admin app.
 ### kablo as a OAuth2 provider [NOT IMPLEMENTED]
 * [Access to a ressources with QGIS](docs/OAuth2_Qgis.md)
 * [Access to a ressources with a bearer token](docs/OAuth2_access_api.md)
-
-### [NOT IMPLEMENTED] Testing emails
-
-A Mailhog container is working on the dev environment, you can access it by going to localhost:8025.
-Just ensure to setup the following entries in your `.env` file:
-
-```ini
-EMAIL_HOST=mailhog
-EMAIL_PORT=1025
-EMAIL_HOST_USER=null
-EMAIL_HOST_PASSWORD=null
-# Set TLS to false for mailhog
-EMAIL_USE_TLS=false
-EMAIL_TO_CONSOLE=false
-```
