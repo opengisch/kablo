@@ -6,28 +6,28 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('network', '0002_demo'),
+        ("network", "0002_demo"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='cable',
-            name='original_uuid',
+            model_name="cable",
+            name="original_uuid",
             field=models.UUIDField(null=True),
         ),
         migrations.AddField(
-            model_name='station',
-            name='original_uuid',
+            model_name="station",
+            name="original_uuid",
             field=models.UUIDField(null=True),
         ),
         migrations.AddField(
-            model_name='track',
-            name='original_uuid',
+            model_name="track",
+            name="original_uuid",
             field=models.UUIDField(null=True),
         ),
         migrations.AddField(
-            model_name='tube',
-            name='original_uuid',
+            model_name="tube",
+            name="original_uuid",
             field=models.UUIDField(null=True),
         ),
     ]
