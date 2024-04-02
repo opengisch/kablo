@@ -1,0 +1,450 @@
+[
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 1,
+		"code" : 0,
+		"index" : 1,
+		"original_uuid" : "E418FD55-46C9-4EB5-94E9-7C1FAC8A1881",
+		"name_fr" : "Inconnu"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 2,
+		"code" : 1,
+		"index" : null,
+		"original_uuid" : "9A2BB010-6F67-4694-8DCA-32A9E7A2F682",
+		"name_fr" : "TC100"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 3,
+		"code" : 2,
+		"index" : null,
+		"original_uuid" : "EAE13AAC-9CEC-4837-9DB9-AF352E00BEF9",
+		"name_fr" : "TC150"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 4,
+		"code" : 3,
+		"index" : null,
+		"original_uuid" : "78517573-418B-4CB5-91E7-7DF8F5B8EFC1",
+		"name_fr" : "TC200"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 5,
+		"code" : 4,
+		"index" : null,
+		"original_uuid" : "BD2E2983-0886-4331-8FCD-C87093B5059E",
+		"name_fr" : "PE44"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 6,
+		"code" : 5,
+		"index" : null,
+		"original_uuid" : "62A0B88B-04AB-4DB9-8290-9F90EAA1EB3E",
+		"name_fr" : "PE60"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 7,
+		"code" : 6,
+		"index" : null,
+		"original_uuid" : "C63F7D16-8473-4045-BB4B-F0CD819F0EB2",
+		"name_fr" : "PE80"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 8,
+		"code" : 7,
+		"index" : null,
+		"original_uuid" : "74FC5B5E-9F2F-4771-B680-A16BB9615CBA",
+		"name_fr" : "PE96/112"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 9,
+		"code" : 8,
+		"index" : null,
+		"original_uuid" : "4F832787-C5F1-4928-A9B9-6BE7E37DB8C0",
+		"name_fr" : "PE100"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 10,
+		"code" : 9,
+		"index" : null,
+		"original_uuid" : "660D2D80-C2AB-4BA7-928E-01BD4D0E0ABF",
+		"name_fr" : "PE120"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 11,
+		"code" : 10,
+		"index" : null,
+		"original_uuid" : "97C2A9D5-DDEE-45C4-A531-367C694BAA8E",
+		"name_fr" : "PE150"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 12,
+		"code" : 11,
+		"index" : null,
+		"original_uuid" : "911A2C64-BD1B-4967-AC14-4175DE1FCE9A",
+		"name_fr" : "PE200"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 13,
+		"code" : 12,
+		"index" : null,
+		"original_uuid" : "BEEFC914-60FD-4D7D-9AAE-4679F78BD70B",
+		"name_fr" : "FE150"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 14,
+		"code" : 13,
+		"index" : null,
+		"original_uuid" : "E65498A8-CD81-4D8D-84E5-BAD43570259A",
+		"name_fr" : "PVC150"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 15,
+		"code" : 14,
+		"index" : null,
+		"original_uuid" : "86920EEB-2AA7-401E-9F47-DCD48168379E",
+		"name_fr" : "Pierre couvrante"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 16,
+		"code" : 15,
+		"index" : null,
+		"original_uuid" : "56B3C311-E2D2-4B00-B4DB-0D860615DC4E",
+		"name_fr" : "Pierre de canal 90"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 17,
+		"code" : 16,
+		"index" : null,
+		"original_uuid" : "5A4EAB7D-F5E1-4762-883F-80A28014B09D",
+		"name_fr" : "Pierre de canal 100"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 18,
+		"code" : 17,
+		"index" : null,
+		"original_uuid" : "C56DADFF-9C30-4C01-B420-28FDFA5E11D8",
+		"name_fr" : "Pierre de canal 110"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 19,
+		"code" : 18,
+		"index" : null,
+		"original_uuid" : "DA9B922E-6918-4350-9DD1-4843AE331E2B",
+		"name_fr" : "Symalen"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 20,
+		"code" : 19,
+		"index" : null,
+		"original_uuid" : "2F8AA7CC-D9AA-49D0-9E77-303F21D2E39C",
+		"name_fr" : "Tube flexible"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 21,
+		"code" : 20,
+		"index" : null,
+		"original_uuid" : "EF23DD88-3C67-41B7-A51E-4EA4449C630C",
+		"name_fr" : "Potelet 2\""
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 22,
+		"code" : 21,
+		"index" : null,
+		"original_uuid" : "A9FA9862-85E9-4F8F-A9C7-86DDC72702CD",
+		"name_fr" : "Potelet 2.5\""
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 23,
+		"code" : 22,
+		"index" : null,
+		"original_uuid" : "FD08418B-4497-4D16-97DA-FBBDB2A5A910",
+		"name_fr" : "Zores"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 24,
+		"code" : 9000,
+		"index" : 9000,
+		"original_uuid" : "722B89B8-8541-4775-B24B-FE5EFCC940A8",
+		"name_fr" : "pas de tube, câble nu"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 25,
+		"code" : 9100,
+		"index" : 9100,
+		"original_uuid" : "DC805B34-28D9-4F28-BF0E-22252BF22EDC",
+		"name_fr" : "pas de tube, ligne aérienne"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 26,
+		"code" : 10001,
+		"index" : 10001,
+		"original_uuid" : "C30CB209-E32A-449D-8F8F-F930194455E0",
+		"name_fr" : "Caniveau Acier"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 27,
+		"code" : 10002,
+		"index" : 10002,
+		"original_uuid" : "40B3C8C4-E6B8-4CD2-B544-C42F75F66682",
+		"name_fr" : "Caniveau Acier (Zores)"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 28,
+		"code" : 10005,
+		"index" : 10005,
+		"original_uuid" : "6A7FC56C-E2B9-4FF4-8FF3-6F945706EB6D",
+		"name_fr" : "Caniveau Ciment"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 29,
+		"code" : 10006,
+		"index" : 10006,
+		"original_uuid" : "0071FC33-F5B1-4C68-B4E1-94C3B2B22B2A",
+		"name_fr" : "Caniveau Eternit"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 30,
+		"code" : 10010,
+		"index" : 1010,
+		"original_uuid" : "10B61E57-96F3-4F78-9001-EED0748430DC",
+		"name_fr" : "Caniveau PE"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 31,
+		"code" : 20001,
+		"index" : 20001,
+		"original_uuid" : "E90083D9-FABB-4AC4-868A-FFE391A341A5",
+		"name_fr" : "Coude Acier"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 32,
+		"code" : 20005,
+		"index" : 20005,
+		"original_uuid" : "789B07BA-04E3-4DD1-87D5-09D7CA305227",
+		"name_fr" : "Coude Ciment"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 33,
+		"code" : 20006,
+		"index" : 20006,
+		"original_uuid" : "2851D52F-F974-40D7-9763-1E07A2E72AAE",
+		"name_fr" : "Coude Fibrociment"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 34,
+		"code" : 20010,
+		"index" : 1009,
+		"original_uuid" : "DC6DC0D0-E344-46A5-B266-2727DC3DB59B",
+		"name_fr" : "Coude PE"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 35,
+		"code" : 30005,
+		"index" : 30005,
+		"original_uuid" : "4AAC20DF-1A5A-4AB9-8AEA-C7CFC6163CF9",
+		"name_fr" : "Dalle Ciment"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 36,
+		"code" : 40005,
+		"index" : 1008,
+		"original_uuid" : "70E93FA7-556B-4D88-8EF2-16AA2CEA1CEC",
+		"name_fr" : "Demi-tuyau Ciment"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 37,
+		"code" : 40006,
+		"index" : 40006,
+		"original_uuid" : "6B17263F-941A-42A5-8204-04A3DB75149E",
+		"name_fr" : "Demi-tuyau Fibrociment"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 38,
+		"code" : 40010,
+		"index" : 40010,
+		"original_uuid" : "0A272F68-BB22-457B-9B6B-7FF4C5E0D95A",
+		"name_fr" : "Demi-tuyau PE"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 39,
+		"code" : 50010,
+		"index" : 1007,
+		"original_uuid" : "F680D826-DC3E-4182-82BE-BB147B9A1992",
+		"name_fr" : "Dérivation PE"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 40,
+		"code" : 50011,
+		"index" : 1006,
+		"original_uuid" : "DF8A2A12-2B55-4DA8-84F3-7EE6880373CD",
+		"name_fr" : "Dérivation PE (r)"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 41,
+		"code" : 50012,
+		"index" : 1005,
+		"original_uuid" : "BEA34AF9-ABB7-47D6-A2AE-02DFEA77C344",
+		"name_fr" : "Dérivation PE (Y)"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 42,
+		"code" : 60000,
+		"index" : 1004,
+		"original_uuid" : "E521B9D2-2335-4791-B92E-DD22E575B815",
+		"name_fr" : "Gaine"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 43,
+		"code" : 70001,
+		"index" : 70001,
+		"original_uuid" : "C6489D44-FD0C-4063-90CD-63399AEEA0E2",
+		"name_fr" : "Profil U Acier"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 44,
+		"code" : 80001,
+		"index" : 80001,
+		"original_uuid" : "7AF74386-3BEA-4BAC-B06E-214C523F62B8",
+		"name_fr" : "Tuyau Acier"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 45,
+		"code" : 80003,
+		"index" : 80003,
+		"original_uuid" : "1ED266A2-CB5B-43B5-B884-E068C035DB9A",
+		"name_fr" : "Tuyau Fonte"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 46,
+		"code" : 80005,
+		"index" : 80005,
+		"original_uuid" : "B10C23B1-973F-4D70-B09C-24683C6FA82E",
+		"name_fr" : "Tuyau Ciment"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 47,
+		"code" : 80006,
+		"index" : 80006,
+		"original_uuid" : "37FC63F2-7E62-48E4-93DF-2C5FBD14AA65",
+		"name_fr" : "Tuyau Fibrociment"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 48,
+		"code" : 80010,
+		"index" : 1001,
+		"original_uuid" : "BB3BD8F9-B95A-4465-8D3C-8002CB35CA99",
+		"name_fr" : "Tuyau PE"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 49,
+		"code" : 80011,
+		"index" : 1002,
+		"original_uuid" : "7312DABF-2C3A-4B98-AA1A-238862AF2DA5",
+		"name_fr" : "Tuyau articulé PE"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 50,
+		"code" : 80012,
+		"index" : 1003,
+		"original_uuid" : "0CD4FF9A-DA74-4473-BCC7-C943977A6252",
+		"name_fr" : "Tuyau fendu PE"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 51,
+		"code" : 80020,
+		"index" : 80020,
+		"original_uuid" : "4F692C1F-449D-4CEE-85E0-24E5A64CC67E",
+		"name_fr" : "Tuyau PVC"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 52,
+		"code" : 10007,
+		"index" : 9002,
+		"original_uuid" : "A37AB27D-FF10-4E05-8BB3-5962D577124D",
+		"name_fr" : "Câbles de suspension"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 54,
+		"code" : 80021,
+		"index" : 80002,
+		"original_uuid" : "1B4A7586-222E-4BBE-B58D-790A3FB14DAD",
+		"name_fr" : "Tuyau Aluminium"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 854,
+		"code" : 9001,
+		"index" : 9001,
+		"original_uuid" : "508F9334-96BF-43F4-A59B-5AA693B4134D",
+		"name_fr" : "pas de tube, mise à terre"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 1254,
+		"code" : 80022,
+		"index" : 80022,
+		"original_uuid" : "7A55820B-8425-4F28-A71F-0E2588360F77",
+		"name_fr" : "Tube FO"
+	},
+	{
+		"json_featuretype" : "cable_protection",
+		"original_id" : 1255,
+		"code" : 80023,
+		"index" : 1004,
+		"original_uuid" : "9B868DB1-8025-4162-8ABD-6CDFFDBD0D38",
+		"name_fr" : "Tube KSR"
+	}
+]

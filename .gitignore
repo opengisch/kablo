@@ -9,6 +9,8 @@ env.yaml
 *.env
 *.bak
 *.orig
+*.qgs~
+/qgis/*.zip
 .coverage
 env.backup
 /media/

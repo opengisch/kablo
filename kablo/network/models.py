@@ -9,6 +9,22 @@ from django_oapif.decorators import register_oapif_viewset
 from kablo.core.geometry import Intersects, SplitLine
 
 
+class AbstractValueList(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    original_id = models.PositiveIntegerField(null=True)
+    original_uuid = models.UUIDField(null=True, editable=True)
+    code = models.PositiveIntegerField(null=True)
+    name_fr = models.CharField(max_length=64, blank=True)
+    index = models.PositiveIntegerField(null=True)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return f"{self.original_id}-{self.name_fr}"
+
+
 class NetworkNode(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     geom = models.PointField(srid=2056)
@@ -17,6 +33,7 @@ class NetworkNode(models.Model):
 @register_oapif_viewset(crs=2056)
 class Track(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    original_uuid = models.UUIDField(null=True, editable=True)
     geom = models.MultiLineStringField(srid=2056)
 
     @transaction.atomic
@@ -119,8 +136,29 @@ class Section(models.Model):
         return Section(**new_kwargs)
 
 
+class StatusType(AbstractValueList):
+    pass
+
+
+class TubeCableProtectionType(AbstractValueList):
+    pass
+
+
+@register_oapif_viewset(crs=2056)
 class Tube(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    original_uuid = models.UUIDField(null=True, editable=True)
+    status = models.ForeignKey(
+        StatusType,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
+    cable_protection_type = models.ForeignKey(
+        TubeCableProtectionType,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
+    geom = models.MultiLineStringField(srid=2056, null=True)
     sections = models.ManyToManyField(Section)
 
 
@@ -131,8 +169,11 @@ class TubeSection(models.Model):
     order_index = models.IntegerField(default=1)
 
 
+@register_oapif_viewset(crs=2056)
 class Station(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    original_uuid = models.UUIDField(null=True, editable=True)
+    label = models.CharField(max_length=64, blank=True)
     geom = models.PointField(srid=2056)
 
 
@@ -150,8 +191,26 @@ class Reach(models.Model):
     )
 
 
+class CableTensionType(AbstractValueList):
+    pass
+
+
+# FIXME, KeyError: 'reach_ptr' when calling the OGC endpoint
+@register_oapif_viewset(crs=2056)
 class Cable(Reach):
+    original_uuid = models.UUIDField(null=True, editable=True)
     tubes = models.ManyToManyField(Tube)
+    tension = models.ForeignKey(
+        CableTensionType,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
+    status = models.ForeignKey(
+        StatusType,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
+    geom = models.MultiLineStringField(srid=2056, null=True)
 
 
 class VirtualNode(Node):

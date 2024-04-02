@@ -1,6 +1,18 @@
 from django.contrib import admin
 
-from .models import Cable, NetworkNode, Section, Station, Switch, Terminal, Track, Tube
+from .models import (
+    Cable,
+    CableTensionType,
+    NetworkNode,
+    Section,
+    Station,
+    StatusType,
+    Switch,
+    Terminal,
+    Track,
+    Tube,
+    TubeCableProtectionType,
+)
 
 
 class SectionInline(admin.TabularInline):
@@ -29,7 +41,19 @@ class TubeAdmin(admin.ModelAdmin):
     inlines = [CableInline]
 
 
-admin.site.register(Cable)
+class CableTubeInline(admin.TabularInline):
+    model = Cable.tubes.through
+    extra = 0
+
+
+class CableAdmin(admin.ModelAdmin):
+    model = Cable
+    search_fields = ("id",)
+    exclude = ["tubes"]
+    inlines = [CableTubeInline]
+
+
+admin.site.register(Cable, CableAdmin)
 admin.site.register(NetworkNode)
 admin.site.register(Station)
 admin.site.register(Switch)
@@ -37,3 +61,6 @@ admin.site.register(Terminal)
 admin.site.register(Track, TrackAdmin)
 admin.site.register(Section)
 admin.site.register(Tube, TubeAdmin)
+admin.site.register(StatusType)
+admin.site.register(TubeCableProtectionType)
+admin.site.register(CableTensionType)
