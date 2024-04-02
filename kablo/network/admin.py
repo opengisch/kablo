@@ -39,6 +39,15 @@ class TubeInline(admin.TabularInline):
 class TubeAdmin(admin.ModelAdmin):
     model = Tube
     inlines = [CableInline]
+    list_display = [
+        "id",
+        "status",
+        "cable_protection_type",
+    ]
+    list_filter = [
+        "status",
+        "cable_protection_type",
+    ]
 
 
 class CableTubeInline(admin.TabularInline):
@@ -51,6 +60,15 @@ class CableAdmin(admin.ModelAdmin):
     search_fields = ("id",)
     exclude = ["tubes"]
     inlines = [CableTubeInline]
+    list_display = [
+        "id",
+        "status",
+        "tension",
+    ]
+    list_filter = [
+        "status",
+        "tension",
+    ]
 
 
 admin.site.register(Cable, CableAdmin)
