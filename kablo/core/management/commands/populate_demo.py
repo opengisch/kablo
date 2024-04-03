@@ -131,7 +131,7 @@ def import_cables(file):
             cable = Cable.objects.filter(original_uuid=feature["KABEL_REF"]).first()
             tube = Tube.objects.filter(original_uuid=feature["ROHR_REF"]).first()
             if cable and tube:
-                cable.tubes.add(tube)
+                tube.cables.add(cable)
 
 
 class Command(BaseCommand):

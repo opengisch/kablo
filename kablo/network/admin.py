@@ -26,7 +26,7 @@ class TrackAdmin(admin.ModelAdmin):
 
 
 class CableInline(admin.TabularInline):
-    model = Cable.tubes.through
+    model = Tube.cables.through
     extra = 0
 
 
@@ -39,6 +39,7 @@ class TubeInline(admin.TabularInline):
 class TubeAdmin(admin.ModelAdmin):
     model = Tube
     inlines = [CableInline]
+    fields = ["status", "cable_protection_type", "geom"]
     list_display = [
         "id",
         "status",
@@ -51,7 +52,7 @@ class TubeAdmin(admin.ModelAdmin):
 
 
 class CableTubeInline(admin.TabularInline):
-    model = Cable.tubes.through
+    model = Tube.cables.through
     extra = 0
 
 

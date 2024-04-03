@@ -103,6 +103,7 @@ INSTALLED_APPS = [
     "kablo.network",
     "kablo.editing",
     "kablo.valuelist",
+    "kablo.webviewer",
     "django_oapif",
     # django
     "django.contrib.admin",
@@ -167,7 +168,7 @@ ROOT_URLCONF = "kablo.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        # "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
