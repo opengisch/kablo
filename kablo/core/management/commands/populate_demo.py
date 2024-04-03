@@ -5,15 +5,8 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 
 from kablo.core.utils import wkt_from_line
-from kablo.network.models import (
-    Cable,
-    CableTensionType,
-    Station,
-    StatusType,
-    Track,
-    Tube,
-    TubeCableProtectionType,
-)
+from kablo.network.models import Cable, Station, Track, Tube
+from kablo.valuelist.models import CableTensionType, StatusType, TubeCableProtectionType
 
 
 def import_value_lists():

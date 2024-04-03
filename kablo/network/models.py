@@ -7,22 +7,7 @@ from django.db import transaction
 from django_oapif.decorators import register_oapif_viewset
 
 from kablo.core.geometry import Intersects, SplitLine
-
-
-class AbstractValueList(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    original_id = models.PositiveIntegerField(null=True)
-    original_uuid = models.UUIDField(null=True, editable=True)
-    code = models.PositiveIntegerField(null=True)
-    name_fr = models.CharField(max_length=64, blank=True)
-    index = models.PositiveIntegerField(null=True)
-    is_active = models.BooleanField(default=True)
-
-    class Meta:
-        abstract = True
-
-    def __str__(self):
-        return f"{self.original_id}-{self.name_fr}"
+from kablo.valuelist.models import CableTensionType, StatusType, TubeCableProtectionType
 
 
 class NetworkNode(models.Model):
@@ -136,14 +121,6 @@ class Section(models.Model):
         return Section(**new_kwargs)
 
 
-class StatusType(AbstractValueList):
-    pass
-
-
-class TubeCableProtectionType(AbstractValueList):
-    pass
-
-
 @register_oapif_viewset(crs=2056)
 class Tube(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -191,13 +168,9 @@ class Reach(models.Model):
     )
 
 
-class CableTensionType(AbstractValueList):
-    pass
-
-
-# FIXME, KeyError: 'reach_ptr' when calling the OGC endpoint
 @register_oapif_viewset(crs=2056)
-class Cable(Reach):
+class Cable(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     original_uuid = models.UUIDField(null=True, editable=True)
     tubes = models.ManyToManyField(Tube)
     tension = models.ForeignKey(

@@ -102,6 +102,7 @@ INSTALLED_APPS = [
     "kablo.api",
     "kablo.network",
     "kablo.editing",
+    "kablo.valuelist",
     "django_oapif",
     # django
     "django.contrib.admin",
