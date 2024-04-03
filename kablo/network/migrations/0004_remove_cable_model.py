@@ -7,47 +7,55 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('network', '0003_add_original_uuid'),
-        ('valuelist', '0001_initial'),
+        ("network", "0003_add_original_uuid"),
+        ("valuelist", "0001_initial"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='cable',
-            name='reach_ptr',
+            model_name="cable",
+            name="reach_ptr",
         ),
         migrations.RemoveField(
-            model_name='cable',
-            name='status',
+            model_name="cable",
+            name="status",
         ),
         migrations.RemoveField(
-            model_name='cable',
-            name='tension',
+            model_name="cable",
+            name="tension",
         ),
         migrations.RemoveField(
-            model_name='cable',
-            name='tubes',
+            model_name="cable",
+            name="tubes",
         ),
         migrations.AlterField(
-            model_name='tube',
-            name='status',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='valuelist.statustype'),
+            model_name="tube",
+            name="status",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="valuelist.statustype",
+            ),
         ),
         migrations.AlterField(
-            model_name='tube',
-            name='cable_protection_type',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='valuelist.tubecableprotectiontype'),
+            model_name="tube",
+            name="cable_protection_type",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="valuelist.tubecableprotectiontype",
+            ),
         ),
         migrations.DeleteModel(
-            name='CableTensionType',
+            name="CableTensionType",
         ),
         migrations.DeleteModel(
-            name='Cable',
+            name="Cable",
         ),
         migrations.DeleteModel(
-            name='StatusType',
+            name="StatusType",
         ),
         migrations.DeleteModel(
-            name='TubeCableProtectionType',
+            name="TubeCableProtectionType",
         ),
     ]

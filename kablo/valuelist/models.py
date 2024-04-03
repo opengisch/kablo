@@ -1,8 +1,7 @@
 import uuid
-from django.db import models
-from django.contrib.gis.db.models.aggregates import Union
-from django_oapif.decorators import register_oapif_viewset
 
+from django.db import models
+from django_oapif.decorators import register_oapif_viewset
 
 
 class AbstractValueList(models.Model):
@@ -25,9 +24,11 @@ class AbstractValueList(models.Model):
 class StatusType(AbstractValueList):
     pass
 
+
 @register_oapif_viewset(geom_field=None)
 class TubeCableProtectionType(AbstractValueList):
     pass
+
 
 @register_oapif_viewset(geom_field=None)
 class CableTensionType(AbstractValueList):
