@@ -6,17 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('network', '0005_new_cable_model'),
+        ("network", "0005_new_cable_model"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='cable',
-            name='tubes',
+            model_name="cable",
+            name="tubes",
         ),
         migrations.AddField(
-            model_name='tube',
-            name='cables',
-            field=models.ManyToManyField(to='network.cable'),
+            model_name="tube",
+            name="cables",
+            field=models.ManyToManyField(to="network.cable"),
         ),
     ]

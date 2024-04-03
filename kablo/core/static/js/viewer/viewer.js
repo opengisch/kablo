@@ -37,7 +37,7 @@ initMap = function (host) {
             new ol.source.WMTS(/** @type {!olx.source.WMTSOptions} */ (options))
         );
     }
-      
+
     setUpBaseLayer();
 
     /* setup map */
@@ -47,7 +47,7 @@ initMap = function (host) {
             center: [2539085, 1181785],
             zoom: 9
         }),
-        layers: [ 
+        layers: [
             base_layer,
         ],
         target: 'map'
@@ -72,13 +72,13 @@ initMap = function (host) {
           selected.setStyle(undefined);
           selected = null;
         }
-      
+
         map.forEachFeatureAtPixel(e.pixel, function (f) {
           hit = true;
           selected = f;
           f.setStyle(selectStyle);
           return true;
-        }, 
+        },
         {
             hitToleance: 20,
             layerFilter: function(layer){
@@ -90,7 +90,7 @@ initMap = function (host) {
             }
         });
 
-      
+
         if (selected) {
         // TODO: set model name from OL layer
             detailsLink.setAttribute("href", `${host}/admin/network/tube/${selected.id_}`);
@@ -115,7 +115,7 @@ initMap = function (host) {
 
 
     /* load tracks, tubes and cables from django oapif, set basic ol styling*/
-    
+
     (async () => {
         const tracks = await fetch(track_url, {
         headers: {
@@ -134,14 +134,14 @@ initMap = function (host) {
                 'Accept': 'application/json'
             }
         }).then(response => response.json());
-    
+
         map.addLayer(new ol.layer.Vector({
             source: new ol.source.Vector({
                 features: new ol.format.GeoJSON().readFeatures(tracks),
             }),
             style: new ol.style.Style({
                 stroke: new ol.style.Stroke({
-                    color: 'black', 
+                    color: 'black',
                     width: 2,
                 }),
             }),
@@ -154,7 +154,7 @@ initMap = function (host) {
             }),
             style: new ol.style.Style({
                 stroke: new ol.style.Stroke({
-                    color: '#e246da', 
+                    color: '#e246da',
                     width: 1,
                 }),
             }),
@@ -167,7 +167,7 @@ initMap = function (host) {
             }),
             style: new ol.style.Style({
                 stroke: new ol.style.Stroke({
-                    color: 'blue', 
+                    color: 'blue',
                     width: 1,
                 }),
             }),
