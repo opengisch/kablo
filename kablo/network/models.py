@@ -18,7 +18,7 @@ class NetworkNode(models.Model):
 @register_oapif_viewset(crs=2056)
 class Track(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    original_uuid = models.UUIDField(null=True, editable=True)
+    original_id = models.TextField(null=True, editable=True)
     geom = models.MultiLineStringField(srid=2056)
 
     @transaction.atomic
@@ -125,7 +125,7 @@ class Section(models.Model):
 @register_oapif_viewset(crs=2056)
 class Cable(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    original_uuid = models.UUIDField(null=True, editable=True)
+    original_id = models.TextField(null=True, editable=True)
     tension = models.ForeignKey(
         CableTensionType,
         null=True,
@@ -142,7 +142,7 @@ class Cable(models.Model):
 @register_oapif_viewset(crs=2056)
 class Tube(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    original_uuid = models.UUIDField(null=True, editable=True)
+    original_id = models.TextField(null=True, editable=True)
     status = models.ForeignKey(
         StatusType,
         null=True,
@@ -168,7 +168,7 @@ class TubeSection(models.Model):
 @register_oapif_viewset(crs=2056)
 class Station(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    original_uuid = models.UUIDField(null=True, editable=True)
+    original_id = models.TextField(null=True, editable=True)
     label = models.CharField(max_length=64, blank=True)
     geom = models.PointField(srid=2056)
 
