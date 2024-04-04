@@ -2,6 +2,9 @@ __pycache__/
 *.py[cod]
 .vscode/
 /venv
+/demo
+*.qgs~
+/qgis/*.zip
 gunicorn_log.log
 env.yaml
 /docker-compose.override.yml

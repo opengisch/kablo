@@ -7,6 +7,7 @@ from django.db import transaction
 from django_oapif.decorators import register_oapif_viewset
 
 from kablo.core.geometry import Intersects, SplitLine
+from kablo.valuelist.models import CableTensionType, StatusType, TubeCableProtectionType
 
 
 class NetworkNode(models.Model):
@@ -17,6 +18,7 @@ class NetworkNode(models.Model):
 @register_oapif_viewset(crs=2056)
 class Track(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    original_id = models.TextField(null=True, editable=True)
     geom = models.MultiLineStringField(srid=2056)
 
     @transaction.atomic
@@ -120,8 +122,39 @@ class Section(models.Model):
         return Section(**new_kwargs)
 
 
+@register_oapif_viewset(crs=2056)
+class Cable(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    original_id = models.TextField(null=True, editable=True)
+    tension = models.ForeignKey(
+        CableTensionType,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
+    status = models.ForeignKey(
+        StatusType,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
+    geom = models.MultiLineStringField(srid=2056, null=True)
+
+
+@register_oapif_viewset(crs=2056)
 class Tube(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    original_id = models.TextField(null=True, editable=True)
+    status = models.ForeignKey(
+        StatusType,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
+    cable_protection_type = models.ForeignKey(
+        TubeCableProtectionType,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
+    cables = models.ManyToManyField(Cable)
+    geom = models.MultiLineStringField(srid=2056, null=True)
     sections = models.ManyToManyField(Section)
 
 
@@ -132,8 +165,11 @@ class TubeSection(models.Model):
     order_index = models.IntegerField(default=1)
 
 
+@register_oapif_viewset(crs=2056)
 class Station(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    original_id = models.TextField(null=True, editable=True)
+    label = models.CharField(max_length=64, blank=True)
     geom = models.PointField(srid=2056)
 
 
@@ -149,10 +185,6 @@ class Reach(models.Model):
     node_2 = models.ForeignKey(
         Node, related_name="node_2", blank=True, null=True, on_delete=models.SET_NULL
     )
-
-
-class Cable(Reach):
-    tubes = models.ManyToManyField(Tube)
 
 
 class VirtualNode(Node):
