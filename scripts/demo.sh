@@ -7,6 +7,5 @@ set -e
 
 python3 manage.py migrate
 python3 manage.py collectstatic --no-input
-python3 manage.py populate_users
 python3 manage.py populate_valuelists
 python3 manage.py populate_demo
