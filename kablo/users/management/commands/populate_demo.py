@@ -4,7 +4,7 @@ from django.contrib.gis.geos import Point
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
-from kablo.core.utils import wkt_from_multiline
+from kablo.core.utils import import_arcsde_linestrings_to_geos
 from kablo.network.models import Cable, Station, Track, Tube
 from kablo.valuelist.models import CableTensionType, StatusType, TubeCableProtectionType
 
@@ -28,11 +28,14 @@ def import_tracks(file):
         data = json.load(fd)
         for feature in data["features"]:
 
-            fields = {
-                "geom": wkt_from_multiline(feature["geometry"]["coordinates"]),
-                "original_id": feature["properties"]["globalid"],
-            }
-            Track.objects.create(**fields)
+            geom = import_arcsde_linestrings_to_geos(feature["geometry"])
+
+            if geom:
+                fields = {
+                    "geom": geom,
+                    "original_id": feature["properties"]["globalid"],
+                }
+                Track.objects.create(**fields)
 
 
 def import_tubes(file):
@@ -45,6 +48,7 @@ def import_tubes(file):
         data = json.load(fd)
         for feature in data["features"]:
 
+            geom = import_arcsde_linestrings_to_geos(feature["geometry"])
             status = StatusType.objects.filter(
                 code=feature["properties"]["status"]
             ).first()
@@ -59,14 +63,15 @@ def import_tubes(file):
             if not cable_protection_type:
                 cable_protection_type = unknown_cable_protection_type
 
-            fields = {
-                "status": status,
-                "cable_protection_type": cable_protection_type,
-                "geom": wkt_from_multiline(feature["geometry"]["coordinates"]),
-                "original_id": feature["properties"]["globalid"],
-            }
+            if geom:
+                fields = {
+                    "status": status,
+                    "cable_protection_type": cable_protection_type,
+                    "geom": geom,
+                    "original_id": feature["properties"]["globalid"],
+                }
 
-            Tube.objects.create(**fields)
+                Tube.objects.create(**fields)
 
 
 def import_cables(file):
@@ -77,6 +82,8 @@ def import_cables(file):
     with open(file, "r") as fd:
         data = json.load(fd)
         for feature in data["features"]:
+
+            geom = import_arcsde_linestrings_to_geos(feature["geometry"])
 
             status = StatusType.objects.filter(
                 code=feature["properties"]["status"]
@@ -92,13 +99,14 @@ def import_cables(file):
             if not tension_type:
                 tension_type = unknown_tension_type
 
-            fields = {
-                "tension": tension_type,
-                "status": status,
-                "geom": wkt_from_multiline(feature["geometry"]["coordinates"]),
-                "original_id": feature["properties"]["globalid"],
-            }
-            Cable.objects.create(**fields)
+            if geom:
+                fields = {
+                    "tension": tension_type,
+                    "status": status,
+                    "geom": geom,
+                    "original_id": feature["properties"]["globalid"],
+                }
+                Cable.objects.create(**fields)
 
 
 def import_tube_cable_relations(file):
