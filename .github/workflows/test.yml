@@ -49,11 +49,12 @@ jobs:
     - name: Check migrations
       run: docker compose exec kablo python manage.py makemigrations --check
 
-    - name: Migrate
-      run: docker compose exec kablo python manage.py migrate --no-input
-
-    - name: Populate
-      run: docker compose exec kablo python manage.py populate_users
+    - name: Migrate and populate
+      run: |
+        docker compose exec kablo python manage.py collectstatic --no-input
+        docker compose exec kablo python manage.py migrate --no-input
+        docker compose exec kablo python manage.py populate_users
+        docker compose exec kablo python manage.py populate_valuelists
 
     - name: Run unit tests
       run: docker compose exec kablo python manage.py test

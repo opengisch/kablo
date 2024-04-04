@@ -1,5 +1,9 @@
+import json
+
 from django.core.management.base import BaseCommand
 from django.db import transaction
+
+from kablo.valuelist.models import CableTensionType, StatusType, TubeCableProtectionType
 
 
 class Command(BaseCommand):
@@ -8,7 +12,7 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
 
-        base_dir = "/kablo/kablo/core/management/data/core_value_lists_data"
+        base_dir = "/kablo/kablo/valuelist/management/data/"
 
         value_lists = {
             "status": {"model": StatusType, "file": "status.json"},
