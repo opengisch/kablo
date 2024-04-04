@@ -1,0 +1,172 @@
+{
+	"type" : "FeatureCollection",
+	"name" : "dbo.ELE_DS_STATION",
+	"crs" : {
+		"type" : "name",
+		"properties" : {
+			"name" : "EPSG:2056"
+		}
+	},
+	"features" : [
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 2539146.3001057841, 1181903.9678690685 ]
+			},
+			"properties" : {
+				"objectid" : 317,
+				"globalid" : "10966AEC-4F8E-4AC0-8357-0B6EEDE58483",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"station_ref" : "B06E7EAC-8240-4F1A-832A-62A657559C01",
+				"_feature_type" : "dbo.ELE_DS_STATION",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 2539142.0750057744, 1181937.6914680095 ]
+			},
+			"properties" : {
+				"objectid" : 379,
+				"globalid" : "D7FB79F4-5BDA-4E2A-9E7A-F1D3400FEAA0",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"station_ref" : "B87FE354-2FAD-4575-ABF5-DC939C792BF4",
+				"_feature_type" : "dbo.ELE_DS_STATION",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 2539194.9539057813, 1181896.6316692857 ]
+			},
+			"properties" : {
+				"objectid" : 380,
+				"globalid" : "AC61F9F7-2950-4140-B272-182F2B38E1D1",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"station_ref" : "614E77F5-A97B-4AD9-88A5-DECBCC50C21B",
+				"_feature_type" : "dbo.ELE_DS_STATION",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 2539217.2144057713, 1181929.4110682474 ]
+			},
+			"properties" : {
+				"objectid" : 381,
+				"globalid" : "944275F7-014E-416B-B3B7-2B3314372181",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"station_ref" : "23500E35-B2D3-4AB1-A897-0EB4AE31C138",
+				"_feature_type" : "dbo.ELE_DS_STATION",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 2539145.9943057857, 1181903.5517690792 ]
+			},
+			"properties" : {
+				"objectid" : 428,
+				"globalid" : "2575F2E0-35F9-46E2-B5C8-1EBF6521EABF",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"station_ref" : "7A7FF935-2D03-483A-9269-4D125CA76FDD",
+				"_feature_type" : "dbo.ELE_DS_STATION",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 2539112.5775057874, 1181910.1794688867 ]
+			},
+			"properties" : {
+				"objectid" : 429,
+				"globalid" : "D4BD68BD-F852-420D-98DE-90E470E2CE27",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"station_ref" : "39E0CEDC-A8F6-49C4-8250-978B903D1224",
+				"_feature_type" : "dbo.ELE_DS_STATION",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 2539113.4348057853, 1181911.3118688483 ]
+			},
+			"properties" : {
+				"objectid" : 527,
+				"globalid" : "9F3D4AA5-F52B-4A15-8E82-800CB31C2B61",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"station_ref" : "6ECC432A-9824-44EF-B48B-8910D6FF8587",
+				"_feature_type" : "dbo.ELE_DS_STATION",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 2539066.9869057979, 1181894.6316693872 ]
+			},
+			"properties" : {
+				"objectid" : 44542,
+				"globalid" : "C73BA370-BB99-4B7A-AB2D-7385A3F69F27",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"station_ref" : "1F1BDE7A-8EB8-48C4-8C8C-5EFA96CA363D",
+				"_feature_type" : "dbo.ELE_DS_STATION",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 2539073.6123057893, 1181917.3403686704 ]
+			},
+			"properties" : {
+				"objectid" : 57776,
+				"globalid" : "24740916-48B2-4B48-B247-8DEA50B5D2A9",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"station_ref" : "0842CE49-F1FC-4A03-9A19-07A1F72C34FD",
+				"_feature_type" : "dbo.ELE_DS_STATION",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 2539066.5496057966, 1181897.8202692892 ]
+			},
+			"properties" : {
+				"objectid" : 65456,
+				"globalid" : "FBB2ED30-AD57-4ED0-B890-00A0973B2A31",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"station_ref" : "797149DC-7B33-4F54-A38F-6E5F223C6FB2",
+				"_feature_type" : "dbo.ELE_DS_STATION",
+				"_clipped" : "no"
+			}
+		}
+	]
+}

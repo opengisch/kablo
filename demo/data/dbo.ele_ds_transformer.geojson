@@ -1,0 +1,117 @@
+{
+	"type" : "FeatureCollection",
+	"name" : "dbo.ELE_DS_TRANSFORMER",
+	"crs" : {
+		"type" : "name",
+		"properties" : {
+			"name" : "EPSG:2056"
+		}
+	},
+	"features" : [
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 2539047.3362057987, 1181888.8189695771 ]
+			},
+			"properties" : {
+				"objectid" : 8834,
+				"bemerkung" : "N.° 293",
+				"globalid" : "516F1DF4-3024-4E93-82A7-0EE063995BA8",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"schaltzustand" : 1,
+				"symbolori" : 0,
+				"ds_ref" : "BD6BCBE1-8C7D-4434-B448-C507001AD6AB",
+				"gn_created_date" : "20180515000000.000000000",
+				"gn_created_user" : "LRH",
+				"gn_last_edited_date" : "20221004072024.000000000",
+				"gn_last_edited_user" : "PAC",
+				"name_nummer" : "RAUSCHER & STOECKLIN DTOJ-N1000-24D/293",
+				"leistung" : 1,
+				"zustand" : null,
+				"eigentuemer" : 1001,
+				"status" : 1,
+				"baujahr" : null,
+				"oberstrom" : null,
+				"unterstrom" : null,
+				"netz_ref" : "326813F5-08BD-4D0B-A261-606D43FFC6F0",
+				"oberspannung" : 20,
+				"unterspannung" : 0.4,
+				"katalog" : "20kV_0.4kV_1000kVA",
+				"_feature_type" : "dbo.ELE_DS_TRANSFORMER",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 2539113.906305789, 1181905.380169034 ]
+			},
+			"properties" : {
+				"objectid" : 8835,
+				"bemerkung" : "N.° 243",
+				"globalid" : "AE9EA4F5-6124-4CD8-BE93-934B7071DD9A",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"schaltzustand" : 1,
+				"symbolori" : 0,
+				"ds_ref" : "F0EA8E10-9645-451D-8710-B5180F7BB2C3",
+				"gn_created_date" : "20180515000000.000000000",
+				"gn_created_user" : "LRH",
+				"gn_last_edited_date" : "20220818123614.000000000",
+				"gn_last_edited_user" : "PAC",
+				"name_nummer" : "RAUSCHER & STOECKLIN DTOJ-N1000-24D/243",
+				"leistung" : 1,
+				"zustand" : null,
+				"eigentuemer" : 1001,
+				"status" : 1,
+				"baujahr" : null,
+				"oberstrom" : null,
+				"unterstrom" : null,
+				"netz_ref" : "E24C9045-6BD4-4DB5-AA78-6C9DC092A0B0",
+				"oberspannung" : 20,
+				"unterspannung" : 0.4,
+				"katalog" : "20kV_0.4kV_1000kVA",
+				"_feature_type" : "dbo.ELE_DS_TRANSFORMER",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 2539047.3362057991, 1181887.8189696071 ]
+			},
+			"properties" : {
+				"objectid" : 11269,
+				"bemerkung" : "N.° 294",
+				"globalid" : "11E49068-CC91-4EFF-B3F4-8347BDBBE4A4",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"schaltzustand" : 1,
+				"symbolori" : 0,
+				"ds_ref" : "BD6BCBE1-8C7D-4434-B448-C507001AD6AB",
+				"gn_created_date" : "20200428094055.000000000",
+				"gn_created_user" : "LRH",
+				"gn_last_edited_date" : "20221004072033.000000000",
+				"gn_last_edited_user" : "PAC",
+				"name_nummer" : "RAUSCHER & STOECKLIN DTOJ-N1000-24D/294",
+				"leistung" : 1,
+				"zustand" : null,
+				"eigentuemer" : 1001,
+				"status" : 1,
+				"baujahr" : null,
+				"oberstrom" : null,
+				"unterstrom" : null,
+				"netz_ref" : "326813F5-08BD-4D0B-A261-606D43FFC6F0",
+				"oberspannung" : 20,
+				"unterspannung" : 0.4,
+				"katalog" : "20kV_0.4kV_1000kVA",
+				"_feature_type" : "dbo.ELE_DS_TRANSFORMER",
+				"_clipped" : "no"
+			}
+		}
+	]
+}

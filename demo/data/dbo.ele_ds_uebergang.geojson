@@ -1,0 +1,187 @@
+{
+	"type" : "FeatureCollection",
+	"name" : "dbo.ELE_DS_UEBERGANG",
+	"crs" : {
+		"type" : "name",
+		"properties" : {
+			"name" : "EPSG:2056"
+		}
+	},
+	"features" : [
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 2539160.9039057824, 1181912.9556687854 ]
+			},
+			"properties" : {
+				"objectid" : 49716,
+				"bemerkung" : null,
+				"globalid" : "FCF9FAA2-7DF5-454B-ADEE-2DFAC3AF5B74",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"symbolori" : 180,
+				"ds_ref" : "54732C88-3FFF-4EC2-A2F8-30BB762C4249",
+				"gn_created_date" : "20181002000000.000000000",
+				"gn_created_user" : "LRH",
+				"gn_last_edited_date" : "20220818091134.000000000",
+				"gn_last_edited_user" : "PAC",
+				"name_nummer" : null,
+				"art" : 3,
+				"trafo_ref" : null,
+				"_feature_type" : "dbo.ELE_DS_UEBERGANG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 2539156.1980057806, 1181913.3227687713 ]
+			},
+			"properties" : {
+				"objectid" : 49717,
+				"bemerkung" : null,
+				"globalid" : "54C067CE-7437-4EFF-9C8E-A71E92AEA4D0",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"symbolori" : 0,
+				"ds_ref" : "3D408071-9F59-43BF-868D-502273D7E5DA",
+				"gn_created_date" : "20181002000000.000000000",
+				"gn_created_user" : "LRH",
+				"gn_last_edited_date" : "20220818090245.000000000",
+				"gn_last_edited_user" : "PAC",
+				"name_nummer" : null,
+				"art" : 2,
+				"trafo_ref" : null,
+				"_feature_type" : "dbo.ELE_DS_UEBERGANG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 2539118.6964057893, 1181905.4340690284 ]
+			},
+			"properties" : {
+				"objectid" : 49720,
+				"bemerkung" : null,
+				"globalid" : "D556007A-F8D7-4851-9939-1CDE8844B99A",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"symbolori" : 180,
+				"ds_ref" : "A947037A-ADA2-44CE-AC4A-011B2C4F911E",
+				"gn_created_date" : "20181002000000.000000000",
+				"gn_created_user" : "LRH",
+				"gn_last_edited_date" : "20221004122843.000000000",
+				"gn_last_edited_user" : "PAC",
+				"name_nummer" : null,
+				"art" : 1,
+				"trafo_ref" : "AE9EA4F5-6124-4CD8-BE93-934B7071DD9A",
+				"_feature_type" : "dbo.ELE_DS_UEBERGANG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 2539054.154005798, 1181890.7436695115 ]
+			},
+			"properties" : {
+				"objectid" : 75877,
+				"bemerkung" : null,
+				"globalid" : "7C76D8BD-751B-4E96-8C71-C072C4979839",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"symbolori" : 0,
+				"ds_ref" : "9DEC4EC7-268D-4178-81BB-F2843802A849",
+				"gn_created_date" : "20210608115601.000000000",
+				"gn_created_user" : "LRH",
+				"gn_last_edited_date" : "20220726063521.000000000",
+				"gn_last_edited_user" : "PAC",
+				"name_nummer" : null,
+				"art" : 1,
+				"trafo_ref" : "11E49068-CC91-4EFF-B3F4-8347BDBBE4A4",
+				"_feature_type" : "dbo.ELE_DS_UEBERGANG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 2539054.1540058004, 1181882.7435697634 ]
+			},
+			"properties" : {
+				"objectid" : 75878,
+				"bemerkung" : null,
+				"globalid" : "CB28987B-E0B8-4165-B2F6-9AB1908F941B",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"symbolori" : 0,
+				"ds_ref" : "9DEC4EC7-268D-4178-81BB-F2843802A849",
+				"gn_created_date" : "20210608115604.000000000",
+				"gn_created_user" : "LRH",
+				"gn_last_edited_date" : "20220726063521.000000000",
+				"gn_last_edited_user" : "PAC",
+				"name_nummer" : null,
+				"art" : 1,
+				"trafo_ref" : "516F1DF4-3024-4E93-82A7-0EE063995BA8",
+				"_feature_type" : "dbo.ELE_DS_UEBERGANG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 2539065.6894057989, 1181882.6168697677 ]
+			},
+			"properties" : {
+				"objectid" : 79594,
+				"bemerkung" : null,
+				"globalid" : "651F4324-669E-4090-9E19-AC76CFFCB7D2",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"symbolori" : 180,
+				"ds_ref" : "3191942D-E51C-4B85-B954-6761FDF49416",
+				"gn_created_date" : "20220726064528.000000000",
+				"gn_created_user" : "PAC",
+				"gn_last_edited_date" : "20220726065528.000000000",
+				"gn_last_edited_user" : "PAC",
+				"name_nummer" : null,
+				"art" : 3,
+				"trafo_ref" : null,
+				"_feature_type" : "dbo.ELE_DS_UEBERGANG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 2539058.1539057977, 1181895.5436693591 ]
+			},
+			"properties" : {
+				"objectid" : 79595,
+				"bemerkung" : null,
+				"globalid" : "E9C21D8E-72B5-499D-A308-95096146DD47",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"symbolori" : 0,
+				"ds_ref" : "9DEC4EC7-268D-4178-81BB-F2843802A849",
+				"gn_created_date" : "20220726065442.000000000",
+				"gn_created_user" : "PAC",
+				"gn_last_edited_date" : "20220726065528.000000000",
+				"gn_last_edited_user" : "PAC",
+				"name_nummer" : null,
+				"art" : 2,
+				"trafo_ref" : null,
+				"_feature_type" : "dbo.ELE_DS_UEBERGANG",
+				"_clipped" : "no"
+			}
+		}
+	]
+}

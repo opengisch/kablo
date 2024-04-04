@@ -1,0 +1,1156 @@
+{
+	"type" : "FeatureCollection",
+	"name" : "dbo.ELE_DS_KABELVERBINDUNG",
+	"crs" : {
+		"type" : "name",
+		"properties" : {
+			"name" : "EPSG:2056"
+		}
+	},
+	"features" : [
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539141.8552057752, 1181937.3514680236 ],
+					[ 2539138.886588736, 1181939.301961134 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 3303,
+				"bemerkung" : null,
+				"globalid" : "F87B05E7-A9BD-429A-8AD9-1FAE4AE05C65",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : 3792,
+				"u_globalapic" : 997504,
+				"strang_ref" : "0F4587B9-3642-4F6E-AC58-1CF1824227E2",
+				"station_ref" : "B87FE354-2FAD-4575-ABF5-DC939C792BF4",
+				"klemme_ref" : "27EBA0C0-794D-4E0B-A477-1F2F6AC9A7F1",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1001,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "yes"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539194.8039057828, 1181896.2716692963 ],
+					[ 2539199.2575057824, 1181897.9543692381 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 3467,
+				"bemerkung" : null,
+				"globalid" : "6F9F26ED-DD39-4B3B-93AA-1DADAC893894",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : 4000,
+				"u_globalapic" : 1021172,
+				"strang_ref" : "1822248E-56BE-477D-AB6B-577D111FE216",
+				"station_ref" : "614E77F5-A97B-4AD9-88A5-DECBCC50C21B",
+				"klemme_ref" : "1C5EA8B0-DA03-4AE7-B599-CE69853B7FBC",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1000,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539147.5774057843, 1181904.2063690627 ],
+					[ 2539156.198005781, 1181911.5227688272 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 3840,
+				"bemerkung" : null,
+				"globalid" : "7A62AE4A-24E9-41FE-A10D-2DE226859895",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : 4436,
+				"u_globalapic" : 1045035,
+				"strang_ref" : "EC5772B0-695B-442A-9A86-D09A1DFD6AFE",
+				"station_ref" : "B06E7EAC-8240-4F1A-832A-62A657559C01",
+				"klemme_ref" : "FA70DFC3-B1F1-4ABB-9FB4-BB0756D54E68",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1001,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539145.2279057838, 1181903.9364690683 ],
+					[ 2539140.5869057868, 1181900.5897691783 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 3930,
+				"bemerkung" : null,
+				"globalid" : "9C0E62CD-27D1-4F02-90FB-95AC5FAFF6BC",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : 4538,
+				"u_globalapic" : 1049240,
+				"strang_ref" : "9D152F71-D26F-44A6-9762-FF67B4111554",
+				"station_ref" : "7A7FF935-2D03-483A-9269-4D125CA76FDD",
+				"klemme_ref" : "04F373F2-373E-456C-B481-05BC14B8A374",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1001,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539145.5771057867, 1181904.354569054 ],
+					[ 2539152.198005782, 1181909.522668896 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 3932,
+				"bemerkung" : null,
+				"globalid" : "C50C70A7-5BCD-4C30-BCA8-EB0B44897E43",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : 4540,
+				"u_globalapic" : 1049336,
+				"strang_ref" : "9D152F71-D26F-44A6-9762-FF67B4111554",
+				"station_ref" : "B06E7EAC-8240-4F1A-832A-62A657559C01",
+				"klemme_ref" : "5FE06D89-39E3-43DD-AA6E-AA0451931015",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1001,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539114.3549057851, 1181911.501968845 ],
+					[ 2539113.4348057853, 1181911.3118688483 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 3940,
+				"bemerkung" : null,
+				"globalid" : "832D6F7A-0655-4043-B8E2-4F5E75786328",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : 4548,
+				"u_globalapic" : 1049696,
+				"strang_ref" : null,
+				"station_ref" : "6ECC432A-9824-44EF-B48B-8910D6FF8587",
+				"klemme_ref" : null,
+				"schaltzustand" : null,
+				"farbe_strang" : null,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539216.9176057689, 1181929.916368233 ],
+					[ 2539219.9148057685, 1181933.0425681274 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 130471,
+				"bemerkung" : null,
+				"globalid" : "AB5D3B1B-6F57-432C-8B97-E369EAE91754",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "6D74109B-929F-4250-BEB0-B4AADAE5E543",
+				"station_ref" : "23500E35-B2D3-4AB1-A897-0EB4AE31C138",
+				"klemme_ref" : "386671C9-77F7-4D5F-858B-B697F8AC5267",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1004,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539146.3142057844, 1181904.4045690512 ],
+					[ 2539152.1981057823, 1181913.5227687627 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 130472,
+				"bemerkung" : null,
+				"globalid" : "875CDBA0-51D4-485A-92C3-FD0D1D1ED2FF",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "C3AE2FBE-CD91-4997-8E9A-A3F78336A148",
+				"station_ref" : "B06E7EAC-8240-4F1A-832A-62A657559C01",
+				"klemme_ref" : "C0ADE785-CE04-4334-BD35-C42B961BCDA7",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1001,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539146.4765057862, 1181904.3346690594 ],
+					[ 2539164.9038057807, 1181910.9557688432 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 182549,
+				"bemerkung" : null,
+				"globalid" : "F0621B60-153D-47DB-9889-BD37A39A1CB6",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "011E0AC5-17E2-4107-A048-1179E0787109",
+				"station_ref" : "B06E7EAC-8240-4F1A-832A-62A657559C01",
+				"klemme_ref" : "C2BCB764-8AD9-4D81-BA08-541D93D6843D",
+				"schaltzustand" : null,
+				"farbe_strang" : 1054,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539146.7013057843, 1181903.7823690781 ],
+					[ 2539164.9038057807, 1181911.9556688103 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 182550,
+				"bemerkung" : null,
+				"globalid" : "E59D9A45-28AF-4E52-9050-6D3CF801E3E9",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "AA427E84-2034-4011-96D2-D372A9C1A663",
+				"station_ref" : "B06E7EAC-8240-4F1A-832A-62A657559C01",
+				"klemme_ref" : "3B67859A-F6EC-4DEB-AC43-574A8ECAEC4C",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1053,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539146.7450057864, 1181904.1076690638 ],
+					[ 2539164.9038057802, 1181912.9556687796 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 182551,
+				"bemerkung" : null,
+				"globalid" : "0681297C-4086-49C2-9EBD-EDC29C8DD8C8",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "AC214FF5-34BB-4115-B357-6F853B3D8DF6",
+				"station_ref" : "B06E7EAC-8240-4F1A-832A-62A657559C01",
+				"klemme_ref" : "083DDB75-EDF6-47D5-95A9-943D09009CB6",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1051,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539160.9039057824, 1181912.9556687854 ],
+					[ 2539156.1980057806, 1181913.3227687713 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 182554,
+				"bemerkung" : null,
+				"globalid" : "4BBF2580-BD68-411A-A223-165DA0DB16D8",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : null,
+				"station_ref" : "B06E7EAC-8240-4F1A-832A-62A657559C01",
+				"klemme_ref" : null,
+				"schaltzustand" : 1,
+				"farbe_strang" : null,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539114.094805785, 1181911.8318688292 ],
+					[ 2539122.6963057872, 1181905.4340690298 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 182556,
+				"bemerkung" : null,
+				"globalid" : "4C2A7D77-8011-48F5-A4F8-DC88E27A2104",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "1822248E-56BE-477D-AB6B-577D111FE216",
+				"station_ref" : "6ECC432A-9824-44EF-B48B-8910D6FF8587",
+				"klemme_ref" : "A0E75F02-8CC7-4D0C-8AFB-9C335480A365",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1000,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539113.913305786, 1181912.0544688266 ],
+					[ 2539122.6963057881, 1181902.4341691253 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 182557,
+				"bemerkung" : null,
+				"globalid" : "59365FCB-253D-4EAB-825B-7123F28402F3",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "FD6172F1-EDF9-441E-B745-3BB65CE25BE6",
+				"station_ref" : "6ECC432A-9824-44EF-B48B-8910D6FF8587",
+				"klemme_ref" : "0B49CC26-F41B-4F86-B383-D31900B19400",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1003,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539113.4549057861, 1181912.3919688116 ],
+					[ 2539122.6963057877, 1181904.4341690617 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 182558,
+				"bemerkung" : null,
+				"globalid" : "EE1E29B6-FE72-4C8C-A9D0-A0A8330DFA41",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "0F4587B9-3642-4F6E-AC58-1CF1824227E2",
+				"station_ref" : "6ECC432A-9824-44EF-B48B-8910D6FF8587",
+				"klemme_ref" : "75A33BB3-BE9C-472E-B69A-807DBEFA3170",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1001,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539118.6964057893, 1181905.4340690284 ],
+					[ 2539113.906305789, 1181905.380169034 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 182560,
+				"bemerkung" : null,
+				"globalid" : "F9AB4002-5224-4A62-8EB7-1D755422A147",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : null,
+				"station_ref" : "6ECC432A-9824-44EF-B48B-8910D6FF8587",
+				"klemme_ref" : null,
+				"schaltzustand" : 1,
+				"farbe_strang" : null,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539066.4767057984, 1181888.5393695806 ],
+					[ 2539043.336205801, 1181883.8188697372 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 219097,
+				"bemerkung" : null,
+				"globalid" : "971A5B30-71DB-4AF7-AD69-BC54E9F749A7",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "437315CF-DB89-4EAD-8FBA-7B98FB5257F8",
+				"station_ref" : "1F1BDE7A-8EB8-48C4-8C8C-5EFA96CA363D",
+				"klemme_ref" : "526555D6-ADF1-4DF3-9D83-CB07F8A27E27",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1101,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539111.8313057884, 1181911.1143688553 ],
+					[ 2539109.906405787, 1181906.3801690016 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 219506,
+				"bemerkung" : null,
+				"globalid" : "39F4CFF6-1961-4747-9DC3-EABDF37AFF29",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "78D80257-3804-4A3D-8E7E-B7788856226D",
+				"station_ref" : "6ECC432A-9824-44EF-B48B-8910D6FF8587",
+				"klemme_ref" : "BA77DC72-F207-43D9-B4C3-48F2477B707B",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1101,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539068.9489057949, 1181896.2471693344 ],
+					[ 2539043.3362058001, 1181886.8189696379 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 219906,
+				"bemerkung" : null,
+				"globalid" : "20F6F6FC-3437-40DE-AE35-6672B50F2172",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "E6543657-9104-4201-8245-D46129181D00",
+				"station_ref" : "1F1BDE7A-8EB8-48C4-8C8C-5EFA96CA363D",
+				"klemme_ref" : "7958AF92-79AF-42B6-8F07-05430667DAA1",
+				"schaltzustand" : 2,
+				"farbe_strang" : 1101,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539068.153305795, 1181892.6196694516 ],
+					[ 2539043.3363058018, 1181885.8189696725 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 219907,
+				"bemerkung" : null,
+				"globalid" : "307CBAD6-F193-433C-A81C-27B061C18348",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "78D80257-3804-4A3D-8E7E-B7788856226D",
+				"station_ref" : "1F1BDE7A-8EB8-48C4-8C8C-5EFA96CA363D",
+				"klemme_ref" : "72341CB9-16A6-46A6-8340-D91A666988CF",
+				"schaltzustand" : 2,
+				"farbe_strang" : 1101,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539068.5539057949, 1181897.8558692851 ],
+					[ 2539058.1540058041, 1181869.743570172 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 225199,
+				"bemerkung" : null,
+				"globalid" : "31D8752C-7BEB-4921-A8FD-4150E9096715",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "B84827CB-0703-42F7-867F-02CA8429932E",
+				"station_ref" : "1F1BDE7A-8EB8-48C4-8C8C-5EFA96CA363D",
+				"klemme_ref" : "BA6F1771-9842-4BCD-A529-0A1B7F6204C7",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1019,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539068.8545057946, 1181897.7899692894 ],
+					[ 2539058.1540058036, 1181870.7435701434 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 225200,
+				"bemerkung" : null,
+				"globalid" : "0F5A2778-9CDB-4798-BF41-279DB8540A24",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "2BA5A6FA-3949-4D40-B988-2A5CB5393459",
+				"station_ref" : "1F1BDE7A-8EB8-48C4-8C8C-5EFA96CA363D",
+				"klemme_ref" : "2748AA17-6547-4466-8374-843ACAFAFE99",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1018,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539069.1078057946, 1181897.755169285 ],
+					[ 2539069.6893058009, 1181881.6168697977 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 225201,
+				"bemerkung" : null,
+				"globalid" : "9EBF85ED-71C5-4C7E-8EF8-325C55344697",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "E4F10048-CC85-4A30-881E-07BD33B118D6",
+				"station_ref" : "1F1BDE7A-8EB8-48C4-8C8C-5EFA96CA363D",
+				"klemme_ref" : "20E3C290-0511-4D16-8C01-ED82BFC0377C",
+				"schaltzustand" : null,
+				"farbe_strang" : 1051,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539067.9912057971, 1181891.880469478 ],
+					[ 2539058.1539058015, 1181883.7435697315 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 225205,
+				"bemerkung" : null,
+				"globalid" : "2CB5232C-1368-41EE-98AE-3F629EE606D8",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "8A5C4C55-A089-4766-BAAE-0857F95C8591",
+				"station_ref" : "1F1BDE7A-8EB8-48C4-8C8C-5EFA96CA363D",
+				"klemme_ref" : "9BEB1CEA-E60D-46E0-A87D-4D4121C3E65F",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1008,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539066.9853057992, 1181888.4179695845 ],
+					[ 2539058.1539058015, 1181884.7437696999 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 225207,
+				"bemerkung" : null,
+				"globalid" : "0ABB6FEA-151D-45EF-96D5-51AC08B9DB1C",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "8140E11C-7185-43E9-97B2-689A66D6EB1E",
+				"station_ref" : "1F1BDE7A-8EB8-48C4-8C8C-5EFA96CA363D",
+				"klemme_ref" : "DB582D95-1B42-43C4-B2BB-C6C144A46455",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1007,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539065.9669057969, 1181888.6540695687 ],
+					[ 2539058.1539057996, 1181889.7436695399 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 225211,
+				"bemerkung" : null,
+				"globalid" : "3017D04E-A083-44B2-AE04-3F5B5582FB74",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "86F2B0A1-3782-40B1-A3E6-C34DFA09D626",
+				"station_ref" : "1F1BDE7A-8EB8-48C4-8C8C-5EFA96CA363D",
+				"klemme_ref" : "8C1998B1-B4BE-43A8-A261-EA229118E02C",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1003,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539065.7870057989, 1181888.691069572 ],
+					[ 2539058.1539058001, 1181888.743669573 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 225212,
+				"bemerkung" : null,
+				"globalid" : "702B2515-9CB2-4960-930E-9B5BE9B1B6FB",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "7083BFA9-AA53-49BE-829C-C87BB4C690E9",
+				"station_ref" : "1F1BDE7A-8EB8-48C4-8C8C-5EFA96CA363D",
+				"klemme_ref" : "CC7EDB6D-FABB-4B24-B325-82F7ED996C25",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1004,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539064.8675057981, 1181888.879169571 ],
+					[ 2539058.1539057987, 1181893.7436694135 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 225216,
+				"bemerkung" : null,
+				"globalid" : "41B3163F-D606-4EF5-BD16-45B1F8952413",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "FB2263B9-D81A-417E-87D8-0621600DE28E",
+				"station_ref" : "1F1BDE7A-8EB8-48C4-8C8C-5EFA96CA363D",
+				"klemme_ref" : "47E173D4-5ACD-4859-B888-8AE9E30976CB",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1000,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539068.0645057973, 1181892.1787694639 ],
+					[ 2539043.3362058005, 1181884.8188697055 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 235361,
+				"bemerkung" : null,
+				"globalid" : "6BD6682B-24CA-4F61-9C80-4A42078DD183",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "56461D4D-B08E-4E2F-8A65-4F73617C8888",
+				"station_ref" : "1F1BDE7A-8EB8-48C4-8C8C-5EFA96CA363D",
+				"klemme_ref" : "0E805169-4303-417C-8458-C6D6AB883C7C",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1101,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539069.1696057939, 1181897.7208692876 ],
+					[ 2539058.1539058066, 1181867.7436702326 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 249506,
+				"bemerkung" : null,
+				"globalid" : "0F886280-C40F-4F50-AE7B-155A185EB824",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "FF2E3C4C-E29F-4B4A-B547-DC588B863E99",
+				"station_ref" : "1F1BDE7A-8EB8-48C4-8C8C-5EFA96CA363D",
+				"klemme_ref" : "BC818C7E-C069-4384-88CB-5EB35FB304D8",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1021,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539047.3362057987, 1181888.8189695771 ],
+					[ 2539054.1540058004, 1181882.7435697634 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 254442,
+				"bemerkung" : null,
+				"globalid" : "6970EE6B-1CDE-4906-8142-430E473D5332",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : null,
+				"station_ref" : "1F1BDE7A-8EB8-48C4-8C8C-5EFA96CA363D",
+				"klemme_ref" : null,
+				"schaltzustand" : null,
+				"farbe_strang" : null,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539047.3362057991, 1181887.8189696071 ],
+					[ 2539054.154005798, 1181890.7436695115 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 254443,
+				"bemerkung" : null,
+				"globalid" : "F71758C5-AF40-4D57-AEB0-3E23FF5AE0EE",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : null,
+				"station_ref" : "1F1BDE7A-8EB8-48C4-8C8C-5EFA96CA363D",
+				"klemme_ref" : null,
+				"schaltzustand" : 1,
+				"farbe_strang" : null,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539067.7973057972, 1181890.9964695042 ],
+					[ 2539069.6893058009, 1181880.6168698322 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 276775,
+				"bemerkung" : null,
+				"globalid" : "ABB7A8F2-DA7C-4837-ACE0-F86CF96963D1",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "0139612F-2B5F-40C1-B9A6-D71957C93E76",
+				"station_ref" : "1F1BDE7A-8EB8-48C4-8C8C-5EFA96CA363D",
+				"klemme_ref" : "B0F8CA0F-C77F-47FA-8A42-6030675C8C5C",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1052,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539066.6147057973, 1181893.3351694273 ],
+					[ 2539058.1539057977, 1181895.7436693504 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 276776,
+				"bemerkung" : null,
+				"globalid" : "ED04334C-A7DA-476A-8C16-7ED4C4CF2A39",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "F3ECBBE6-735F-4FEB-9542-0910951D0A88",
+				"station_ref" : "1F1BDE7A-8EB8-48C4-8C8C-5EFA96CA363D",
+				"klemme_ref" : "1B9FE930-16D9-4643-A33C-5AE663CC6B52",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1029,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539065.6894057989, 1181882.6168697677 ],
+					[ 2539058.1539057977, 1181895.5436693591 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 276777,
+				"bemerkung" : null,
+				"globalid" : "93721071-A507-4778-9D4D-28F59FE69433",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : null,
+				"station_ref" : "1F1BDE7A-8EB8-48C4-8C8C-5EFA96CA363D",
+				"klemme_ref" : null,
+				"schaltzustand" : 1,
+				"farbe_strang" : null,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539064.3767057974, 1181889.0070695621 ],
+					[ 2539069.6893058019, 1181878.6168698908 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 276809,
+				"bemerkung" : null,
+				"globalid" : "F55EF696-919A-4B31-9E76-C2461DF9C1A5",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "FD8861E5-38FB-44A4-83D4-36E74E370506",
+				"station_ref" : "1F1BDE7A-8EB8-48C4-8C8C-5EFA96CA363D",
+				"klemme_ref" : "26D41B3A-10DB-4D71-B6F8-AA5AA6E7FE7C",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1054,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539146.5561057855, 1181902.9363691024 ],
+					[ 2539156.1980057806, 1181912.5227687969 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 277408,
+				"bemerkung" : null,
+				"globalid" : "1904768C-75DC-4ADB-B83B-B6997DD6150D",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "85A841B3-5811-4B6D-8585-6BE41C89089A",
+				"station_ref" : "B06E7EAC-8240-4F1A-832A-62A657559C01",
+				"klemme_ref" : "C8BEF5A3-396F-40AB-8884-88F573C43625",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1001,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539146.6936057848, 1181903.0739690959 ],
+					[ 2539144.5868057888, 1181899.5897692107 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 277409,
+				"bemerkung" : null,
+				"globalid" : "6A1138EF-E5B5-40FB-AC65-7F4BEED7B876",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "F8230118-64BF-4E58-9638-ED66483F3037",
+				"station_ref" : "7A7FF935-2D03-483A-9269-4D125CA76FDD",
+				"klemme_ref" : "64D65519-452D-4B92-9B16-95B9D104B464",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1001,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539146.1559057869, 1181904.1776690618 ],
+					[ 2539156.1980057801, 1181913.5227687641 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 277410,
+				"bemerkung" : null,
+				"globalid" : "6234F6BD-6049-4839-98AF-61813092C7CA",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "B63C4905-7BFD-412F-96E3-3ADCFA82FBA7",
+				"station_ref" : "B06E7EAC-8240-4F1A-832A-62A657559C01",
+				"klemme_ref" : "18C36E9A-6664-4CFF-9F57-ECA068F97465",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1001,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539066.2545058001, 1181888.5949695751 ],
+					[ 2539062.652905792, 1181906.202769025 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 279031,
+				"bemerkung" : null,
+				"globalid" : "47283780-2D9B-4DDF-9997-E084ACA7B6D7",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "185AB6C7-ED5A-49B3-A647-C1EB08EA883A",
+				"station_ref" : "797149DC-7B33-4F54-A38F-6E5F223C6FB2",
+				"klemme_ref" : "AA271A1B-3E67-4C56-A185-2B900A68F202",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1013,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539068.223705797, 1181897.9494692862 ],
+					[ 2539058.652905792, 1181908.2027689635 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 279034,
+				"bemerkung" : null,
+				"globalid" : "2EC74D70-910D-449D-879A-BBE758CF4D99",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "29D47256-CB32-4BE2-AB6E-3A2A51A64CB6",
+				"station_ref" : "797149DC-7B33-4F54-A38F-6E5F223C6FB2",
+				"klemme_ref" : "96F0DD78-0579-45E1-A44A-3FEEFEF6F924",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1009,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539066.8540057936, 1181897.1384693072 ],
+					[ 2539058.6531057912, 1181909.2026689332 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 279036,
+				"bemerkung" : null,
+				"globalid" : "71C42465-C0C8-454B-B42C-0AAC8AFDFC4F",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "CC91543A-59A2-475F-8B43-F0C5FF26D01A",
+				"station_ref" : "797149DC-7B33-4F54-A38F-6E5F223C6FB2",
+				"klemme_ref" : "F529F063-8810-4974-9FF9-54F0887E8B16",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1013,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539065.7745057982, 1181892.4605694546 ],
+					[ 2539058.1540058018, 1181876.7435699524 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 279037,
+				"bemerkung" : null,
+				"globalid" : "B2C7B00A-63FF-400E-93DA-CA41FDD30A98",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "CC91543A-59A2-475F-8B43-F0C5FF26D01A",
+				"station_ref" : "1F1BDE7A-8EB8-48C4-8C8C-5EFA96CA363D",
+				"klemme_ref" : "F2E79B1F-394D-4E98-B361-008EDF96D64A",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1013,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "LineString",
+				"coordinates" : [
+					[ 2539065.3460057988, 1181888.7749695694 ],
+					[ 2539062.652905792, 1181907.2027689957 ]
+				]
+			},
+			"properties" : {
+				"objectid" : 279038,
+				"bemerkung" : null,
+				"globalid" : "DCEADA9C-EC14-44D1-80B1-97C8472FCB2F",
+				"gdb_geomattr_data" : null,
+				"enabled" : 1,
+				"u_numeroapic" : null,
+				"u_globalapic" : null,
+				"strang_ref" : "64AB430E-9F7D-4819-BBEF-597B1634BB06",
+				"station_ref" : "797149DC-7B33-4F54-A38F-6E5F223C6FB2",
+				"klemme_ref" : "DA73826B-C33E-4D8B-955F-1BC9052FA463",
+				"schaltzustand" : 1,
+				"farbe_strang" : 1013,
+				"_feature_type" : "dbo.ELE_DS_KABELVERBINDUNG",
+				"_clipped" : "no"
+			}
+		}
+	]
+}

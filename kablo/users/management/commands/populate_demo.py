@@ -9,30 +9,6 @@ from kablo.network.models import Cable, Station, Track, Tube
 from kablo.valuelist.models import CableTensionType, StatusType, TubeCableProtectionType
 
 
-def import_value_lists():
-
-    base_dir = "/kablo/kablo/core/management/data/core_value_lists_data"
-
-    value_lists = {
-        "status": {"model": StatusType, "file": "status.json"},
-        "cable_protection": {
-            "model": TubeCableProtectionType,
-            "file": "cable_protection.json",
-        },
-        "cable_tension": {"model": CableTensionType, "file": "cable_tension.json"},
-    }
-
-    for key in value_lists:
-        value_lists[key]["model"].objects.all().delete()
-        with open(f'{base_dir}/{value_lists[key]["file"]}', "r") as fd:
-            data = json.load(fd)
-            for feature in data:
-                del feature["json_featuretype"]
-                value_lists[key]["model"].objects.create(**feature)
-
-        print(f"🤖 Values added for list {key}!")
-
-
 def import_stations(file):
     Station.objects.all().delete()
     with open(file, "r") as fd:
@@ -137,16 +113,9 @@ def import_cables(file):
 class Command(BaseCommand):
     help = "Populate db with demo data"
 
-    def add_arguments(self, parser):
-        parser.add_argument("-s", "--size", type=int, default=1000)
-
     @transaction.atomic
     def handle(self, *args, **options):
         """Populate db with testdata"""
-
-        # Value lists must be added before anything else
-        import_value_lists()
-        print(f"🤖 Value types added!")
 
         import_tracks("/kablo/demo/data/dbo.ele_trasse.geojson")
         print(f"🤖 demo tracks added!")
