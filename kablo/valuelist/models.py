@@ -6,12 +6,11 @@ from django_oapif.decorators import register_oapif_viewset
 
 class AbstractValueList(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    original_id = models.PositiveIntegerField(null=True)
-    original_uuid = models.UUIDField(null=True, editable=True)
-    code = models.PositiveIntegerField(null=True)
+    original_id = models.TextField(null=True)
+    code = models.PositiveIntegerField(null=False, blank=False)
     name_fr = models.CharField(max_length=64, blank=True)
     index = models.PositiveIntegerField(null=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True, null=False, blank=False)
 
     class Meta:
         abstract = True
