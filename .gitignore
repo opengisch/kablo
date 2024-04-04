@@ -3,6 +3,8 @@ __pycache__/
 .vscode/
 /venv
 /demo
+*.qgs~
+/qgis/*.zip
 gunicorn_log.log
 env.yaml
 /docker-compose.override.yml
