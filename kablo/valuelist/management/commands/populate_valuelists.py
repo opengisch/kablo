@@ -15,12 +15,15 @@ class Command(BaseCommand):
         base_dir = "/kablo/kablo/valuelist/management/data/"
 
         value_lists = {
-            "status": {"model": StatusType, "file": "status.json"},
+            "status": {"model": StatusType, "file": "dbo.eles_status.json"},
             "cable_protection": {
                 "model": TubeCableProtectionType,
-                "file": "cable_protection.json",
+                "file": "dbo.eles_kabelschutz_rohr.json",
             },
-            "cable_tension": {"model": CableTensionType, "file": "cable_tension.json"},
+            "cable_tension": {
+                "model": CableTensionType,
+                "file": "dbo.eles_spannung.json",
+            },
         }
 
         for key in value_lists:
@@ -29,6 +32,7 @@ class Command(BaseCommand):
                 data = json.load(fd)
                 for feature in data:
                     del feature["json_featuretype"]
+                    del feature["_feature_type"]
                     value_lists[key]["model"].objects.create(**feature)
 
             print(f"🤖 Values added for list {key}!")

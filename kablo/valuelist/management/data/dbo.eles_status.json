@@ -1,0 +1,90 @@
+[
+	{
+		"json_featuretype" : "tube_cable_relation",
+		"code" : 0,
+		"index" : 1,
+		"original_id" : "DE8F44C1-B34C-4BA7-99BE-72116076284A",
+		"name_fr" : "Inconnu",
+		"_feature_type" : "dbo.ELES_STATUS"
+	},
+	{
+		"json_featuretype" : "tube_cable_relation",
+		"code" : 1,
+		"index" : 2,
+		"original_id" : "DDC92CD7-C7DE-49BE-B65A-60B450E6364A",
+		"name_fr" : "En service",
+		"_feature_type" : "dbo.ELES_STATUS"
+	},
+	{
+		"json_featuretype" : "tube_cable_relation",
+		"code" : 2,
+		"index" : 6,
+		"original_id" : "C2103D2F-B325-4942-AF0A-343334308708",
+		"name_fr" : "Hors service",
+		"_feature_type" : "dbo.ELES_STATUS"
+	},
+	{
+		"json_featuretype" : "tube_cable_relation",
+		"code" : 3,
+		"index" : 4,
+		"original_id" : "3FAA8AEA-5DAE-40EC-A78D-11C1928394DA",
+		"name_fr" : "En réserve",
+		"_feature_type" : "dbo.ELES_STATUS"
+	},
+	{
+		"json_featuretype" : "tube_cable_relation",
+		"code" : 4,
+		"index" : 5,
+		"original_id" : "8AEC0F16-3A94-472E-82FD-9E2B9B3265A7",
+		"name_fr" : "Abandonné",
+		"_feature_type" : "dbo.ELES_STATUS"
+	},
+	{
+		"json_featuretype" : "tube_cable_relation",
+		"code" : 5,
+		"index" : null,
+		"original_id" : "8D5D5D69-A0DF-4949-A015-94915297C28B",
+		"name_fr" : "Variante de calcul",
+		"_feature_type" : "dbo.ELES_STATUS"
+	},
+	{
+		"json_featuretype" : "tube_cable_relation",
+		"code" : 6,
+		"index" : null,
+		"original_id" : "78C00545-661F-4022-B9BC-7293CC04AFD5",
+		"name_fr" : "Planifié",
+		"_feature_type" : "dbo.ELES_STATUS"
+	},
+	{
+		"json_featuretype" : "tube_cable_relation",
+		"code" : 7,
+		"index" : 8,
+		"original_id" : "8B5B4FBC-C729-48A9-8F95-3E38E1DC98EC",
+		"name_fr" : "Projet",
+		"_feature_type" : "dbo.ELES_STATUS"
+	},
+	{
+		"json_featuretype" : "tube_cable_relation",
+		"code" : 8,
+		"index" : null,
+		"original_id" : "AFE65983-3A4D-4D62-A4EE-7F00B7D24739",
+		"name_fr" : "Provisoire",
+		"_feature_type" : "dbo.ELES_STATUS"
+	},
+	{
+		"json_featuretype" : "tube_cable_relation",
+		"code" : 1000,
+		"index" : 9,
+		"original_id" : "FD2C7D8C-2B4D-4EA3-BD82-B4D21E3CE32D",
+		"name_fr" : "Réservé PDDÉL",
+		"_feature_type" : "dbo.ELES_STATUS"
+	},
+	{
+		"json_featuretype" : "tube_cable_relation",
+		"code" : 1001,
+		"index" : 10,
+		"original_id" : "4F9EDA9C-796D-44E2-BA3E-E2739704A4DA",
+		"name_fr" : "Sorti de terre",
+		"_feature_type" : "dbo.ELES_STATUS"
+	}
+]

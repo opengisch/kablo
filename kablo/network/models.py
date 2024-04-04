@@ -169,7 +169,7 @@ class TubeSection(models.Model):
 class Station(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     original_id = models.TextField(null=True, editable=True)
-    label = models.CharField(max_length=64, blank=True)
+    label = models.CharField(max_length=64, blank=True, null=True)
     geom = models.PointField(srid=2056)
 
 

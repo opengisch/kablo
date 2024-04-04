@@ -9,6 +9,8 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, **options):
+        User.objects.all().delete()
+        Group.objects.all().delete()
         editors, _ = Group.objects.get_or_create(name="editors")
         viewers, _ = Group.objects.get_or_create(name="viewers")
 

@@ -4,7 +4,7 @@ from django.contrib.gis.geos import Point
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
-from kablo.core.utils import wkt_from_line
+from kablo.core.utils import wkt_from_multiline
 from kablo.network.models import Cable, Station, Track, Tube
 from kablo.valuelist.models import CableTensionType, StatusType, TubeCableProtectionType
 
@@ -16,7 +16,8 @@ def import_stations(file):
         for feature in data["features"]:
             fields = {
                 "geom": Point(feature["geometry"]["coordinates"]),
-                "original_uuid": feature["properties"]["globalid"],
+                "original_id": feature["properties"]["globalid"],
+                "label": feature["properties"]["nummer"],
             }
             Station.objects.create(**fields)
 
@@ -28,8 +29,8 @@ def import_tracks(file):
         for feature in data["features"]:
 
             fields = {
-                "geom": wkt_from_line(feature["geometry"]["coordinates"]),
-                "original_uuid": feature["properties"]["globalid"],
+                "geom": wkt_from_multiline(feature["geometry"]["coordinates"]),
+                "original_id": feature["properties"]["globalid"],
             }
             Track.objects.create(**fields)
 
@@ -61,8 +62,8 @@ def import_tubes(file):
             fields = {
                 "status": status,
                 "cable_protection_type": cable_protection_type,
-                "geom": wkt_from_line(feature["geometry"]["coordinates"]),
-                "original_uuid": feature["properties"]["globalid"],
+                "geom": wkt_from_multiline(feature["geometry"]["coordinates"]),
+                "original_id": feature["properties"]["globalid"],
             }
 
             Tube.objects.create(**fields)
@@ -94,18 +95,21 @@ def import_cables(file):
             fields = {
                 "tension": tension_type,
                 "status": status,
-                "geom": wkt_from_line(feature["geometry"]["coordinates"]),
-                "original_uuid": feature["properties"]["globalid"],
+                "geom": wkt_from_multiline(feature["geometry"]["coordinates"]),
+                "original_id": feature["properties"]["globalid"],
             }
             Cable.objects.create(**fields)
 
+
+def import_tube_cable_relations(file):
     # Set cable-tube m2m relation
-    with open("/kablo/demo/data/tube_cable_relation.json", "r") as fd:
+    print(f"🤖 ...Setting tube_cable m2m relations...this might take some time...")
+    with open(file, "r") as fd:
         data = json.load(fd)
 
         for feature in data:
-            cable = Cable.objects.filter(original_uuid=feature["KABEL_REF"]).first()
-            tube = Tube.objects.filter(original_uuid=feature["ROHR_REF"]).first()
+            cable = Cable.objects.filter(original_id=feature["kabel_ref"]).first()
+            tube = Tube.objects.filter(original_id=feature["rohr_ref"]).first()
             if cable and tube:
                 tube.cables.add(cable)
 
@@ -129,3 +133,7 @@ class Command(BaseCommand):
 
         import_stations("/kablo/demo/data/dbo.ele_station.geojson")
         print(f"🤖 demo stations added!")
+
+        # Must be executed after tubes and cables import
+        import_tube_cable_relations("/kablo/demo/data/dbo.eler_rohr_kabel.json")
+        print(f"🤖 tubes-cables relations added!")
