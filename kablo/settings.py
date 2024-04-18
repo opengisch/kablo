@@ -118,6 +118,7 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "migrate_sql",
 ]
 
 if ENABLE_2FA:

@@ -13,3 +13,4 @@ django-two-factor-auth[phonenumbers]
 django-oauth-toolkit
 django-allauth
 django-rest-knox
+django-migrate-sql-3

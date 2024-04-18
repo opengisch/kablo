@@ -80,6 +80,8 @@ django-formtools==2.5.1
     # via
     #   -r requirements.txt
     #   django-two-factor-auth
+django-migrate-sql-3==3.0.2
+    # via -r requirements.txt
 django-oapif @ git+https://github.com/opengisch/django-oapif.git
     # via -r requirements.txt
 django-oauth-toolkit==2.3.0
