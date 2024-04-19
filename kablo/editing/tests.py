@@ -16,7 +16,7 @@ class TrackSplitTestCase(TestCase):
         y = 1152000
 
         line = [(x + 10 * i, y + 10 * i) for i in range(5)]
-        geom_line_wkt = wkt_from_multiline(line)
+        geom_line_wkt = wkt_from_multiline([line])
 
         mid_x = (line[2][0] + line[3][0]) / 2
         mid_y = (line[2][1] + line[3][1]) / 2

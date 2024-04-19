@@ -1,8 +1,11 @@
+import random
+from math import cos, radians, sin
+
 from django.contrib.gis.geos import LineString
 from django.test import TestCase, override_settings
 
 from kablo.core.utils import wkt_from_multiline
-from kablo.network.models import Section, Track
+from kablo.network.models import Section, Track, Tube, TubeSection
 
 
 class TrackSectionTestCase(TestCase):
@@ -16,7 +19,7 @@ class TrackSectionTestCase(TestCase):
         y = 1152000
 
         line = [(x + 10 * i, y + 10 * i) for i in range(5)]
-        geom_line_wkt = wkt_from_multiline(line)
+        geom_line_wkt = wkt_from_multiline([line])
         fields = {"geom": geom_line_wkt}
         track = Track.objects.create(**fields)
 
@@ -39,3 +42,50 @@ class TrackSectionTestCase(TestCase):
 
             self.assertEqual(qs.count(), n_sections)
             # self.assertEqual(sections[0].geom, track.geom)
+
+    @override_settings(DEBUG=True)
+    def test_tube_geom(self):
+        x = 2508500
+        y = 1152000
+
+        tracks = []
+        sections = []
+        for t in range(1, 3):
+            azimuths = [[10, 40, 20, 100, 180], [-90, -20, 10]]
+            multiline = []
+            for section_azimuths in azimuths:
+                line = [(x, y)]
+                for azimuth in section_azimuths:
+                    # make dist random to make the test more robust
+                    dist = random.randint(5, 15)
+                    x += dist * cos(radians(90 - azimuth))
+                    y += dist * sin(radians(90 - azimuth))
+                    line.append((x, y))
+                multiline.append(line)
+
+            geom_line_wkt = wkt_from_multiline(multiline)
+            fields = {"geom": geom_line_wkt}
+            track = Track.objects.create(**fields)
+            for section in track.section_set.all():
+                sections.append(section)
+            tracks.append(track)
+
+        tube = Tube.objects.create()
+
+        tube_sections = []
+        i = 0
+        for section in sections:
+            n_vertices = len(section.geom.coords)
+            offset_x = [100] * n_vertices
+            offset_z = 0
+            TubeSection.objects.create(
+                tube=tube,
+                section=section,
+                order_index=i,
+                interpolated=False,
+                offset_x=offset_x,
+                offset_z=offset_z,
+            )
+            i += 1
+
+        tube.save()

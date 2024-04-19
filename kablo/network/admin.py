@@ -38,7 +38,8 @@ class TubeInline(admin.TabularInline):
 
 class TubeAdmin(admin.ModelAdmin):
     model = Tube
-    inlines = [CableInline]
+    readonly_fields = ("geom",)
+    inlines = [CableInline, TubeInline]
     fields = ["status", "cable_protection_type", "geom"]
     list_display = [
         "id",
