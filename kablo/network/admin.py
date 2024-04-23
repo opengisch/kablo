@@ -1,5 +1,7 @@
+from django import forms
 from django.contrib import admin
 
+from ..core.forms import MapWidgetFor3Dgeom
 from .models import (
     Cable,
     CableTensionType,
@@ -15,13 +17,67 @@ from .models import (
 )
 
 
+class SectionAdminForm(forms.ModelForm):
+    class Meta:
+        model = Section
+        widgets = {
+            "geom": MapWidgetFor3Dgeom(),
+        }
+        readonly_fields = ["geom"]
+        fields = "__all__"
+
+
 class SectionInline(admin.TabularInline):
+    form = SectionAdminForm
     model = Section
+    readonly_fields = ["geom"]
     extra = 0
 
 
+class SectionAdmin(admin.ModelAdmin):
+    form = SectionAdminForm
+
+
+class StationAdminForm(forms.ModelForm):
+    class Meta:
+        model = Station
+        widgets = {
+            "geom": MapWidgetFor3Dgeom(),
+        }
+        readonly_fields = ["geom"]
+        fields = "__all__"
+
+
+class StationAdmin(admin.ModelAdmin):
+    form = StationAdminForm
+
+
+class NetworkNodeAdminForm(forms.ModelForm):
+    class Meta:
+        model = NetworkNode
+        widgets = {
+            "geom": MapWidgetFor3Dgeom(),
+        }
+        readonly_fields = ["geom"]
+        fields = "__all__"
+
+
+class NetworkNodeAdmin(admin.ModelAdmin):
+    form = NetworkNodeAdminForm
+
+
+class TrackAdminForm(forms.ModelForm):
+    class Meta:
+        model = Track
+        widgets = {
+            "geom": MapWidgetFor3Dgeom(),
+        }
+        readonly_fields = ["geom"]
+        fields = "__all__"
+
+
 class TrackAdmin(admin.ModelAdmin):
-    model = Track
+    form = TrackAdminForm
     inlines = [SectionInline]
 
 
@@ -36,11 +92,20 @@ class TubeInline(admin.TabularInline):
     inlines = [CableInline]
 
 
+class TubeAdminForm(forms.ModelForm):
+    class Meta:
+        model = Tube
+        widgets = {
+            "geom": MapWidgetFor3Dgeom(),
+        }
+        readonly_fields = ["geom"]
+        fields = "__all__"
+
+
 class TubeAdmin(admin.ModelAdmin):
+    form = TubeAdminForm
     model = Tube
-    readonly_fields = ("geom",)
     inlines = [CableInline, TubeInline]
-    fields = ["status", "cable_protection_type", "geom"]
     list_display = [
         "id",
         "status",
@@ -57,7 +122,19 @@ class CableTubeInline(admin.TabularInline):
     extra = 0
 
 
+class CableAdminForm(forms.ModelForm):
+    class Meta:
+        model = Cable
+        widgets = {
+            "geom": MapWidgetFor3Dgeom(),
+        }
+        # FIXME: make mwidget effetively readonly
+        readonly_fields = ["geom"]
+        fields = "__all__"
+
+
 class CableAdmin(admin.ModelAdmin):
+    form = CableAdminForm
     model = Cable
     search_fields = ("id",)
     exclude = ["tubes"]
@@ -74,12 +151,12 @@ class CableAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Cable, CableAdmin)
-admin.site.register(NetworkNode)
-admin.site.register(Station)
+admin.site.register(NetworkNode, NetworkNodeAdmin)
+admin.site.register(Station, StationAdmin)
 admin.site.register(Switch)
 admin.site.register(Terminal)
 admin.site.register(Track, TrackAdmin)
-admin.site.register(Section)
+admin.site.register(Section, SectionAdmin)
 admin.site.register(Tube, TubeAdmin)
 admin.site.register(StatusType)
 admin.site.register(TubeCableProtectionType)
