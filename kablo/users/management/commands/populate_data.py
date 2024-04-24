@@ -18,12 +18,12 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         """Populate db with testdata"""
-        x = 2508200
+        x = 2508600
         y = 1152000
 
-        tracks = []
-        sections = []
-        for t in range(1, 3):
+        tracks_geom = []
+        for track_idx in range(1, 3):
+            tracks_geom.append([])
             azimuths = [[10, 40, 20, 100, 50], [-30, -20, 10]]
             multiline = []
             for section_azimuths in azimuths:
@@ -40,26 +40,34 @@ class Command(BaseCommand):
             fields = {"geom": geom_line_wkt}
             track = Track.objects.create(**fields)
             for section in track.section_set.order_by("order_index").all():
-                sections.append(section)
-            tracks.append(track)
+                tracks_geom[-1].append(section)
+            track.save()
 
-        tube = Tube.objects.create()
+        tube_1 = Tube.objects.create()
+        tube_2 = Tube.objects.create()
         i = 0
-        for section in sections:
-            n_vertices = len(section.geom.coords)
-            offset_x = [100] * n_vertices
-            offset_z = 0
-            TubeSection.objects.create(
-                tube=tube,
-                section=section,
-                order_index=i,
-                interpolated=False,
-                offset_x=offset_x,
-                offset_z=offset_z,
-            )
-            i += 1
+        for track in tracks_geom:
+            for section in track:
+                TubeSection.objects.create(
+                    tube=tube_1,
+                    section=section,
+                    order_index=i,
+                    interpolated=False,
+                    offset_x=100,
+                    offset_z=0,
+                )
+                TubeSection.objects.create(
+                    tube=tube_2,
+                    section=section,
+                    order_index=i,
+                    interpolated=False,
+                    offset_x=-50,
+                    offset_z=0,
+                )
+                i += 1
 
-        tube.save()
+        tube_1.save()
+        tube_2.save()
 
         # all layers neeed some data to be loaded in QGIS
         line = [(x - 1000 + 10 * i, y + 10 * i) for i in range(2)]
