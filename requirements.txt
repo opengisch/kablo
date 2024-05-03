@@ -31,6 +31,7 @@ django==5.0.3
     #   -r requirements.in
     #   django-allauth
     #   django-cors-headers
+    #   django-eav2
     #   django-formtools
     #   django-oapif
     #   django-oauth-toolkit
@@ -42,6 +43,8 @@ django==5.0.3
 django-allauth==0.61.1
     # via -r requirements.in
 django-cors-headers==4.3.1
+    # via -r requirements.in
+django-eav2==1.6.0
     # via -r requirements.in
 django-formtools==2.5.1
     # via django-two-factor-auth
@@ -99,7 +102,9 @@ python3-openid==3.2.0
 pytz==2024.1
     # via djangorestframework
 pyyaml==6.0.1
-    # via django-oapif
+    # via
+    #   django-eav2
+    #   django-oapif
 qrcode==7.4.2
     # via django-two-factor-auth
 requests==2.31.0

@@ -14,3 +14,4 @@ django-oauth-toolkit
 django-allauth
 django-rest-knox
 django-migrate-sql-3
+django-eav2
