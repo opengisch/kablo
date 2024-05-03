@@ -300,5 +300,4 @@ LOGGING = {
 }
 
 # django-eav2
-# EAV2_PRIMARY_KEY_FIELD = "django.db.models.CharField"
 EAV2_PRIMARY_KEY_FIELD = "django.db.models.UUIDField"
