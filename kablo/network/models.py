@@ -196,9 +196,11 @@ class Tube(models.Model):
             last_section = tube_section.order_index == max_order_index
             first_vertex_in_section = True
 
-            for i, (point, azimuth) in enumerate(
-                zip(tube_section.section.geom.coords, tube_section.azimuths)
-            ):
+            coords = tube_section.section.geom.coords
+            if tube_section.reversed:
+                coords.reverse()
+
+            for i, (point, azimuth) in enumerate(zip(coords, tube_section.azimuths)):
                 planimetric_offset_x = 0
                 planimetric_offset_y = 0
 
@@ -253,6 +255,7 @@ class TubeSection(models.Model):
     tube = models.ForeignKey(Tube, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
     order_index = models.IntegerField(default=1)
+    reversed = models.BooleanField(default=False, null=False, blank=False)
     interpolated = models.BooleanField(default=False, null=False, blank=False)
     offset_x = models.IntegerField(null=False, blank=False, default=0)
     offset_z = models.IntegerField(null=False, blank=False, default=0)
