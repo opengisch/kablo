@@ -1,11 +1,11 @@
 import uuid
-from math import atan2, cos, degrees, radians, sin
+from math import cos, radians, sin
 
 from django.contrib.gis.db import models
 from django.contrib.gis.db.models.aggregates import Union
 from django.contrib.gis.geos import LineString
-from django.contrib.postgres.fields import ArrayField
 from django.db import transaction
+from django.db.models import Max
 from django_oapif.decorators import register_oapif_viewset
 
 from kablo.core.geometry import AzimuthAlongLine, Intersects, SplitLine
@@ -168,72 +168,68 @@ class Tube(models.Model):
         # TODO: check geometry exists + is coherent
         # TODO: check order_index is continuous
 
-        # combined_geom = self.tubesection_set.order_by("order_index").annotate(combined_geom=Union('section__geom')).annotate(AzimuthAlongLine('combined_geom'))
-        # combined_geom = self.tubesection_set.order_by("order_index").aggregate(combined_geom=Union('section__geom'))['combined_geom']
-        # print(combined_geom)
-
         tube_line = []
-        last_azimuth = None
-        last_offset_x = None
-        last_offset_z = None
 
-        for tube_section in (
-            self.tubesection_set.order_by("order_index")
-            .annotate(azimuths=AzimuthAlongLine("section__geom"))
-            .all()
-        ):
+        qs = self.tubesection_set.order_by("order_index").annotate(
+            azimuths=AzimuthAlongLine("section__geom")
+        )
 
+        max_order_index = qs.aggregate(max_order_index=Max("order_index"))[
+            "max_order_index"
+        ]
+        first_vertex = True
+
+        for tube_section in qs.all():
             # TODO: this works when the tube already exists (i.e. we are adding section after it was created and saved)
-            # TODO: there is probably a way to make this qs outside of the loop for optimization
 
-            section = tube_section.section
-
-            offset_x_set = tube_section.offset_x
-            offset_z_set = tube_section.offset_z
-
-            assert len(tube_section.azimuths) == len(section.geom.coords)
-            if tube_section.order_index == 0:
-                assert len(offset_x_set) == len(section.geom.coords)
-                assert len(offset_z_set) == len(section.geom.coords)
-            else:
-                assert len(offset_x_set) == len(section.geom.coords) - 1
-                assert len(offset_z_set) == len(section.geom.coords) - 1
-                offset_x_set = [last_offset_x] + offset_x_set
-                offset_z_set = [last_offset_z] + offset_z_set
-
+            last_section = tube_section.order_index == max_order_index
             first_vertex_in_section = True
-            for (point, azimuth, offset_x, offset_z) in zip(
-                section.geom.coords,
-                tube_section.azimuths,
-                offset_x_set,
-                offset_z_set,
-            ):
-                # calculate mean of angles on section join, recalculate previous point and go to next one
-                if first_vertex_in_section and last_azimuth:
-                    # TODO: we might want to check that the coordinates are exactly the same (but it might be checked somehwere else: in geometry integrity checks?)
 
-                    az1 = radians(last_azimuth)
-                    az2 = radians(azimuth)
-                    azimuth = degrees(
-                        atan2((sin(az1) + sin(az2)) / 2, (cos(az1) + cos(az2)) / 2)
-                    )
+            for i, (point, azimuth) in enumerate(
+                zip(tube_section.section.geom.coords, tube_section.azimuths)
+            ):
+                planimetric_offset_x = 0
+                planimetric_offset_y = 0
+
+                last_vertex_in_section = i == len(tube_section.section.geom.coords) - 1
+                last_vertex = last_section and last_vertex_in_section
+
+                if first_vertex:
+                    tube_line.append((point[0], point[1], point[2]))
+                    first_vertex = False
+
+                if first_vertex_in_section:
+                    # tube offset starts at a certain gap from first vertex
+                    # TODO: define app setting for offset + possibility to override per TubeSection (start + end)
+                    # planimetric offset is to start the offset away from the node to improve visualisation
+                    planimetric_offset_x = 0.5 * cos(radians(90 - azimuth))
+                    planimetric_offset_y = 0.5 * sin(radians(90 - azimuth))
+                    first_vertex_in_section = False
+
+                if last_vertex_in_section:
+                    # planimetric offset is to start the offset away from the node to improve visualisation
+                    planimetric_offset_x = 0.5 * cos(radians(90 - azimuth + 180))
+                    planimetric_offset_y = 0.5 * sin(radians(90 - azimuth + 180))
 
                 # segment_direction_angle = 90 - azimuth
                 # orthogonal_direction = segment_direction + 90
-                x = point[0] + cos(radians(90 - azimuth + 90)) * offset_x / 1000
-                y = point[1] + sin(radians(90 - azimuth + 90)) * offset_x / 1000
-                z = point[2] + offset_z
+                od = radians(90 - azimuth + 90)
+                x = (
+                    point[0]
+                    + planimetric_offset_x
+                    + cos(od) * tube_section.offset_x / 1000
+                )
+                y = (
+                    point[1]
+                    + planimetric_offset_y
+                    + sin(od) * tube_section.offset_x / 1000
+                )
+                z = point[2] + tube_section.offset_z  # TODO: absolute vs relative Z
 
-                if first_vertex_in_section and last_azimuth:
-                    tube_line[-1] = (x, y, z)
+                tube_line.append((x, y, z))
 
-                else:
-                    tube_line.append((x, y, z))
-
-                first_vertex_in_section = False
-                last_azimuth = azimuth
-                last_offset_x = offset_x
-                last_offset_z = offset_z
+                if last_vertex:
+                    tube_line.append((point[0], point[1], point[2]))
 
         if len(tube_line) > 0:
             self.geom = LineString(tube_line)
@@ -247,30 +243,11 @@ class TubeSection(models.Model):
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
     order_index = models.IntegerField(default=1)
     interpolated = models.BooleanField(default=False, null=False, blank=False)
-    # TODO check data integrity: len(offsets) = n_vertex if order_index = 0, n_vertex-1 otherwise
-    offset_x = ArrayField(models.IntegerField(null=False, blank=False, default=0))
-    # TODO: potentially we want an absolute Z rather than an offset
-    offset_z = ArrayField(models.IntegerField(null=False, blank=False, default=0))
+    offset_x = models.IntegerField(null=False, blank=False, default=0)
+    offset_z = models.IntegerField(null=False, blank=False, default=0)
 
     class Meta:
         ordering = ["order_index"]
-
-    @transaction.atomic
-    def save(self, **kwargs):
-        n_vertices = len(self.section.geom.coords)
-        n_offset = n_vertices - int(self.order_index > 0)
-        if type(self.offset_x) != list:
-            self.offset_x = n_offset * [self.offset_x]
-        elif len(self.offset_x) != n_offset:
-            # TODO raise error
-            pass
-        if type(self.offset_z) != list:
-            self.offset_z = n_offset * [self.offset_z]
-        elif len(self.offset_z) != n_offset:
-            # TODO raise error
-            pass
-
-        super().save(**kwargs)
 
     # TODO: recalculate tube geom when changed
 

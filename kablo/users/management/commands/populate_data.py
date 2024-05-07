@@ -56,7 +56,7 @@ class Command(BaseCommand):
                     section=section,
                     order_index=i,
                     interpolated=False,
-                    offset_x=offset,
+                    offset_x=random.randint(-400, 400),
                     offset_z=0,
                 )
                 i += 1
@@ -65,7 +65,7 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         """Populate db with testdata"""
-        x = 2509600
+        x = 2508300
         y = 1152000
 
         # list of tracks (track = list of sections => list of list of sections)
