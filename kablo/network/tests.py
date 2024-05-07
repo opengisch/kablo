@@ -50,7 +50,7 @@ class TrackSectionTestCase(TestCase):
 
         tracks = []
         sections = []
-        n_vertex_check = 1
+        n_vertex_check = 0
         for t in range(1, 3):
             azimuths = [[10, 40, 20, 100, 180], [-90, -20, 10]]
             multiline = []
@@ -69,7 +69,7 @@ class TrackSectionTestCase(TestCase):
             track = Track.objects.create(**fields)
             for section in track.section_set.all():
                 sections.append(section)
-                n_vertex_check += len(section.geom.coords) - 1
+                n_vertex_check += len(section.geom.coords)
 
             tracks.append(track)
 
@@ -79,7 +79,7 @@ class TrackSectionTestCase(TestCase):
         i = 0
         for section in sections:
             n_vertices = len(section.geom.coords)
-            offset_x = [100] * (n_vertices - int(i > 0))
+            offset_x = 100
             offset_z = 0
             TubeSection.objects.create(
                 tube=tube,
@@ -93,4 +93,4 @@ class TrackSectionTestCase(TestCase):
 
         tube.save()
 
-        self.assertEqual(len(tube.geom.coords), n_vertex_check)
+        self.assertEqual(len(tube.geom.coords), n_vertex_check + 2)

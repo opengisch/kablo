@@ -46,6 +46,7 @@ class Command(BaseCommand):
         track_section_indexes: List[Tuple[int, List[int]]],
         offset: int,
     ):
+        # TODO: fix offset
         tube = Tube.objects.create()
         i = 0
         for (track_idx, section_indexes) in track_section_indexes:
@@ -65,7 +66,7 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         """Populate db with testdata"""
-        x = 2508300
+        x = 2508000
         y = 1152000
 
         # list of tracks (track = list of sections => list of list of sections)
@@ -88,14 +89,16 @@ class Command(BaseCommand):
             (1, [0, 1]),
             (2, [0, 1]),
         ]
-        self.create_tube(tracks_sections, tube_1_track_indexes, 50)
+        for i in range(5):
+            self.create_tube(tracks_sections, tube_1_track_indexes, 50)
 
-        tube_1_track_indexes = [
+        tube_2_track_indexes = [
             (0, [0, 1]),
             (1, [0, 1]),
             (3, [0, 1]),
         ]
-        self.create_tube(tracks_sections, tube_1_track_indexes, -100)
+        for i in range(3):
+            self.create_tube(tracks_sections, tube_2_track_indexes, -100)
 
         # all layers neeed some data to be loaded in QGIS
         line = [(x - 1000 + 10 * i, y + 10 * i) for i in range(2)]
