@@ -1,6 +1,5 @@
 import random
 from math import cos, radians, sin
-from typing import List, Tuple
 
 from django.core.management.base import BaseCommand
 from django.db import transaction
@@ -18,7 +17,7 @@ class Command(BaseCommand):
 
     @staticmethod
     def create_track(
-        x: int, y: int, azimuths: List[List[int]], tracks_sections
+        x: int, y: int, azimuths: list[list[int]], tracks_sections
     ) -> Track:
         multiline = []
         for section_azimuths in azimuths:
@@ -42,8 +41,8 @@ class Command(BaseCommand):
 
     @staticmethod
     def create_tube(
-        track_sections: List[List[Section]],
-        track_section_indexes: List[Tuple[int, List[int]]],
+        track_sections: list[list[Section]],
+        track_section_indexes: list[tuple[int, list[int]]],
         offset: int,
     ):
         # TODO: fix offset

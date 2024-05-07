@@ -28,7 +28,7 @@ class Command(BaseCommand):
 
         for key in value_lists:
             value_lists[key]["model"].objects.all().delete()
-            with open(f'{base_dir}/{value_lists[key]["file"]}', "r") as fd:
+            with open(f'{base_dir}/{value_lists[key]["file"]}') as fd:
                 data = json.load(fd)
                 for feature in data:
                     del feature["json_featuretype"]

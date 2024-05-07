@@ -11,7 +11,7 @@ from kablo.valuelist.models import CableTensionType, StatusType, TubeCableProtec
 
 def import_stations(file):
     Station.objects.all().delete()
-    with open(file, "r") as fd:
+    with open(file) as fd:
         data = json.load(fd)
         for feature in data["features"]:
             fields = {
@@ -24,7 +24,7 @@ def import_stations(file):
 
 def import_tracks(file):
     Track.objects.all().delete()
-    with open(file, "r") as fd:
+    with open(file) as fd:
         data = json.load(fd)
         for feature in data["features"]:
 
@@ -44,7 +44,7 @@ def import_tubes(file):
     unknown_status = StatusType.objects.get(code=1)
     unknown_cable_protection_type = TubeCableProtectionType.objects.get(code=1)
     # TODO: log missing data as quality control
-    with open(file, "r") as fd:
+    with open(file) as fd:
         data = json.load(fd)
         for feature in data["features"]:
 
@@ -79,7 +79,7 @@ def import_cables(file):
     unknown_tension_type = CableTensionType.objects.get(code=1)
     unknown_status = StatusType.objects.get(code=1)
     # TODO: log missing data as quality control
-    with open(file, "r") as fd:
+    with open(file) as fd:
         data = json.load(fd)
         for feature in data["features"]:
 
@@ -112,7 +112,7 @@ def import_cables(file):
 def import_tube_cable_relations(file):
     # Set cable-tube m2m relation
     print(f"🤖 ...Setting tube_cable m2m relations...this might take some time...")
-    with open(file, "r") as fd:
+    with open(file) as fd:
         data = json.load(fd)
 
         for feature in data:
