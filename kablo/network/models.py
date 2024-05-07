@@ -1,6 +1,7 @@
 import uuid
 from math import cos, radians, sin
 
+import eav
 from django.contrib.gis.db import models
 from django.contrib.gis.db.models.aggregates import Union
 from django.contrib.gis.geos import LineString
@@ -89,6 +90,9 @@ class Track(models.Model):
                 union=Union("geom")
             )["union"]
             self.save()
+
+
+eav.register(Track)
 
 
 @register_oapif_viewset(crs=2056)

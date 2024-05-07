@@ -59,6 +59,7 @@ django==5.0.3
     #   django-allauth
     #   django-cors-headers
     #   django-debug-toolbar
+    #   django-eav2
     #   django-extensions
     #   django-formtools
     #   django-oapif
@@ -74,6 +75,8 @@ django-cors-headers==4.3.1
     # via -r requirements.txt
 django-debug-toolbar==4.3.0
     # via -r requirements_dev.in
+django-eav2==1.6.0
+    # via -r requirements.txt
 django-extensions==3.2.3
     # via -r requirements_dev.in
 django-formtools==2.5.1
@@ -221,6 +224,7 @@ pytz==2024.1
 pyyaml==6.0.1
     # via
     #   -r requirements.txt
+    #   django-eav2
     #   django-oapif
     #   pre-commit
 qrcode==7.4.2

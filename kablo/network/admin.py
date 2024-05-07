@@ -1,5 +1,7 @@
 from django import forms
 from django.contrib import admin
+from eav.admin import BaseEntityAdmin
+from eav.forms import BaseDynamicEntityForm
 
 from ..core.forms import MapWidgetFor3Dgeom
 from .models import (
@@ -76,7 +78,12 @@ class TrackAdminForm(forms.ModelForm):
         fields = "__all__"
 
 
-class TrackAdmin(admin.ModelAdmin):
+class TrackAdminForm(BaseDynamicEntityForm):
+    model = Track
+
+
+class TrackAdmin(BaseEntityAdmin):
+    model = Track
     form = TrackAdminForm
     inlines = [SectionInline]
 
