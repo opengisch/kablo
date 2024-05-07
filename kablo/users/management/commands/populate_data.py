@@ -6,7 +6,7 @@ from django.db import transaction
 
 from kablo.core.utils import wkt_from_line, wkt_from_multiline
 from kablo.editing.models import TrackSplit
-from kablo.network.models import Section, Track, Tube, TubeSection
+from kablo.network.models import Cable, CableTube, Section, Track, Tube, TubeSection
 
 
 class Command(BaseCommand):
@@ -61,6 +61,22 @@ class Command(BaseCommand):
                 )
                 i += 1
         tube.save()
+        return tube
+
+    @staticmethod
+    def create_cable(tubes: list[Tube]):
+        # TODO: fix offset
+        cable = Cable.objects.create()
+        i = 0
+        for tube in tubes:
+            CableTube.objects.create(
+                tube=tube,
+                cable=cable,
+                order_index=i,
+            )
+            i += 1
+        cable.save()
+        return cable
 
     @transaction.atomic
     def handle(self, *args, **options):
@@ -83,13 +99,15 @@ class Command(BaseCommand):
         track = self.create_track(x, y, azimuths, tracks_sections)
         tracks.append(track)
 
+        tubes = []
+
         tube_1_track_indexes = [
             (0, [0, 1]),
             (1, [0, 1]),
             (2, [0, 1]),
         ]
         for i in range(5):
-            self.create_tube(tracks_sections, tube_1_track_indexes, 50)
+            tubes.append(self.create_tube(tracks_sections, tube_1_track_indexes, 50))
 
         tube_2_track_indexes = [
             (0, [0, 1]),
@@ -97,7 +115,9 @@ class Command(BaseCommand):
             (3, [0, 1]),
         ]
         for i in range(3):
-            self.create_tube(tracks_sections, tube_2_track_indexes, -100)
+            tubes.append(self.create_tube(tracks_sections, tube_2_track_indexes, -100))
+
+        self.create_cable([tubes[0]])
 
         # all layers neeed some data to be loaded in QGIS
         line = [(x - 1000 + 10 * i, y + 10 * i) for i in range(2)]

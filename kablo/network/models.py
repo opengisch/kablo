@@ -139,7 +139,18 @@ class Cable(models.Model):
         null=True,
         on_delete=models.SET_NULL,
     )
-    geom = models.MultiLineStringField(srid=2056, dim=3, null=True)
+    geom = models.LineStringField(srid=2056, dim=3, null=True)
+
+    @transaction.atomic
+    def save(self, **kwargs):
+        # recalculate geom
+        # TODO: check geometry exists + is coherent
+        # TODO: check order_index is continuous
+
+        self.geom = self.cabletube_set.order_by("order_index").aggregate(
+            geom=Union("tube__geom")
+        )["geom"]
+        super().save(**kwargs)
 
 
 @register_oapif_viewset(crs=2056)
@@ -245,6 +256,18 @@ class TubeSection(models.Model):
     interpolated = models.BooleanField(default=False, null=False, blank=False)
     offset_x = models.IntegerField(null=False, blank=False, default=0)
     offset_z = models.IntegerField(null=False, blank=False, default=0)
+
+    class Meta:
+        ordering = ["order_index"]
+
+    # TODO: recalculate tube geom when changed
+
+
+class CableTube(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    tube = models.ForeignKey(Tube, on_delete=models.CASCADE)
+    cable = models.ForeignKey(Cable, on_delete=models.CASCADE)
+    order_index = models.IntegerField(default=0)
 
     class Meta:
         ordering = ["order_index"]
