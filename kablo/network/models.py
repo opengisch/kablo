@@ -211,6 +211,16 @@ class Tube(models.Model):
                 last_vertex_in_section = i == len(tube_section.section.geom.coords) - 1
                 last_vertex = last_section and last_vertex_in_section
 
+                # In case of different start and ending offset,
+                # we take the mean at intermediate vertex for now
+                # TODO: do a linear interpolation
+                offset_x = tube_section.offset_x
+                if tube_section.offset_x_2:
+                    offset_x = (tube_section.offset_x + tube_section.offset_x_2) / 2
+                offset_z = tube_section.offset_z
+                if tube_section.offset_z_2:
+                    offset_z = (tube_section.offset_z + tube_section.offset_z_2) / 2
+
                 if first_vertex:
                     tube_line.append((point[0], point[1], point[2]))
                     first_vertex = False
@@ -222,26 +232,22 @@ class Tube(models.Model):
                     planimetric_offset_x = 0.5 * cos(radians(90 - azimuth))
                     planimetric_offset_y = 0.5 * sin(radians(90 - azimuth))
                     first_vertex_in_section = False
+                    offset_x = tube_section.offset_x
+                    offset_z = tube_section.offset_z
 
                 if last_vertex_in_section:
                     # planimetric offset is to start the offset away from the node to improve visualisation
                     planimetric_offset_x = 0.5 * cos(radians(90 - azimuth + 180))
                     planimetric_offset_y = 0.5 * sin(radians(90 - azimuth + 180))
+                    offset_x = tube_section.offset_x_2 or tube_section.offset_x
+                    offset_z = tube_section.offset_z_2 or tube_section.offset_z
 
                 # segment_direction_angle = 90 - azimuth
                 # orthogonal_direction = segment_direction + 90
                 od = radians(90 - azimuth + 90)
-                x = (
-                    point[0]
-                    + planimetric_offset_x
-                    + cos(od) * tube_section.offset_x / 1000
-                )
-                y = (
-                    point[1]
-                    + planimetric_offset_y
-                    + sin(od) * tube_section.offset_x / 1000
-                )
-                z = point[2] + tube_section.offset_z  # TODO: absolute vs relative Z
+                x = point[0] + planimetric_offset_x + cos(od) * offset_x / 1000
+                y = point[1] + planimetric_offset_y + sin(od) * offset_x / 1000
+                z = point[2] + offset_z  # TODO: absolute vs relative Z
 
                 tube_line.append((x, y, z))
 
@@ -263,6 +269,18 @@ class TubeSection(models.Model):
     interpolated = models.BooleanField(default=False, null=False, blank=False)
     offset_x = models.IntegerField(null=False, blank=False, default=0)
     offset_z = models.IntegerField(null=False, blank=False, default=0)
+    offset_x_2 = models.IntegerField(
+        null=True,
+        blank=True,
+        default=None,
+        help_text="Optional x end offset (if different from from start)",
+    )
+    offset_z_2 = models.IntegerField(
+        null=True,
+        blank=True,
+        default=None,
+        help_text="Optional z end offset (if different from from start)",
+    )
 
     class Meta:
         ordering = ["order_index"]

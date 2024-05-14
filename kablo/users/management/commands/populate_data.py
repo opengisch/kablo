@@ -56,8 +56,9 @@ class Command(BaseCommand):
                     section=section,
                     order_index=i,
                     interpolated=False,
-                    offset_x=random.randint(-400, 400),
-                    offset_z=0,
+                    offset_x=100 * random.randint(-4, 4),
+                    offset_z=100 * random.randint(-1, 1),
+                    # offset_x_2=100 * random.randint(-4, 4 ),
                 )
                 i += 1
         tube.save()
