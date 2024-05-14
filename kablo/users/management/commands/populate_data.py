@@ -46,7 +46,7 @@ class Command(BaseCommand):
         offset: int,
     ):
         # TODO: fix offset
-        tube = Tube.objects.create()
+        tube = Tube.objects.create(diameter=10 * random.randint(8, 25))
         i = 0
         for (track_idx, section_indexes) in track_section_indexes:
             for section_index in section_indexes:

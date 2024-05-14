@@ -128,6 +128,7 @@ class Section(models.Model):
 @register_oapif_viewset(crs=2056)
 class Cable(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    identifier = models.TextField(null=True, blank=True)
     original_id = models.TextField(null=True, editable=True)
     tension = models.ForeignKey(
         CableTensionType,
@@ -161,6 +162,9 @@ class Tube(models.Model):
         StatusType,
         null=True,
         on_delete=models.SET_NULL,
+    )
+    diameter = models.IntegerField(
+        default=None, null=True, blank=True, help_text="Diameter in mm"
     )
     cable_protection_type = models.ForeignKey(
         TubeCableProtectionType,
