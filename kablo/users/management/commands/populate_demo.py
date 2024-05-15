@@ -14,8 +14,10 @@ def import_stations(file):
     with open(file) as fd:
         data = json.load(fd)
         for feature in data["features"]:
+            coordinates = feature["geometry"]["coordinates"]
+            coordinates.append(999)
             fields = {
-                "geom": Point(feature["geometry"]["coordinates"]),
+                "geom": Point(coordinates),
                 "original_id": feature["properties"]["globalid"],
                 "label": feature["properties"]["nummer"],
             }
@@ -48,7 +50,9 @@ def import_tubes(file):
         data = json.load(fd)
         for feature in data["features"]:
 
-            geom = import_arcsde_linestrings_to_geos(feature["geometry"])
+            geom = import_arcsde_linestrings_to_geos(
+                feature["geometry"], output_type="LineString"
+            )
             status = StatusType.objects.filter(
                 code=feature["properties"]["status"]
             ).first()
@@ -83,7 +87,9 @@ def import_cables(file):
         data = json.load(fd)
         for feature in data["features"]:
 
-            geom = import_arcsde_linestrings_to_geos(feature["geometry"])
+            geom = import_arcsde_linestrings_to_geos(
+                feature["geometry"], output_type="LineString"
+            )
 
             status = StatusType.objects.filter(
                 code=feature["properties"]["status"]

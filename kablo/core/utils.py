@@ -15,13 +15,28 @@ def wkt_from_multiline(multiline: list[list[tuple[float, float]]]) -> str:
     return f"MULTILINESTRING ({line_wkts})"
 
 
-def import_arcsde_linestrings_to_geos(geometry):
+def import_arcsde_linestrings_to_geos(geometry, output_type="MultiLineString"):
     geom = None
     try:
-        if geometry["type"] == "MultiLineString":
-            geom = MultiLineString(geometry["coordinates"])
+        # TODO: handle deagregation from multiline to line
+        if geometry["type"] == "MultiLineString" and output_type == "MultiLineString":
+            coordinates = []
+            for part in geometry["coordinates"]:
+                parts = []
+                for vertex in part:
+                    parts.append(vertex.append(999))
+                coordinates.append(parts)
+            geom = MultiLineString(coordinates)
+
         elif geometry["type"] == "LineString":
-            geom = MultiLineString(LineString(geometry["coordinates"]))
+            coordinates = []
+            for vertex in geometry["coordinates"]:
+                vertex.append(999)
+                coordinates.append(vertex)
+            if output_type == "MultiLineString":
+                geom = MultiLineString(LineString(coordinates))
+            else:
+                geom = LineString(coordinates)
     except:
         # TODO: report broken geometries
         pass
