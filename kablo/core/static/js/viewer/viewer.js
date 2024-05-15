@@ -135,7 +135,7 @@ initMap = function (host) {
             }
         }).then(response => response.json());
 
-        map.addLayer(new ol.layer.Vector({
+        var tracks_layer = new ol.layer.Vector({
             source: new ol.source.Vector({
                 features: new ol.format.GeoJSON().readFeatures(tracks),
             }),
@@ -146,7 +146,9 @@ initMap = function (host) {
                 }),
             }),
             className: 'tracks',
-        }));
+        })
+
+        map.addLayer(tracks_layer);
 
         map.addLayer(new ol.layer.Vector({
             source: new ol.source.Vector({
@@ -173,5 +175,10 @@ initMap = function (host) {
             }),
             className: 'cables',
         }));
+
+        /* Center map on tracks */
+        map.getView().fit(tracks_layer.getSource().getExtent() , map.getSize());
+
+
     })();
 }
