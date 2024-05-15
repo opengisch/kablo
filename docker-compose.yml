@@ -39,6 +39,7 @@ services:
       SECURE_PROXY_SSL_HEADER:
       DEFAULT_SITE:
       LOCAL_TIME_ZONE_UTC:
+      CSRF_TRUSTED_ORIGINS:
     ports:
       - "${DJANGO_DOCKER_PORT}:9000"
     networks:
