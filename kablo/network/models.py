@@ -142,15 +142,18 @@ class Cable(models.Model):
     )
     geom = models.LineStringField(srid=2056, dim=3, null=True)
 
-    @transaction.atomic
-    def save(self, **kwargs):
-        # recalculate geom
+    def compute_geom(self):
         # TODO: check geometry exists + is coherent
         # TODO: check order_index is continuous
-
+        # TODO: if holes, create junction (e.g. within station)
         self.geom = self.cabletube_set.order_by("order_index").aggregate(
             geom=Union("tube__geom")
         )["geom"]
+
+    @transaction.atomic
+    def save(self, **kwargs):
+        if self._state.adding:
+            self.compute_geom()
         super().save(**kwargs)
 
 
@@ -178,6 +181,8 @@ class Tube(models.Model):
     sections = models.ManyToManyField(Section, through="TubeSection")
 
     def compute_geom(self):
+        # TODO: check geometry exists + is coherent
+        # TODO: check order_index is continuous
         tube_line = []
 
         qs = self.tubesection_set.order_by("order_index").annotate(
@@ -254,9 +259,6 @@ class Tube(models.Model):
 
     @transaction.atomic
     def save(self, **kwargs):
-        # recalculate geom
-        # TODO: check geometry exists + is coherent
-        # TODO: check order_index is continuous
         if self._state.adding:
             self.compute_geom()
         super().save(**kwargs)
@@ -305,7 +307,11 @@ class CableTube(models.Model):
     class Meta:
         ordering = ["order_index"]
 
-    # TODO: recalculate tube geom when changed
+    @transaction.atomic
+    def save(self, **kwargs):
+        super().save(**kwargs)
+        self.cable.compute_geom()
+        self.cable.save()
 
 
 @register_oapif_viewset(crs=2056)
