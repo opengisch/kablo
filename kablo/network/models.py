@@ -177,12 +177,7 @@ class Tube(models.Model):
     geom = models.LineStringField(srid=2056, dim=3, null=True)
     sections = models.ManyToManyField(Section, through="TubeSection")
 
-    @transaction.atomic
-    def save(self, **kwargs):
-        # recalculate geom
-        # TODO: check geometry exists + is coherent
-        # TODO: check order_index is continuous
-
+    def compute_geom(self):
         tube_line = []
 
         qs = self.tubesection_set.order_by("order_index").annotate(
@@ -257,6 +252,13 @@ class Tube(models.Model):
         if len(tube_line) > 0:
             self.geom = LineString(tube_line)
 
+    @transaction.atomic
+    def save(self, **kwargs):
+        # recalculate geom
+        # TODO: check geometry exists + is coherent
+        # TODO: check order_index is continuous
+        if self._state.adding:
+            self.compute_geom()
         super().save(**kwargs)
 
 
@@ -286,7 +288,11 @@ class TubeSection(models.Model):
     class Meta:
         ordering = ["order_index"]
 
-    # TODO: recalculate tube geom when changed
+    @transaction.atomic
+    def save(self, **kwargs):
+        super().save(**kwargs)
+        self.tube.compute_geom()
+        self.tube.save()
 
 
 @register_oapif_viewset(geom_field=None)
