@@ -260,6 +260,7 @@ class Tube(models.Model):
         super().save(**kwargs)
 
 
+@register_oapif_viewset(geom_field=None)
 class TubeSection(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     tube = models.ForeignKey(Tube, on_delete=models.CASCADE)
@@ -288,6 +289,7 @@ class TubeSection(models.Model):
     # TODO: recalculate tube geom when changed
 
 
+@register_oapif_viewset(geom_field=None)
 class CableTube(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     tube = models.ForeignKey(Tube, on_delete=models.CASCADE)
