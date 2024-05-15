@@ -28,9 +28,21 @@ def section_profile(request, section_id, distance: int = 0):
             "id": tube_section.tube.id,
             "diameter": tube_section.tube.diameter,
             "pos": {
-                "x": tube_section.offset_x,
-                "z": tube_section.offset_z,
+                "x": (
+                    tube_section.offset_x
+                    + (tube_section.offset_x_2 or tube_section.offset_x)
+                )
+                / 2,
+                "z": (
+                    tube_section.offset_z
+                    + (tube_section.offset_z_2 or tube_section.offset_z)
+                )
+                / 2,
             },
+            "offset_x": tube_section.offset_x,
+            "offset_x_2": tube_section.offset_x,
+            "offset_z": tube_section.offset_z,
+            "offset_z_2": tube_section.offset_z_2,
             "cables": cables,
         }
         tubes.append(tube)
