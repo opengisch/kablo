@@ -26,7 +26,7 @@ urlpatterns = [
     path("", core_views.home, name="home"),
     path("demo-qgis-project", core_views.demo_qgis_project, name="demo_qgis_project"),
     path("viewer", webviewer_views.viewer, name="viewer"),
-    path("admin/", admin.site.urls),
+    path("admin/", admin.site.urls, {"extra_context": {"DEBUG": settings.DEBUG}}),
     path("oapif/", include(oapif_router.urls)),
     path("users/", include("allauth.urls")),
 ]
