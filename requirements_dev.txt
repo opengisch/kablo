@@ -130,6 +130,10 @@ idna==3.6
     # via
     #   -r requirements.txt
     #   requests
+inflection==0.5.1
+    # via
+    #   -r requirements.txt
+    #   django-oapif
 ipdb==0.13.13
     # via -r requirements_dev.in
 ipython==8.22.2
@@ -154,6 +158,7 @@ packaging==24.0
     #   -r requirements.txt
     #   build
     #   gunicorn
+    #   plotly
 parso==0.8.3
     # via jedi
 pexpect==4.9.0
@@ -168,6 +173,8 @@ pip-tools==7.4.1
     # via -r requirements_dev.in
 platformdirs==4.2.0
     # via virtualenv
+plotly==5.22.0
+    # via -r requirements.txt
 pre-commit==3.6.2
     # via -r requirements_dev.in
 prompt-toolkit==3.0.43
@@ -252,6 +259,10 @@ sqlparse==0.4.4
     #   django-debug-toolbar
 stack-data==0.6.3
     # via ipython
+tenacity==8.3.0
+    # via
+    #   -r requirements.txt
+    #   plotly
 traitlets==5.14.2
     # via
     #   ipython

@@ -3,6 +3,7 @@ Django>5
 # Base docker image must be update when GDAL is updated
 # https://github.com/yverdon/docker-kablo/
 gunicorn
+plotly
 psycopg
 requests
 whitenoise
