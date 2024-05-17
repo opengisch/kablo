@@ -177,7 +177,6 @@ class Tube(models.Model):
     # TODO: this should not be editable, but switching prevent from seeing it in admin
     # TODO: this should not be nullable?
     geom = models.LineStringField(srid=2056, dim=3, null=True)
-    sections = models.ManyToManyField(Section, through="TubeSection")
 
     def compute_geom(self):
         # TODO: check geometry exists + is coherent
