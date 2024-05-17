@@ -5,6 +5,7 @@ from ..core.forms import MapWidgetFor3Dgeom
 from .models import (
     Cable,
     CableTensionType,
+    CableTube,
     NetworkNode,
     Section,
     Station,
@@ -14,6 +15,7 @@ from .models import (
     Track,
     Tube,
     TubeCableProtectionType,
+    TubeSection,
 )
 
 
@@ -32,10 +34,6 @@ class SectionInline(admin.TabularInline):
     model = Section
     readonly_fields = ["geom"]
     extra = 0
-
-
-class SectionAdmin(admin.ModelAdmin):
-    form = SectionAdminForm
 
 
 class StationAdminForm(forms.ModelForm):
@@ -81,15 +79,19 @@ class TrackAdmin(admin.ModelAdmin):
     inlines = [SectionInline]
 
 
-class CableInline(admin.TabularInline):
-    model = Tube.cables.through
+class CableTubeInline(admin.TabularInline):
+    model = CableTube
     extra = 0
 
 
-class TubeInline(admin.TabularInline):
-    model = Tube.sections.through
+class TubeSectionInline(admin.TabularInline):
+    model = TubeSection
     extra = 0
-    inlines = [CableInline]
+
+
+class SectionAdmin(admin.ModelAdmin):
+    form = SectionAdminForm
+    inlines = (TubeSectionInline,)
 
 
 class TubeAdminForm(forms.ModelForm):
@@ -105,7 +107,10 @@ class TubeAdminForm(forms.ModelForm):
 class TubeAdmin(admin.ModelAdmin):
     form = TubeAdminForm
     model = Tube
-    inlines = [CableInline, TubeInline]
+    inlines = (
+        CableTubeInline,
+        TubeSectionInline,
+    )
     list_display = [
         "id",
         "status",
@@ -117,18 +122,13 @@ class TubeAdmin(admin.ModelAdmin):
     ]
 
 
-class CableTubeInline(admin.TabularInline):
-    model = Tube.cables.through
-    extra = 0
-
-
 class CableAdminForm(forms.ModelForm):
     class Meta:
         model = Cable
         widgets = {
             "geom": MapWidgetFor3Dgeom(),
         }
-        # FIXME: make mwidget effetively readonly
+        # TODO: make widget effectively readonly
         readonly_fields = ["geom"]
         fields = "__all__"
 
@@ -138,7 +138,7 @@ class CableAdmin(admin.ModelAdmin):
     model = Cable
     search_fields = ("id",)
     exclude = ["tubes"]
-    inlines = [CableTubeInline]
+    inlines = (CableTubeInline,)
     list_display = [
         "id",
         "status",

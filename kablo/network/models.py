@@ -174,7 +174,6 @@ class Tube(models.Model):
         null=True,
         on_delete=models.SET_NULL,
     )
-    cables = models.ManyToManyField(Cable)
     # TODO: this should not be editable, but switching prevent from seeing it in admin
     # TODO: this should not be nullable?
     geom = models.LineStringField(srid=2056, dim=3, null=True)
