@@ -1,4 +1,5 @@
 import random
+from copy import deepcopy
 from math import cos, radians, sin
 
 from django.core.management.base import BaseCommand
@@ -43,21 +44,28 @@ class Command(BaseCommand):
     def create_tube(
         track_sections: list[list[Section]],
         track_section_indexes: list[tuple[int, list[int]]],
-        offset: int,
+        available_offsets: dict[str : list[int]],
     ):
-        # TODO: fix offset
-        tube = Tube.objects.create(diameter=10 * random.randint(8, 25))
+        tube = Tube.objects.create(diameter=10 * random.randint(8, 12))
         i = 0
         for (track_idx, section_indexes) in track_section_indexes:
             for section_index in section_indexes:
                 section = track_sections[track_idx][section_index]
+                offset_index = 0
+                if len(available_offsets[section.id]) > 1:
+                    offset_index = random.randint(
+                        0, len(available_offsets[section.id]) - 1
+                    )
+
+                offset_x, offset_z = available_offsets[section.id].pop(offset_index)
+
                 TubeSection.objects.create(
                     tube=tube,
                     section=section,
                     order_index=i,
                     interpolated=False,
-                    offset_x=100 * random.randint(-4, 4),
-                    offset_z=100 * random.randint(-1, 1),
+                    offset_x=offset_x,
+                    offset_z=offset_z,
                     # offset_x_2=100 * random.randint(-4, 4 ),
                 )
                 i += 1
@@ -85,6 +93,13 @@ class Command(BaseCommand):
         # list of tracks (track = list of sections => list of list of sections)
         azimuth_track_sections = []
         tubes = []
+        available_offsets = {}
+
+        initial_available_offsets = []
+        for x in range(-800, 801, 200):
+            for y in (-200, 200):
+                # create small x offset to avoid overlapping tubes
+                initial_available_offsets.append((x + y / 10, y))
 
         for start_azimuth in range(0, 360, 90):
             x = 2516800
@@ -98,11 +113,15 @@ class Command(BaseCommand):
                 (track, sections) = self.create_track(x, y, start_azimuth, azimuths)
                 (x, y, z) = track.geom.coords[-1][-1]
                 azimuth_track_sections[-1].append(sections)
+                for section in sections:
+                    available_offsets[section.id] = deepcopy(initial_available_offsets)
 
             (x, y, z) = azimuth_track_sections[-1][1][1].geom.coords[-1]
             azimuths = [[120, 120, 30, 100, 50], [-30, -20, 10]]
             (track, sections) = self.create_track(x, y, start_azimuth, azimuths)
             azimuth_track_sections[-1].append(sections)
+            for section in sections:
+                available_offsets[section.id] = deepcopy(initial_available_offsets)
 
             tube_1_track_indexes = [
                 (0, [0, 1]),
@@ -112,7 +131,9 @@ class Command(BaseCommand):
             for i in range(3):
                 tubes.append(
                     self.create_tube(
-                        azimuth_track_sections[-1], tube_1_track_indexes, 50
+                        azimuth_track_sections[-1],
+                        tube_1_track_indexes,
+                        available_offsets,
                     )
                 )
 
@@ -124,7 +145,9 @@ class Command(BaseCommand):
             for i in range(3):
                 tubes.append(
                     self.create_tube(
-                        azimuth_track_sections[-1], tube_2_track_indexes, -100
+                        azimuth_track_sections[-1],
+                        tube_2_track_indexes,
+                        available_offsets,
                     )
                 )
 
