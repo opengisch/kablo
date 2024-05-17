@@ -129,6 +129,12 @@ class Command(BaseCommand):
                 )
 
         self.create_cable([tubes[0]])
+        self.create_cable([tubes[0]])
+        self.create_cable([tubes[0]])
+        self.create_cable([tubes[0]])
+        self.create_cable([tubes[0]])
+        self.create_cable([tubes[0]])
+        self.create_cable([tubes[0]])
 
         # all layers need some data to be loaded in QGIS
         line = [(x - 1000 + 10 * i, y + 10 * i) for i in range(2)]
