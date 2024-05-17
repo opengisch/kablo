@@ -14,12 +14,16 @@ from kablo.valuelist.models import CableTensionType, StatusType, TubeCableProtec
 
 class NetworkNode(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
     geom = models.PointField(srid=2056, dim=3)
 
 
 @register_oapif_viewset(crs=2056)
 class Track(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
     original_id = models.TextField(null=True, editable=True)
     geom = models.MultiLineStringField(srid=2056, dim=3)
 
@@ -94,6 +98,8 @@ class Track(models.Model):
 @register_oapif_viewset(crs=2056)
 class Section(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
     geom = models.LineStringField(srid=2056, dim=3)
     track = models.ForeignKey(Track, on_delete=models.CASCADE)
     order_index = models.IntegerField(default=0, null=False, blank=False)
@@ -128,6 +134,8 @@ class Section(models.Model):
 @register_oapif_viewset(crs=2056)
 class Cable(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
     identifier = models.TextField(null=True, blank=True)
     original_id = models.TextField(null=True, editable=True)
     tension = models.ForeignKey(
@@ -159,11 +167,16 @@ class Cable(models.Model):
 
 @register_oapif_viewset(crs=2056)
 class Tube(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    original_id = models.TextField(null=True, editable=True)
+    id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False, blank=True
+    )
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
+    original_id = models.TextField(null=True, blank=True, editable=True)
     status = models.ForeignKey(
         StatusType,
         null=True,
+        blank=True,
         on_delete=models.SET_NULL,
     )
     diameter = models.IntegerField(
@@ -172,11 +185,12 @@ class Tube(models.Model):
     cable_protection_type = models.ForeignKey(
         TubeCableProtectionType,
         null=True,
+        blank=True,
         on_delete=models.SET_NULL,
     )
     # TODO: this should not be editable, but switching prevent from seeing it in admin
     # TODO: this should not be nullable?
-    geom = models.LineStringField(srid=2056, dim=3, null=True)
+    geom = models.LineStringField(srid=2056, dim=3, null=True, blank=True)
 
     def compute_geom(self):
         # TODO: check geometry exists + is coherent
@@ -265,6 +279,8 @@ class Tube(models.Model):
 @register_oapif_viewset(geom_field=None)
 class TubeSection(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
     tube = models.ForeignKey(Tube, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
     order_index = models.IntegerField(default=1)
@@ -298,6 +314,8 @@ class TubeSection(models.Model):
 @register_oapif_viewset(geom_field=None)
 class CableTube(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
     tube = models.ForeignKey(Tube, on_delete=models.CASCADE)
     cable = models.ForeignKey(Cable, on_delete=models.CASCADE)
     order_index = models.IntegerField(default=0)
@@ -315,6 +333,8 @@ class CableTube(models.Model):
 @register_oapif_viewset(crs=2056)
 class Station(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
     original_id = models.TextField(null=True, editable=True)
     label = models.CharField(max_length=64, blank=True, null=True)
     geom = models.PointField(srid=2056, dim=3)
@@ -322,10 +342,14 @@ class Station(models.Model):
 
 class Node(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
 
 
 class Reach(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
     node_1 = models.ForeignKey(
         Node, related_name="node_1", blank=True, null=True, on_delete=models.SET_NULL
     )
