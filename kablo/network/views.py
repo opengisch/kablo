@@ -23,68 +23,90 @@ def _max(current, offset, offset_optional, diameter):
     return max(current, offset_max + diameter / 2)
 
 
+class _Pos(NamedTuple):
+    x: int
+    z: int
+
+
+class _Cable(NamedTuple):
+    id: str
+    identifier: str
+    pos: _Pos
+
+
+class _Tube(NamedTuple):
+    id: str
+    diameter: int
+    pos: _Pos
+    offset_x: int
+    offset_x_2: int
+    offset_z: int
+    offset_z_2: int
+    cables: list[_Cable]
+
+
 def section_profile(request, section_id, distance: int = 0, _format="json"):
 
     section = get_object_or_404(Section, id=section_id)
-
     qs = section.tubesection_set.all()
-
-    tubes = []
 
     x_min = None
     x_max = None
     z_min = None
     z_max = None
 
-    class _Pos(NamedTuple):
-        x: int
-        z: int
-
-    class _Cable(NamedTuple):
-        id: str
-        identifier: str
-
-    class _Tube(NamedTuple):
-        id: str
-        diameter: int
-        pos: _Pos
-        offset_x: int
-        offset_x_2: int
-        offset_z: int
-        offset_z_2: int
-        cables: list[_Cable]
+    _tubes: list[_Tube] = []
 
     for tube_section in qs:
 
-        cables = []
+        tube_pos_x = (
+            tube_section.offset_x + (tube_section.offset_x_2 or tube_section.offset_x)
+        ) / 2
+        tube_pos_z = (
+            tube_section.offset_z + (tube_section.offset_z_2 or tube_section.offset_z)
+        ) / 2
+
+        cables_data = []
+        _cables: list[_Cable] = []
         cable_tube_qs = tube_section.tube.cabletube_set.all()
         for cable_tube in cable_tube_qs:
-            cables.append(
-                _Cable(id=cable_tube.cable.id, identifier=cable_tube.cable.identifier)
-            )
+            cables_data.append((str(cable_tube.cable.id), cable_tube.cable.identifier))
 
-        tube = _Tube(
+        # display the cables in a grid within the tube
+        n_cables = len(cables_data)
+        if n_cables > 0:
+            # we prefer more cols than rows (cols is max rows+1)
+            cols = math.ceil(math.sqrt(n_cables))
+            rows = math.ceil(n_cables / cols)
+            # potentially, if we have more cols than rows, we could have a rectangle grid instead of a squared one
+            grid_max_size = tube_section.tube.diameter * math.sqrt(2) / 2
+            cell_max_size = grid_max_size / cols
+            start_x = tube_pos_x - grid_max_size / 2
+            start_z = tube_pos_z + grid_max_size / 2
+            for i, cable in enumerate(cables_data):
+                row = math.floor(i / cols)
+                col = i - row * cols
+                cable_pos_x = start_x + (col + 0.5) * cell_max_size
+                cable_pos_z = start_z - (row + 0.5) * cell_max_size
+                _cable = _Cable(
+                    id=cable[0], identifier=cable[1], pos=_Pos(cable_pos_x, cable_pos_z)
+                )
+                _cables.append(_cable)
+
+        _tube = _Tube(
             id=tube_section.tube.id,
             diameter=tube_section.tube.diameter,
             pos=_Pos(
-                x=(
-                    tube_section.offset_x
-                    + (tube_section.offset_x_2 or tube_section.offset_x)
-                )
-                / 2,
-                z=(
-                    tube_section.offset_z
-                    + (tube_section.offset_z_2 or tube_section.offset_z)
-                )
-                / 2,
+                x=tube_pos_x,
+                z=tube_pos_z,
             ),
             offset_x=tube_section.offset_x,
             offset_x_2=tube_section.offset_x,
             offset_z=tube_section.offset_z,
             offset_z_2=tube_section.offset_z_2,
-            cables=cables,
+            cables=_cables,
         )
-        tubes.append(tube)
+        _tubes.append(_tube)
 
         x_min = _min(
             x_min,
@@ -112,7 +134,7 @@ def section_profile(request, section_id, distance: int = 0, _format="json"):
         )
 
     if _format == "json":
-        return JsonResponse({"section": section_id, "tubes": json.dumps(tubes)})
+        return JsonResponse({"section": section_id, "tubes": json.dumps(_tubes)})
 
     else:
         fig = go.Figure()
@@ -134,51 +156,36 @@ def section_profile(request, section_id, distance: int = 0, _format="json"):
             showgrid=False,
         )
 
-        for tube in tubes:
+        for _tube in _tubes:
             fig.add_shape(
                 type="circle",
                 xref="x",
                 yref="y",
-                x0=tube.pos.x - tube.diameter / 2,
-                x1=tube.pos.x + tube.diameter / 2,
-                y0=tube.pos.z - tube.diameter / 2,
-                y1=tube.pos.z + tube.diameter / 2,
+                x0=_tube.pos.x - _tube.diameter / 2,
+                x1=_tube.pos.x + _tube.diameter / 2,
+                y0=_tube.pos.z - _tube.diameter / 2,
+                y1=_tube.pos.z + _tube.diameter / 2,
                 line_color="Grey",
             )
 
-            # display the cables in a grid within the tube
-            n_cables = len(tube.cables)
-            if n_cables > 0:
-                # we prefer more cols than rows (cols is max rows+1)
-                cols = math.ceil(math.sqrt(n_cables))
-                rows = math.ceil(n_cables / cols)
-                # potentially, if we have more cols than rows, we could have a rectangle grid instead of a squared one
-                grid_max_size = tube.diameter * math.sqrt(2) / 2
-                cell_max_size = grid_max_size / cols
+            x = []
+            y = []
+            customdata = []
+            for _cable in _tube.cables:
+                x.append(_cable.pos.x)
+                y.append(_cable.pos.z)
+                customdata.append([f"<b>{_cable.identifier or _cable.id}</b>"])
 
-                start_x = tube.pos.x - grid_max_size / 2
-                start_z = tube.pos.z + grid_max_size / 2
-
-                cables_x = []
-                cables_z = []
-                cable_texts = []
-                for i, cable in enumerate(tube.cables):
-                    row = math.floor(i / cols)
-                    col = i - row * cols
-                    cables_x.append(start_x + (col + 0.5) * cell_max_size)
-                    cables_z.append(start_z - (row + 0.5) * cell_max_size)
-                    cable_texts.append(str(i))
-
-                fig.add_trace(
-                    go.Scatter(
-                        x=cables_x,
-                        y=cables_z,
-                        marker=dict(color="red", size=8),
-                        mode="markers",
-                        text=cable_texts,
-                        textposition="bottom center",
-                    )
+            fig.add_trace(
+                go.Scatter(
+                    x=x,
+                    y=y,
+                    marker=dict(color="red", size=8),
+                    mode="markers",
+                    customdata=customdata,
+                    hovertemplate="<b>%{customdata[0]}</b><br>",
                 )
+            )
 
         fig.update_yaxes(
             scaleanchor="x",
