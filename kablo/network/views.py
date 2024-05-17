@@ -156,33 +156,44 @@ def section_profile(request, section_id, distance: int = 0, _format="json"):
             showgrid=False,
         )
 
+        tubes_x = []
+        tubes_y = []
+        tubes_customdata = []
+        tubes_size = []
         for _tube in _tubes:
-            fig.add_shape(
-                type="circle",
-                xref="x",
-                yref="y",
-                x0=_tube.pos.x - _tube.diameter / 2,
-                x1=_tube.pos.x + _tube.diameter / 2,
-                y0=_tube.pos.z - _tube.diameter / 2,
-                y1=_tube.pos.z + _tube.diameter / 2,
-                line_color="Grey",
+            tubes_x.append(_tube.pos.x)
+            tubes_y.append(_tube.pos.z)
+            tubes_customdata.append(
+                [f"<b>{_tube.id}</b><br>Diameter: {_tube.diameter}"]
             )
+            tubes_size.append(_tube.diameter / 2)
+        fig.add_trace(
+            go.Scatter(
+                x=tubes_x,
+                y=tubes_y,
+                marker=dict(color="aquamarine", size=tubes_size),
+                mode="markers",
+                customdata=tubes_customdata,
+                hovertemplate="<b>%{customdata[0]}</b><br>",
+            )
+        )
 
-            x = []
-            y = []
-            customdata = []
+        for _tube in _tubes:
+            cables_x = []
+            cables_y = []
+            cables_customdata = []
             for _cable in _tube.cables:
-                x.append(_cable.pos.x)
-                y.append(_cable.pos.z)
-                customdata.append([f"<b>{_cable.identifier or _cable.id}</b>"])
+                cables_x.append(_cable.pos.x)
+                cables_y.append(_cable.pos.z)
+                cables_customdata.append([f"<b>{_cable.identifier or _cable.id}</b>"])
 
             fig.add_trace(
                 go.Scatter(
-                    x=x,
-                    y=y,
+                    x=cables_x,
+                    y=cables_y,
                     marker=dict(color="red", size=8),
                     mode="markers",
-                    customdata=customdata,
+                    customdata=cables_customdata,
                     hovertemplate="<b>%{customdata[0]}</b><br>",
                 )
             )
