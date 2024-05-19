@@ -77,6 +77,10 @@ class TrackAdminForm(forms.ModelForm):
 class TrackAdmin(admin.ModelAdmin):
     form = TrackAdminForm
     inlines = [SectionInline]
+    list_display = [
+        "id",
+        "created_at",
+    ]
 
 
 class CableTubeInline(admin.TabularInline):
@@ -115,6 +119,7 @@ class TubeAdmin(admin.ModelAdmin):
         "id",
         "status",
         "cable_protection_type",
+        "created_at",
     ]
     list_filter = [
         "status",

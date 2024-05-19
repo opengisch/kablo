@@ -170,6 +170,7 @@ class Tube(models.Model):
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False, blank=True
     )
+    fake_id = models.UUIDField(default=uuid.uuid4)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
     original_id = models.TextField(null=True, blank=True, editable=True)
@@ -214,6 +215,8 @@ class Tube(models.Model):
 
             coords = tube_section.section.geom.coords
             if tube_section.reversed:
+                pass
+                # TODO: fix
                 coords.reverse()
 
             for i, (point, azimuth) in enumerate(zip(coords, tube_section.azimuths)):
@@ -281,9 +284,9 @@ class TubeSection(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
-    tube = models.ForeignKey(Tube, on_delete=models.CASCADE)
-    section = models.ForeignKey(Section, on_delete=models.CASCADE)
-    order_index = models.IntegerField(default=1)
+    tube = models.ForeignKey(Tube, on_delete=models.CASCADE, null=False)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE, null=False)
+    order_index = models.IntegerField(default=0, null=False, blank=False)
     reversed = models.BooleanField(default=False, null=False, blank=False)
     interpolated = models.BooleanField(default=False, null=False, blank=False)
     offset_x = models.IntegerField(null=False, blank=False, default=0)
