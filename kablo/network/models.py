@@ -259,8 +259,8 @@ class Tube(models.Model):
                     offset_z = tube_section.offset_z_2 or tube_section.offset_z
 
                 # segment_direction_angle = 90 - azimuth
-                # orthogonal_direction = segment_direction + 90
-                od = radians(90 - azimuth + 90)
+                # orthogonal_direction = segment_direction - 90
+                od = radians(-azimuth)
                 x = point[0] + planimetric_offset_x + cos(od) * offset_x / 1000
                 y = point[1] + planimetric_offset_y + sin(od) * offset_x / 1000
                 z = point[2] + offset_z  # TODO: absolute vs relative Z
