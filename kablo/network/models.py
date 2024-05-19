@@ -134,6 +134,7 @@ class Section(models.Model):
 @register_oapif_viewset(crs=2056)
 class Cable(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    fake_id = models.UUIDField(default=uuid.uuid4)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
     identifier = models.TextField(null=True, blank=True)
