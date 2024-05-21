@@ -19,7 +19,17 @@ docker compose up --build -d --remove-orphans
 docker compose run kablo scripts/migrate.sh
 ```
 
-As fixtures are not yet available, should you need and superadmin account, please create it as follow: ```python manage.py createsuperuser```
+To generate dummy data, execute:
+
+```bash
+docker compose exec kablo scripts/dummy_data.sh
+```
+
+You'll be asked to confirm database flush.
+
+
+You'll be asked to confirm database flush.
+
 
 If everything went fine, go to ```localhost:9051``` and you should see the welcome page:
 
