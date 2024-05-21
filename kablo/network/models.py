@@ -335,13 +335,21 @@ class CableTube(models.Model):
     updated_at = models.DateTimeField(auto_now=True, editable=False)
     tube = models.ForeignKey(Tube, on_delete=models.CASCADE)
     cable = models.ForeignKey(Cable, on_delete=models.CASCADE)
-    order_index = models.IntegerField(default=0)
+    order_index = models.IntegerField(default=0, null=False, blank=False)
+    display_offset = models.IntegerField(default=0, null=False, blank=False)
 
     class Meta:
         ordering = ["order_index"]
 
     @transaction.atomic
     def save(self, **kwargs):
+        if self._state.adding:
+            do = CableTube.objects.filter(tube=self.tube).aggregate(
+                do=Max("display_offset")
+            )["do"]
+            if do is None:
+                do = -1
+            self.display_offset = do + 1
         super().save(**kwargs)
         self.cable.compute_geom()
         self.cable.save()

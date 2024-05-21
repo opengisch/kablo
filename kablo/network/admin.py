@@ -96,6 +96,10 @@ class TubeSectionInline(admin.TabularInline):
 class SectionAdmin(admin.ModelAdmin):
     form = SectionAdminForm
     inlines = (TubeSectionInline,)
+    list_display = [
+        "id",
+        "created_at",
+    ]
 
 
 class TubeAdminForm(forms.ModelForm):
