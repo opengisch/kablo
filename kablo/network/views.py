@@ -66,6 +66,8 @@ def section_profile(request, section_id, distance: int = 0, _format="json"):
             tube_section.offset_z + (tube_section.offset_z_2 or tube_section.offset_z)
         ) / 2
 
+        _diameter = tube_section.tube.diameter or 100
+
         cables_data = []
         _cables: list[_Cable] = []
         cable_tube_qs = tube_section.tube.cabletube_set.all()
@@ -79,7 +81,7 @@ def section_profile(request, section_id, distance: int = 0, _format="json"):
             cols = math.ceil(math.sqrt(n_cables))
             rows = math.ceil(n_cables / cols)
             # potentially, if we have more cols than rows, we could have a rectangle grid instead of a squared one
-            grid_max_size = tube_section.tube.diameter * math.sqrt(2) / 2
+            grid_max_size = _diameter * math.sqrt(2) / 2
             cell_max_size = grid_max_size / cols
             start_x = tube_pos_x - grid_max_size / 2
             start_z = tube_pos_z + grid_max_size / 2
@@ -95,7 +97,7 @@ def section_profile(request, section_id, distance: int = 0, _format="json"):
 
         _tube = _Tube(
             id=tube_section.tube.id,
-            diameter=tube_section.tube.diameter,
+            diameter=_diameter,
             pos=_Pos(
                 x=tube_pos_x,
                 z=tube_pos_z,
@@ -112,25 +114,25 @@ def section_profile(request, section_id, distance: int = 0, _format="json"):
             x_min,
             tube_section.offset_x,
             tube_section.offset_x_2,
-            tube_section.tube.diameter,
+            _diameter,
         )
         x_max = _max(
             x_max,
             tube_section.offset_x,
             tube_section.offset_x_2,
-            tube_section.tube.diameter,
+            _diameter,
         )
         z_min = _min(
             z_min,
             tube_section.offset_z,
             tube_section.offset_z_2,
-            tube_section.tube.diameter,
+            _diameter,
         )
         z_max = _max(
             z_max,
             tube_section.offset_z,
             tube_section.offset_z_2,
-            tube_section.tube.diameter,
+            _diameter,
         )
 
     if _format == "json":
