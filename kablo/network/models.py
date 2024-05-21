@@ -154,23 +154,11 @@ class Cable(models.Model):
     def compute_geom(self):
         # TODO: check geometry exists + is coherent
         # TODO: check order_index is continuous
-        # TODO: if holes, create junction (e.g. within station)
         geom = self.cabletube_set.order_by("order_index").aggregate(
             geom=Union("tube__geom")
         )["geom"]
-        if geom and geom.geom_type == "MultiLineString":
-            line = []
-            for part in geom:
-                if not line:
-                    line = part.coords
-                else:
-                    if part.coords[0] == line[-1]:
-                        line += part.coords[1:]
-                    else:
-                        line += part.coords
-            self.geom = LineString(line)
-        else:
-            self.geom = geom
+        if geom:
+            self.geom = geom.merged
 
     @transaction.atomic
     def save(self, **kwargs):
