@@ -4,7 +4,7 @@ sql_items = [
     SQLItem(
         "project_z_on_line",
         r"""
-        CREATE OR REPLACE FUNCTION project_z_on_line(line_2d geometry, line_z geometry)
+        CREATE OR REPLACE FUNCTION project_z_on_line(line_2d geometry, line_z geometry, delta_z float)
            RETURNS geometry
            LANGUAGE plpgsql
           AS
@@ -17,7 +17,7 @@ sql_items = [
                     ST_MakePoint(
                         ST_X((points_2d.dp).geom),
                         ST_Y((points_2d.dp).geom),
-                        ST_Z((points_z.dp).geom)
+                        ST_Z((points_z.dp).geom) + delta_z
                     ),
                     ST_Srid(line_2d)
                 ) as geom

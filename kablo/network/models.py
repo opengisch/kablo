@@ -232,6 +232,10 @@ class Tube(models.Model):
                     Cast("offset_x", output_field=models.FloatField()) / 1000,
                     output_field=models.FloatField(),
                 ),
+                offset_z_m=ExpressionWrapper(
+                    Cast("offset_z", output_field=models.FloatField()) / 1000,
+                    output_field=models.FloatField(),
+                ),
             )
             .annotate(
                 planar_offset_fraction=ExpressionWrapper(
@@ -251,6 +255,7 @@ class Tube(models.Model):
                 offset_geom_reduced=ProjectZOnLine(
                     OffsetCurve("geom_reduced", "offset_x_m", Value("join=mitre")),
                     "geom_reduced",
+                    "offset_z_m",
                 )
             )
             .annotate(
