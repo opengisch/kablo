@@ -10,7 +10,7 @@ services:
       target: prod
       dockerfile: kablo/.docker/Dockerfile
     entrypoint: /kablo/kablo/.docker/entrypoint.sh
-    command: "gunicorn kablo.core.wsgi -b :9000 --error-logfile gunicorn_log.log --workers=2 --threads=4 --worker-class=gthread"
+    command: "gunicorn kablo.wsgi -b :9000 --error-logfile gunicorn_log.log --workers=2 --threads=4 --worker-class=gthread"
     environment:
       DISABLE_MIGRATION_SCRIPT_ON_PRODUCTION:
       CLEAR_PUBLIC_SCHEMA_ON_FIXTURIZE:
