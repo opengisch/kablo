@@ -277,22 +277,9 @@ class TubeSection(models.Model):
     tube = models.ForeignKey(Tube, on_delete=models.CASCADE, null=False)
     section = models.ForeignKey(Section, on_delete=models.CASCADE, null=False)
     order_index = models.IntegerField(default=0, null=False, blank=False)
-    reversed = models.BooleanField(default=False, null=False, blank=False)
     interpolated = models.BooleanField(default=False, null=False, blank=False)
     offset_x = models.IntegerField(null=False, blank=False, default=0)
     offset_z = models.IntegerField(null=False, blank=False, default=0)
-    offset_x_2 = models.IntegerField(
-        null=True,
-        blank=True,
-        default=None,
-        help_text="Optional x end offset (if different from from start)",
-    )
-    offset_z_2 = models.IntegerField(
-        null=True,
-        blank=True,
-        default=None,
-        help_text="Optional z end offset (if different from from start)",
-    )
 
     class Meta:
         ordering = ["order_index"]
