@@ -15,8 +15,8 @@ class EndPoint(GeoFunc):
     output_field = models.PointField()
 
 
-class Force3D(GeoFunc):
-    function = "ST_Force3D"
+class Force2D(GeoFunc):
+    function = "ST_Force2D"
     geom_param_pos = (0,)
     output_field = models.GeometryField()
 
@@ -66,6 +66,12 @@ class Merge(GeoFunc):
     output_field = models.LineStringField()
 
 
+class NPoints(GeoFunc):
+    function = "ST_NPoints"
+    geom_param_pos = (0,)
+    output_field = models.IntegerField()
+
+
 class OffsetCurve(GeoFunc):
     function = "ST_OffsetCurve"
     geom_param_pos = (0,)
@@ -75,6 +81,12 @@ class OffsetCurve(GeoFunc):
 class ProjectZOnLine(GeoFunc):
     function = "project_z_on_line"
     geom_param_pos = (0, 1)
+    output_field = models.LineStringField()
+
+
+class RemovePoint(GeoFunc):
+    function = "ST_RemovePoint"
+    geom_param_pos = (0,)
     output_field = models.LineStringField()
 
 
