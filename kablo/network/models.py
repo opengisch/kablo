@@ -2,13 +2,27 @@ import uuid
 from math import cos, radians, sin
 
 from django.contrib.gis.db import models
+from django.contrib.gis.db.models.aggregates import MakeLine as MakeLineAgg
 from django.contrib.gis.db.models.aggregates import Union
 from django.contrib.gis.geos import LineString
-from django.db import transaction
-from django.db.models import Max
+from django.db import connection, transaction
+from django.db.models import ExpressionWrapper, F, Max, Value
+from django.db.models.functions import Cast, Least
 from django_oapif.decorators import register_oapif_viewset
 
-from kablo.core.geometry import AzimuthAlongLine, Intersects, SplitLine
+from kablo.core.functions import (
+    EndPoint,
+    Force3D,
+    Intersects,
+    Length2d,
+    LineMerge,
+    LineSubstring,
+    MakeLine,
+    OffsetCurve,
+    ProjectZOnLine,
+    SplitLine,
+    StartPoint,
+)
 from kablo.valuelist.models import CableTensionType, StatusType, TubeCableProtectionType
 
 
@@ -154,11 +168,20 @@ class Cable(models.Model):
     def compute_geom(self):
         # TODO: check geometry exists + is coherent
         # TODO: check order_index is continuous
-        geom = self.cabletube_set.order_by("order_index").aggregate(
-            geom=Union("tube__geom")
-        )["geom"]
-        if geom:
-            self.geom = geom.merged
+        geom = (
+            self.cabletube_set.order_by("order_index")
+            .annotate(
+                offset_geom=Force3D(
+                    OffsetCurve("tube__geom", "display_offset", Value("join=bevel"))
+                )
+            )
+            .aggregate(geom=MakeLineAgg("offset_geom"))["geom"]
+        )
+        print(333, geom)
+        self.geom = geom
+        # cursor = connection.cursor()
+        # print(connection.queries)
+        # cursor.execute("SELECT * FROM azimuth_along_line")
 
     @transaction.atomic
     def save(self, **kwargs):
@@ -200,9 +223,49 @@ class Tube(models.Model):
         # TODO: check order_index is continuous
         tube_line = []
 
-        qs = self.tubesection_set.order_by("order_index").annotate(
-            azimuths=AzimuthAlongLine("section__geom")
+        # TODO recalculate cables on change
+        # TODO Z offset
+
+        geom = (
+            self.tubesection_set.order_by("order_index")
+            .annotate(
+                length=Length2d("section__geom"),
+                offset_x_m=ExpressionWrapper(
+                    Cast("offset_x", output_field=models.FloatField()) / 1000,
+                    output_field=models.FloatField(),
+                ),
+            )
+            .annotate(
+                planar_offset_fraction=ExpressionWrapper(
+                    Least(0.3, 1.0 / F("length")), output_field=models.FloatField()
+                )
+            )
+            .annotate(
+                geom_reduced=LineSubstring(
+                    "section__geom",
+                    "planar_offset_fraction",
+                    1 - F("planar_offset_fraction"),
+                ),
+                start_point=StartPoint("section__geom"),
+                end_point=EndPoint("section__geom"),
+            )
+            .annotate(
+                offset_geom_reduced=ProjectZOnLine(
+                    OffsetCurve("geom_reduced", "offset_x_m", Value("join=bevel")),
+                    "geom_reduced",
+                )
+            )
+            .annotate(
+                offset_geom_full=MakeLine(
+                    MakeLine("start_point", "offset_geom_reduced"), "end_point"
+                )
+            )
+            .aggregate(geom=LineMerge(Union("offset_geom_full")))["geom"]
         )
+        print(111, geom)
+        print(connection.queries)
+        self.geom = geom
+        return
 
         max_order_index = qs.aggregate(max_order_index=Max("order_index"))[
             "max_order_index"

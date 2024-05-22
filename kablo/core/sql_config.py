@@ -2,6 +2,40 @@ from migrate_sql.config import SQLItem
 
 sql_items = [
     SQLItem(
+        "project_z_on_line",
+        r"""
+        CREATE OR REPLACE FUNCTION project_z_on_line(line_2d geometry, line_z geometry)
+           RETURNS geometry
+           LANGUAGE plpgsql
+          AS
+        $$
+        declare
+           geom geometry;
+        begin
+            SELECT ST_MakeLine(points.geom) INTO geom from (
+                SELECT ST_SetSRID(
+                    ST_MakePoint(
+                        ST_X((points_2d.dp).geom),
+                        ST_Y((points_2d.dp).geom),
+                        ST_Z((points_z.dp).geom)
+                    ),
+                    ST_Srid(line_2d)
+                ) as geom
+                FROM (
+                    SELECT ST_DumpPoints(line_z) AS dp) points_z
+                    INNER JOIN (SELECT ST_DumpPoints(line_2d) AS dp) points_2d
+                        ON (points_z.dp).path = (points_2d.dp).path
+                    ORDER BY (points_z.dp).path
+                ) points;
+           return geom;
+        end;
+        $$;
+        """,
+        r"""
+            DROP FUNCTION project_z_on_line(line_2d geometry, line_z geometry);
+        """,
+    ),
+    SQLItem(
         "azimuth_along_line",
         r"""
         CREATE OR REPLACE FUNCTION azimuth_along_line(geom geometry)
