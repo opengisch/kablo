@@ -176,7 +176,8 @@ class Cable(models.Model):
                 offset_x_m=ExpressionWrapper(
                     (
                         Cast("display_offset", output_field=models.FloatField())
-                        - Cast("cable_count", output_field=models.FloatField()) / 2
+                        - (Cast("cable_count", output_field=models.FloatField()) - 1)
+                        / 2
                     )
                     * Value(cable_spacing),
                     output_field=models.FloatField(),
