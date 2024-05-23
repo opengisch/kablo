@@ -9,18 +9,16 @@ from django.shortcuts import get_object_or_404, render
 from kablo.network.models import Section
 
 
-def _min(current, offset, offset_optional, diameter):
-    offset_min = min(offset, offset_optional or offset)
+def _min(current, offset, diameter):
     if not current:
-        return offset_min - diameter / 2
-    return min(current, offset_min - diameter / 2)
+        return offset - diameter / 2
+    return min(current, offset - diameter / 2)
 
 
-def _max(current, offset, offset_optional, diameter):
-    offset_max = max(offset, offset_optional or offset)
+def _max(current, offset, diameter):
     if not current:
-        return offset_max + diameter / 2
-    return max(current, offset_max + diameter / 2)
+        return offset + diameter / 2
+    return max(current, offset + diameter / 2)
 
 
 class _Pos(NamedTuple):
@@ -39,9 +37,7 @@ class _Tube(NamedTuple):
     diameter: int
     pos: _Pos
     offset_x: int
-    offset_x_2: int
     offset_z: int
-    offset_z_2: int
     cables: list[_Cable]
 
 
@@ -59,12 +55,8 @@ def section_profile(request, section_id, distance: int = 0, _format="json"):
 
     for tube_section in qs:
 
-        tube_pos_x = (
-            tube_section.offset_x + (tube_section.offset_x_2 or tube_section.offset_x)
-        ) / 2
-        tube_pos_z = (
-            tube_section.offset_z + (tube_section.offset_z_2 or tube_section.offset_z)
-        ) / 2
+        tube_pos_x = tube_section.offset_x
+        tube_pos_z = tube_section.offset_z
 
         _diameter = tube_section.tube.diameter or 100
 
@@ -103,9 +95,7 @@ def section_profile(request, section_id, distance: int = 0, _format="json"):
                 z=tube_pos_z,
             ),
             offset_x=tube_section.offset_x,
-            offset_x_2=tube_section.offset_x,
             offset_z=tube_section.offset_z,
-            offset_z_2=tube_section.offset_z_2,
             cables=_cables,
         )
         _tubes.append(_tube)
@@ -113,25 +103,21 @@ def section_profile(request, section_id, distance: int = 0, _format="json"):
         x_min = _min(
             x_min,
             tube_section.offset_x,
-            tube_section.offset_x_2,
             _diameter,
         )
         x_max = _max(
             x_max,
             tube_section.offset_x,
-            tube_section.offset_x_2,
             _diameter,
         )
         z_min = _min(
             z_min,
             tube_section.offset_z,
-            tube_section.offset_z_2,
             _diameter,
         )
         z_max = _max(
             z_max,
             tube_section.offset_z,
-            tube_section.offset_z_2,
             _diameter,
         )
 
