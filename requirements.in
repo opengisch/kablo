@@ -6,8 +6,10 @@ gunicorn
 plotly
 psycopg
 requests
+shapely
 whitenoise
 django-oapif@git+https://github.com/opengisch/django-oapif.git
+django-computedfields
 django-simple-history
 django-cors-headers
 django-two-factor-auth[phonenumbers]

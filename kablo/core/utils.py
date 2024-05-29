@@ -1,4 +1,13 @@
-from django.contrib.gis.geos import LineString, MultiLineString
+from django.contrib.gis.geos import GEOSGeometry, LineString, MultiLineString
+from shapely import Geometry, get_srid, wkb
+
+
+def geodjango2shapely(geodjango_geom) -> Geometry:
+    return wkb.loads(geodjango_geom.hexewkb)
+
+
+def shapely2geodjango(shapely_geom):
+    return GEOSGeometry(shapely_geom.wkb_hex, srid=int(get_srid(shapely_geom)))
 
 
 def wkt_from_line(line: list[tuple[float, float]], force3d=True) -> str:

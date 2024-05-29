@@ -57,9 +57,11 @@ django==5.0.3
     # via
     #   -r requirements.txt
     #   django-allauth
+    #   django-computedfields
     #   django-cors-headers
     #   django-debug-toolbar
     #   django-extensions
+    #   django-fast-update
     #   django-formtools
     #   django-oapif
     #   django-oauth-toolkit
@@ -70,12 +72,18 @@ django==5.0.3
     #   djangorestframework
 django-allauth==0.61.1
     # via -r requirements.txt
+django-computedfields==0.2.5
+    # via -r requirements.txt
 django-cors-headers==4.3.1
     # via -r requirements.txt
 django-debug-toolbar==4.3.0
     # via -r requirements_dev.in
 django-extensions==3.2.3
     # via -r requirements_dev.in
+django-fast-update==0.2.3
+    # via
+    #   -r requirements.txt
+    #   django-computedfields
 django-formtools==2.5.1
     # via
     #   -r requirements.txt
@@ -148,6 +156,10 @@ matplotlib-inline==0.1.6
     # via ipython
 nodeenv==1.8.0
     # via pre-commit
+numpy==1.26.4
+    # via
+    #   -r requirements.txt
+    #   shapely
 oauthlib==3.2.2
     # via
     #   -r requirements.txt
@@ -244,6 +256,8 @@ requests-oauthlib==1.4.0
     # via
     #   -r requirements.txt
     #   django-allauth
+shapely==2.0.4
+    # via -r requirements.txt
 six==1.16.0
     # via
     #   asttokens
@@ -270,6 +284,7 @@ traitlets==5.14.2
 typing-extensions==4.10.0
     # via
     #   -r requirements.txt
+    #   django-computedfields
     #   jwcrypto
     #   psycopg
     #   qrcode

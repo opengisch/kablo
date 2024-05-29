@@ -120,6 +120,7 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "computedfields",
     "migrate_sql",
 ]
 
