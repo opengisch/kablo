@@ -3,10 +3,11 @@
 set -e
 
 
+DATA=1
 MAKE_MIGRATIONS=0
 BUILD=
 
-while getopts 'bm' opt; do
+while getopts 'bmn' opt; do
   case "$opt" in
     b)
       echo "-> Rebuild docker image"
@@ -15,6 +16,10 @@ while getopts 'bm' opt; do
     m)
       echo "-> Make migrations"
       MAKE_MIGRATIONS=1
+      ;;
+    n)
+      echo "-> No Data"
+      DATA=0
       ;;
     ?|h)
       echo "Usage: $(basename $0) [-bm]"
@@ -35,5 +40,7 @@ fi
 docker compose exec kablo python manage.py collectstatic --no-input
 docker compose exec kablo python manage.py migrate
 docker compose exec kablo python manage.py populate_users
-docker compose exec kablo python manage.py populate_data
 docker compose exec kablo python manage.py populate_valuelists
+if  [[ ${DATA} -eq 1 ]]; then
+  docker compose exec kablo python manage.py populate_data
+fi
