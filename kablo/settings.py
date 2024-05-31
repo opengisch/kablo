@@ -292,6 +292,11 @@ DEBUG_TOOLBAR_CONFIG = {
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    "loggers": {
+        "asyncio": {
+            "level": "WARNING",
+        },
+    },
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",

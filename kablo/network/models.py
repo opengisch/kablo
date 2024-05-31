@@ -16,8 +16,10 @@ from shapely import (
     Point,
     distance,
     force_2d,
+    get_srid,
     line_merge,
     offset_curve,
+    set_srid,
 )
 
 from kablo.core.functions import Intersects, SplitLine
@@ -206,30 +208,35 @@ class Cable(ComputedFieldsModel):
                 logger.debug(
                     f"  :: in tube {tube_id} cable_count: {cable_count} display_offset: {display_offset}"
                 )
-
                 coords = list(part.coords)
                 original_start_point = coords[0][0:2]
                 original_end_point = coords[-1][0:2]
 
                 first_vertex_distance = distance(Point(coords[0]), Point(coords[-1]))
                 if first_vertex_distance > 1:
-                    coords[0] = part.interpolate(0.5).coords[0]
+                    coords[0] = part.line_interpolate_point(0.5).coords[0]
                 else:
                     coords.pop(0)
 
                 last_vertex_distance = distance(Point(coords[-1]), Point(coords[-2]))
                 if last_vertex_distance > 1:
-                    coords[-1] = part.interpolate(-0.5).coords[0]
+                    coords[-1] = part.line_interpolate_point(-0.5).coords[0]
                 else:
                     coords.pop(-1)
 
-                part = offset_curve(
-                    force_2d(LineString(coords)), distance=offset_x, join_style="bevel"
+                # forcing 2d: otherwise if offset=0, the original geometry
+                # is returned as is i.e. with z-dimension
+                offset_part = force_2d(
+                    offset_curve(
+                        LineString(coords), distance=offset_x, join_style="bevel"
+                    )
                 )
-                part = LineString(
-                    [original_start_point] + list(part.coords) + [original_end_point]
+                complete_offset_part = LineString(
+                    [original_start_point]
+                    + list(offset_part.coords)
+                    + [original_end_point]
                 )
-                parts.append(part)
+                parts.append(complete_offset_part)
             geom = line_merge(MultiLineString(parts))
             geom = shapely2geodjango(geom)
         return geom
@@ -292,6 +299,7 @@ class Tube(ComputedFieldsModel):
         geom = agg["geom"]
         if geom:
             geom = geodjango2shapely(geom)
+            srid = get_srid(geom)
             parts = []
             if geom.geom_type == "MultiLineString":
                 geoms = geom.geoms
@@ -324,9 +332,14 @@ class Tube(ComputedFieldsModel):
                 else:
                     coords.pop(-1)
 
-                part = offset_curve(
-                    LineString(coords), distance=offset_x / 1000, join_style="mitre"
+                # forcing 2d: otherwise if offset=0, the original geometry
+                # is returned as is i.e. with z-dimension
+                part = force_2d(
+                    offset_curve(
+                        LineString(coords), distance=offset_x / 1000, join_style="mitre"
+                    )
                 )
+
                 new_coords = []
                 for point_offset, point_z in zip(part.coords, coords):
                     new_coords.append(point_offset + (point_z[2] + offset_z / 1000,))
@@ -334,7 +347,7 @@ class Tube(ComputedFieldsModel):
                     [original_start_point] + new_coords + [original_end_point]
                 )
                 parts.append(part)
-            geom = line_merge(MultiLineString(parts))
+            geom = set_srid(line_merge(MultiLineString(parts)), srid=srid)
             geom = shapely2geodjango(geom)
         return geom
 
