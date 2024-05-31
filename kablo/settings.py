@@ -22,8 +22,10 @@ if ENV not in ["DEV", "PROD"]:
     )
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+DEBUG_LEVEL = "INFO"
 if ENV == "DEV":
     DEBUG = True
+    DEBUG_LEVEL = "DEBUG"
 
 ROOT_URLCONF = "kablo.urls"
 PREFIX_URL = os.environ.get("PREFIX_URL", "")
@@ -297,6 +299,6 @@ LOGGING = {
     },
     "root": {
         "handlers": ["console"],
-        "level": "INFO",
+        "level": DEBUG_LEVEL,
     },
 }

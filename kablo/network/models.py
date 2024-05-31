@@ -1,3 +1,4 @@
+import logging
 import uuid
 
 from computedfields.models import ComputedFieldsModel, computed
@@ -6,7 +7,7 @@ from django.contrib.gis.db.models.aggregates import Union
 from django.contrib.gis.geos import LineString as GeosLineString
 from django.contrib.postgres.aggregates import ArrayAgg
 from django.db import transaction
-from django.db.models import Max, Value
+from django.db.models import Max
 from django.db.models.functions import Coalesce
 from django_oapif.decorators import register_oapif_viewset
 from shapely import (
@@ -22,6 +23,8 @@ from shapely import (
 from kablo.core.functions import Intersects, SplitLine
 from kablo.core.utils import geodjango2shapely, shapely2geodjango
 from kablo.valuelist.models import CableTensionType, StatusType, TubeCableProtectionType
+
+logger = logging.getLogger(__name__)
 
 
 class NetworkNode(models.Model):
@@ -162,61 +165,72 @@ class Cable(ComputedFieldsModel):
         on_delete=models.SET_NULL,
     )
 
-    @computed(models.LineStringField(srid=2056, null=True))
+    @computed(
+        models.LineStringField(srid=2056, null=True),
+        depends=[
+            ("cabletube_set", ["order_index", "display_offset"]),
+            ("cabletube_set.tube", ["geom"]),
+            (
+                "cabletube_set.tube.cabletube_set",
+                ["order_index", "display_offset"],
+            ),  # this will recalculate all the cables in the same tube
+        ],
+    )
     def geom(self):
         # TODO: check geometry exists + is coherent
         # TODO: check order_index is continuous
         cable_spacing = 0.1
         planar_offset = 1.1
 
+        logger.debug(f"cable.geom compute for {self.id}")
+
         agg = self.cabletube_set.order_by("order_index").aggregate(
             geom=Union("tube__geom"),
             display_offset=ArrayAgg("display_offset"),
-            cable_count=ArrayAgg("cable_count"),
+            cable_count=ArrayAgg("tube__cable_count"),
+            tube_id=ArrayAgg("tube__id"),
         )
         geom = agg["geom"]
         if geom:
             geom = geodjango2shapely(geom)
+            parts = []
             if geom.geom_type == "MultiLineString":
-                parts = []
-                for part, display_offset, cable_count in zip(
-                    geom.geoms, agg["display_offset"], agg["cable_count"]
-                ):
-
-                    offset_x = (
-                        (display_offset - (cable_count - 1) / 2) * Value(cable_spacing),
-                    )
-
-                    coords = list(part.coords)
-                    original_start_point = coords[0][0:1]
-                    original_end_point = coords[-1][0:1]
-
-                    first_vertex_distance = distance(
-                        Point(coords[0]), Point(coords[-1])
-                    )
-                    if first_vertex_distance > 1:
-                        coords[0] = part.interpolate(0.5).coords[0]
-                    else:
-                        coords.pop(0)
-
-                    last_vertex_distance = distance(
-                        Point(coords[-1]), Point(coords[-2])
-                    )
-                    if last_vertex_distance > 1:
-                        coords[-1] = part.interpolate(-0.5).coords[0]
-                    else:
-                        coords.pop(-1)
-
-                    part = offset_curve(
-                        LineString(coords), distance=offset_x, join_style="bevel"
-                    )
-                    part = LineString(
-                        [original_start_point] + list(part) + [original_end_point]
-                    )
-                    parts.append(part)
-                geom = line_merge(MultiLineString(parts))
+                geoms = geom.geoms
             else:
-                geom = force_2d(geom)
+                geoms = [geom]
+
+            for part, display_offset, cable_count, tube_id in zip(
+                geoms, agg["display_offset"], agg["cable_count"], agg["tube_id"]
+            ):
+                offset_x = (display_offset - (cable_count - 1) / 2) * cable_spacing
+                logger.debug(
+                    f"  :: in tube {tube_id} cable_count: {cable_count} display_offset: {display_offset}"
+                )
+
+                coords = list(part.coords)
+                original_start_point = coords[0][0:2]
+                original_end_point = coords[-1][0:2]
+
+                first_vertex_distance = distance(Point(coords[0]), Point(coords[-1]))
+                if first_vertex_distance > 1:
+                    coords[0] = part.interpolate(0.5).coords[0]
+                else:
+                    coords.pop(0)
+
+                last_vertex_distance = distance(Point(coords[-1]), Point(coords[-2]))
+                if last_vertex_distance > 1:
+                    coords[-1] = part.interpolate(-0.5).coords[0]
+                else:
+                    coords.pop(-1)
+
+                part = offset_curve(
+                    force_2d(LineString(coords)), distance=offset_x, join_style="bevel"
+                )
+                part = LineString(
+                    [original_start_point] + list(part.coords) + [original_end_point]
+                )
+                parts.append(part)
+            geom = line_merge(MultiLineString(parts))
             geom = shapely2geodjango(geom)
         return geom
 
@@ -247,7 +261,18 @@ class Tube(ComputedFieldsModel):
     )
 
     @computed(
+        models.IntegerField(default=0, null=False, blank=False),
+        depends=[("cabletube_set", [])],
+    )
+    def cable_count(self):
+        return self.cabletube_set.count()
+
+    @computed(
         models.LineStringField(srid=2056, dim=3, null=True, blank=True),
+        depends=[
+            ("tubesection_set", ["order_index", "offset_x", "offset_z"]),
+            ("tubesection_set.section", ["geom"]),
+        ],
     )
     def geom(self):
         # TODO: this should not be editable, but switching prevent from seeing it in admin
@@ -268,8 +293,12 @@ class Tube(ComputedFieldsModel):
         if geom:
             geom = geodjango2shapely(geom)
             parts = []
+            if geom.geom_type == "MultiLineString":
+                geoms = geom.geoms
+            else:
+                geoms = [geom]
             for part, offset_x, offset_z in zip(
-                geom.geoms, agg["offset_x"], agg["offset_z"]
+                geoms, agg["offset_x"], agg["offset_z"]
             ):
                 coords = list(part.coords)
                 original_start_point = (
@@ -335,10 +364,6 @@ class CableTube(ComputedFieldsModel):
     cable = models.ForeignKey(Cable, on_delete=models.CASCADE)
     order_index = models.IntegerField(default=0, null=False, blank=False)
     display_offset = models.IntegerField(default=0, null=False, blank=False)
-
-    @computed(models.IntegerField(default=0, null=False, blank=False))
-    def cable_count(self):
-        return CableTube.objects.filter(tube=self.tube).count()
 
     class Meta:
         ordering = ["order_index"]
