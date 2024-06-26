@@ -1,11 +1,11 @@
 import random
 from math import cos, radians, sin
 
-from django.contrib.gis.geos import LineString
+from django.contrib.gis.geos import LineString, MultiLineString
 from django.test import TestCase, override_settings
 
 from kablo.core.utils import wkt_from_multiline
-from kablo.network.models import Section, Track, Tube, TubeSection
+from kablo.network.models import Cable, CableTube, Section, Track, Tube, TubeSection
 
 
 class TrackSectionTestCase(TestCase):
@@ -50,35 +50,31 @@ class TrackSectionTestCase(TestCase):
 
         tracks = []
         sections = []
-        n_vertex_check = 0
         for t in range(1, 3):
-            azimuths = [[10, 40, 20, 100, 180], [-90, -20, 10]]
+            azimuths = [[10, 40, 20, 100, 60], [-90, -20, 10]]
             multiline = []
             for section_azimuths in azimuths:
-                line = [(x, y)]
+                line = [(x, y, -10)]
                 for azimuth in section_azimuths:
                     # make dist random to make the test more robust
-                    dist = random.randint(5, 15)
+                    dist = random.randint(8, 15)
                     x += dist * cos(radians(90 - azimuth))
                     y += dist * sin(radians(90 - azimuth))
-                    line.append((x, y))
-                multiline.append(line)
+                    line.append((x, y, 20))
+                multiline.append(LineString(line, srid=2056))
 
-            geom_line_wkt = wkt_from_multiline(multiline)
-            fields = {"geom": geom_line_wkt}
+            ml = MultiLineString(multiline, srid=2056)
+            fields = {"geom": ml}
             track = Track.objects.create(**fields)
             for section in track.section_set.all():
                 sections.append(section)
-                n_vertex_check += len(section.geom.coords)
 
             tracks.append(track)
 
         tube = Tube.objects.create()
 
-        tube_sections = []
         i = 0
         for section in sections:
-            n_vertices = len(section.geom.coords)
             offset_x = 100
             offset_z = 0
             TubeSection.objects.create(
@@ -91,6 +87,62 @@ class TrackSectionTestCase(TestCase):
             )
             i += 1
 
-        tube.save()
+    @override_settings(DEBUG=True)
+    def test_section_tube_geom_merge(self):
+        x = 2508500
+        y = 1152000
 
-        self.assertEqual(len(tube.geom.coords), n_vertex_check + 2)
+        geom1 = MultiLineString(LineString((x, y, 0), (x + 10, y, 20), srid=2056))
+        track1 = Track.objects.create(geom=geom1)
+        section1 = track1.section_set.first()
+
+        geom2 = MultiLineString(LineString((x, y, 0), (x - 10, y, 10), srid=2056))
+        track2 = Track.objects.create(geom=geom2)
+        section2 = track2.section_set.first()
+
+        for offset_x in (0, 100):
+            tube12 = Tube.objects.create()
+            for i, section in enumerate(
+                (
+                    section1,
+                    section2,
+                )
+            ):
+                TubeSection.objects.create(
+                    tube=tube12,
+                    section=section,
+                    order_index=i,
+                    interpolated=False,
+                    offset_x=offset_x,
+                    offset_z=66,
+                )
+
+            tube1 = Tube.objects.create()
+            TubeSection.objects.create(
+                tube=tube1,
+                section=section1,
+                order_index=0,
+                interpolated=False,
+                offset_x=offset_x,
+                offset_z=66,
+            )
+
+            tube2 = Tube.objects.create()
+            TubeSection.objects.create(
+                tube=tube2,
+                section=section2,
+                order_index=0,
+                interpolated=False,
+                offset_x=offset_x,
+                offset_z=66,
+            )
+
+            for display_offset in (0, 1):
+                cable12 = Cable.objects.create()
+                for i, tube in enumerate((tube1, tube2)):
+                    CableTube.objects.create(
+                        tube=tube,
+                        cable=cable12,
+                        order_index=i,
+                        display_offset=display_offset,
+                    )

@@ -30,7 +30,9 @@ django==5.0.3
     # via
     #   -r requirements.in
     #   django-allauth
+    #   django-computedfields
     #   django-cors-headers
+    #   django-fast-update
     #   django-formtools
     #   django-oapif
     #   django-oauth-toolkit
@@ -41,8 +43,12 @@ django==5.0.3
     #   djangorestframework
 django-allauth==0.61.1
     # via -r requirements.in
+django-computedfields==0.2.5
+    # via -r requirements.in
 django-cors-headers==4.3.1
     # via -r requirements.in
+django-fast-update==0.2.3
+    # via django-computedfields
 django-formtools==2.5.1
     # via django-two-factor-auth
 django-migrate-sql-3==3.0.2
@@ -72,16 +78,24 @@ gunicorn==21.2.0
     # via -r requirements.in
 idna==3.6
     # via requests
+inflection==0.5.1
+    # via django-oapif
 jwcrypto==1.5.6
     # via django-oauth-toolkit
+numpy==1.26.4
+    # via shapely
 oauthlib==3.2.2
     # via
     #   django-oauth-toolkit
     #   requests-oauthlib
 packaging==24.0
-    # via gunicorn
+    # via
+    #   gunicorn
+    #   plotly
 phonenumbers==8.13.32
     # via django-two-factor-auth
+plotly==5.22.0
+    # via -r requirements.in
 psycopg==3.1.18
     # via -r requirements.in
 psycopg2-binary==2.9.9
@@ -110,12 +124,17 @@ requests==2.31.0
     #   requests-oauthlib
 requests-oauthlib==1.4.0
     # via django-allauth
+shapely==2.0.4
+    # via -r requirements.in
 soupsieve==2.5
     # via beautifulsoup4
 sqlparse==0.4.4
     # via django
+tenacity==8.3.0
+    # via plotly
 typing-extensions==4.10.0
     # via
+    #   django-computedfields
     #   jwcrypto
     #   psycopg
     #   qrcode

@@ -1,6 +1,8 @@
 import random
+from copy import deepcopy
 from math import cos, radians, sin
 
+from django.contrib.gis.geos import LineString, MultiLineString
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
@@ -24,7 +26,7 @@ class Command(BaseCommand):
             line = [(x, y)]
             for azimuth in section_azimuths:
                 # make dist random to make the test more robust
-                dist = random.randint(5, 15)
+                dist = random.randint(8, 15)
                 x += dist * cos(radians(start_azimuth + azimuth))
                 y += dist * sin(radians(start_azimuth + azimuth))
                 line.append((x, y))
@@ -43,21 +45,29 @@ class Command(BaseCommand):
     def create_tube(
         track_sections: list[list[Section]],
         track_section_indexes: list[tuple[int, list[int]]],
-        offset: int,
+        available_offsets: dict[str : list[int]],
     ):
-        # TODO: fix offset
-        tube = Tube.objects.create()
+        tube = Tube.objects.create(diameter=10 * random.randint(8, 12))
         i = 0
         for (track_idx, section_indexes) in track_section_indexes:
             for section_index in section_indexes:
                 section = track_sections[track_idx][section_index]
+                offset_index = 0
+                if len(available_offsets[section.id]) > 1:
+                    offset_index = random.randint(
+                        0, len(available_offsets[section.id]) - 1
+                    )
+
+                offset_x, offset_z = available_offsets[section.id].pop(offset_index)
+
                 TubeSection.objects.create(
                     tube=tube,
                     section=section,
                     order_index=i,
                     interpolated=False,
-                    offset_x=random.randint(-400, 400),
-                    offset_z=0,
+                    offset_x=offset_x,
+                    offset_z=offset_z,
+                    # offset_x_2=100 * random.randint(-4, 4 ),
                 )
                 i += 1
         tube.save()
@@ -84,12 +94,19 @@ class Command(BaseCommand):
         # list of tracks (track = list of sections => list of list of sections)
         azimuth_track_sections = []
         tubes = []
+        available_offsets = {}
+
+        initial_available_offsets = []
+        for x in range(-800, 801, 200):
+            for y in (-200, 200):
+                # create small x offset to avoid overlapping tubes
+                initial_available_offsets.append((x + y / 10, y))
 
         for start_azimuth in range(0, 360, 90):
             x = 2516800
             y = 1152200
 
-            azimuths = [[10, 40, 20, 100, 50], [-30, -20, 10]]
+            azimuths = [[10, 40, 20, 30, 50], [0, -20, 10]]
 
             azimuth_track_sections.append([])
 
@@ -97,11 +114,15 @@ class Command(BaseCommand):
                 (track, sections) = self.create_track(x, y, start_azimuth, azimuths)
                 (x, y, z) = track.geom.coords[-1][-1]
                 azimuth_track_sections[-1].append(sections)
+                for section in sections:
+                    available_offsets[section.id] = deepcopy(initial_available_offsets)
 
             (x, y, z) = azimuth_track_sections[-1][1][1].geom.coords[-1]
-            azimuths = [[120, 120, 30, 100, 50], [-30, -20, 10]]
+            azimuths = [[120, 120, 30, 40, 50], [0, -20, 10]]
             (track, sections) = self.create_track(x, y, start_azimuth, azimuths)
             azimuth_track_sections[-1].append(sections)
+            for section in sections:
+                available_offsets[section.id] = deepcopy(initial_available_offsets)
 
             tube_1_track_indexes = [
                 (0, [0, 1]),
@@ -111,7 +132,9 @@ class Command(BaseCommand):
             for i in range(3):
                 tubes.append(
                     self.create_tube(
-                        azimuth_track_sections[-1], tube_1_track_indexes, 50
+                        azimuth_track_sections[-1],
+                        tube_1_track_indexes,
+                        available_offsets,
                     )
                 )
 
@@ -123,10 +146,18 @@ class Command(BaseCommand):
             for i in range(3):
                 tubes.append(
                     self.create_tube(
-                        azimuth_track_sections[-1], tube_2_track_indexes, -100
+                        azimuth_track_sections[-1],
+                        tube_2_track_indexes,
+                        available_offsets,
                     )
                 )
 
+        self.create_cable([tubes[0]])
+        self.create_cable([tubes[0]])
+        self.create_cable([tubes[0]])
+        self.create_cable([tubes[0]])
+        self.create_cable([tubes[0]])
+        self.create_cable([tubes[0]])
         self.create_cable([tubes[0]])
 
         # all layers need some data to be loaded in QGIS
@@ -134,5 +165,60 @@ class Command(BaseCommand):
         geom_line_wkt = wkt_from_line(line, force3d=False)
         fields = {"geom": geom_line_wkt, "force_save": True}
         TrackSplit.objects.create(**fields)
+
+        # same than tests
+        x = 2516700
+        y = 1152000
+
+        geom1 = MultiLineString(LineString((x, y, 0), (x + 10, y, 20), srid=2056))
+        track1 = Track.objects.create(geom=geom1)
+        section1 = track1.section_set.first()
+
+        geom2 = MultiLineString(LineString((x, y, 0), (x - 10, y, 10), srid=2056))
+        track2 = Track.objects.create(geom=geom2)
+        section2 = track2.section_set.first()
+
+        tube12 = Tube.objects.create()
+        for i, section in enumerate(
+            (
+                section1,
+                section2,
+            )
+        ):
+            TubeSection.objects.create(
+                tube=tube12,
+                section=section,
+                order_index=i,
+                interpolated=False,
+                offset_x=-300,
+                offset_z=0,
+            )
+
+        tube1 = Tube.objects.create()
+        TubeSection.objects.create(
+            tube=tube1,
+            section=section1,
+            order_index=0,
+            interpolated=False,
+            offset_x=200,
+            offset_z=66,
+        )
+
+        tube2 = Tube.objects.create()
+        TubeSection.objects.create(
+            tube=tube2,
+            section=section2,
+            order_index=0,
+            interpolated=False,
+            offset_x=0,
+            offset_z=66,
+        )
+
+        for do in (0, 1, 2):
+            cable12 = Cable.objects.create()
+            for i, tube in enumerate((tube1, tube2)):
+                CableTube.objects.create(
+                    tube=tube, cable=cable12, order_index=i, display_offset=do
+                )
 
         print(f"🤖 testdata added!")

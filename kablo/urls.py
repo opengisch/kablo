@@ -20,6 +20,7 @@ from django.urls import include, path
 from django_oapif.urls import oapif_router
 
 from kablo.core import views as core_views
+from kablo.network import urls as network_urls
 from kablo.webviewer import views as webviewer_views
 
 urlpatterns = [
@@ -27,6 +28,7 @@ urlpatterns = [
     path("demo-qgis-project", core_views.demo_qgis_project, name="demo_qgis_project"),
     path("viewer", webviewer_views.viewer, name="viewer"),
     path("admin/", admin.site.urls, {"extra_context": {"DEBUG": settings.DEBUG}}),
+    path("network/", include(network_urls)),
     path("oapif/", include(oapif_router.urls)),
     path("users/", include("allauth.urls")),
 ]

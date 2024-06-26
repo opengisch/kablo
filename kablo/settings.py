@@ -22,8 +22,10 @@ if ENV not in ["DEV", "PROD"]:
     )
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+DEBUG_LEVEL = "INFO"
 if ENV == "DEV":
     DEBUG = True
+    DEBUG_LEVEL = "DEBUG"
 
 ROOT_URLCONF = "kablo.urls"
 PREFIX_URL = os.environ.get("PREFIX_URL", "")
@@ -120,6 +122,7 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "computedfields",
     "migrate_sql",
 ]
 
@@ -289,6 +292,11 @@ DEBUG_TOOLBAR_CONFIG = {
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    "loggers": {
+        "asyncio": {
+            "level": "WARNING",
+        },
+    },
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
@@ -296,6 +304,6 @@ LOGGING = {
     },
     "root": {
         "handlers": ["console"],
-        "level": "INFO",
+        "level": DEBUG_LEVEL,
     },
 }

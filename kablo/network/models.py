@@ -1,25 +1,46 @@
+import logging
 import uuid
-from math import cos, radians, sin
 
+from computedfields.models import ComputedFieldsModel, computed
 from django.contrib.gis.db import models
 from django.contrib.gis.db.models.aggregates import Union
-from django.contrib.gis.geos import LineString
+from django.contrib.gis.geos import LineString as GeosLineString
+from django.contrib.postgres.aggregates import ArrayAgg
 from django.db import transaction
 from django.db.models import Max
+from django.db.models.functions import Coalesce
 from django_oapif.decorators import register_oapif_viewset
+from shapely import (
+    LineString,
+    MultiLineString,
+    Point,
+    distance,
+    force_2d,
+    get_srid,
+    line_merge,
+    offset_curve,
+    set_srid,
+)
 
-from kablo.core.geometry import AzimuthAlongLine, Intersects, SplitLine
+from kablo.core.functions import Intersects, SplitLine
+from kablo.core.utils import geodjango2shapely, shapely2geodjango
 from kablo.valuelist.models import CableTensionType, StatusType, TubeCableProtectionType
+
+logger = logging.getLogger(__name__)
 
 
 class NetworkNode(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
     geom = models.PointField(srid=2056, dim=3)
 
 
 @register_oapif_viewset(crs=2056)
 class Track(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
     original_id = models.TextField(null=True, editable=True)
     geom = models.MultiLineStringField(srid=2056, dim=3)
 
@@ -44,7 +65,7 @@ class Track(models.Model):
             Section.objects.bulk_create(sections)
 
     @transaction.atomic
-    def split(self, split_line: LineString):
+    def split(self, split_line: GeosLineString):
         has_split = False
         order_index = 0
         sections_qs = (
@@ -94,6 +115,8 @@ class Track(models.Model):
 @register_oapif_viewset(crs=2056)
 class Section(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
     geom = models.LineStringField(srid=2056, dim=3)
     track = models.ForeignKey(Track, on_delete=models.CASCADE)
     order_index = models.IntegerField(default=0, null=False, blank=False)
@@ -126,8 +149,12 @@ class Section(models.Model):
 
 
 @register_oapif_viewset(crs=2056)
-class Cable(models.Model):
+class Cable(ComputedFieldsModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    fake_id = models.UUIDField(default=uuid.uuid4)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
+    identifier = models.TextField(null=True, blank=True)
     original_id = models.TextField(null=True, editable=True)
     tension = models.ForeignKey(
         CableTensionType,
@@ -139,123 +166,200 @@ class Cable(models.Model):
         null=True,
         on_delete=models.SET_NULL,
     )
-    geom = models.LineStringField(srid=2056, dim=3, null=True)
 
-    @transaction.atomic
-    def save(self, **kwargs):
-        # recalculate geom
+    @computed(
+        models.LineStringField(srid=2056, null=True),
+        depends=[
+            ("cabletube_set", ["order_index", "display_offset"]),
+            ("cabletube_set.tube", ["geom"]),
+            (
+                "cabletube_set.tube.cabletube_set",
+                ["order_index", "display_offset"],
+            ),  # this will recalculate all the cables in the same tube
+        ],
+    )
+    def geom(self):
         # TODO: check geometry exists + is coherent
         # TODO: check order_index is continuous
+        cable_spacing = 0.1
+        planar_offset = 1.1
 
-        self.geom = self.cabletube_set.order_by("order_index").aggregate(
-            geom=Union("tube__geom")
-        )["geom"]
-        super().save(**kwargs)
+        logger.debug(f"cable.geom compute for {self.id}")
+
+        agg = self.cabletube_set.order_by("order_index").aggregate(
+            geom=Union("tube__geom"),
+            display_offset=ArrayAgg("display_offset"),
+            cable_count=ArrayAgg("tube__cable_count"),
+            tube_id=ArrayAgg("tube__id"),
+        )
+        geom = agg["geom"]
+        if geom:
+            geom = geodjango2shapely(geom)
+            parts = []
+            if geom.geom_type == "MultiLineString":
+                geoms = geom.geoms
+            else:
+                geoms = [geom]
+
+            for part, display_offset, cable_count, tube_id in zip(
+                geoms, agg["display_offset"], agg["cable_count"], agg["tube_id"]
+            ):
+                offset_x = (display_offset - (cable_count - 1) / 2) * cable_spacing
+                logger.debug(
+                    f"  :: in tube {tube_id} cable_count: {cable_count} display_offset: {display_offset}"
+                )
+                coords = list(part.coords)
+                original_start_point = coords[0][0:2]
+                original_end_point = coords[-1][0:2]
+
+                first_vertex_distance = distance(Point(coords[0]), Point(coords[-1]))
+                if first_vertex_distance > 1:
+                    coords[0] = part.line_interpolate_point(0.5).coords[0]
+                else:
+                    coords.pop(0)
+
+                last_vertex_distance = distance(Point(coords[-1]), Point(coords[-2]))
+                if last_vertex_distance > 1:
+                    coords[-1] = part.line_interpolate_point(-0.5).coords[0]
+                else:
+                    coords.pop(-1)
+
+                # forcing 2d: otherwise if offset=0, the original geometry
+                # is returned as is i.e. with z-dimension
+                offset_part = force_2d(
+                    offset_curve(
+                        LineString(coords), distance=offset_x, join_style="bevel"
+                    )
+                )
+                complete_offset_part = LineString(
+                    [original_start_point]
+                    + list(offset_part.coords)
+                    + [original_end_point]
+                )
+                parts.append(complete_offset_part)
+            geom = line_merge(MultiLineString(parts))
+            geom = shapely2geodjango(geom)
+        return geom
 
 
 @register_oapif_viewset(crs=2056)
-class Tube(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    original_id = models.TextField(null=True, editable=True)
+class Tube(ComputedFieldsModel):
+    id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False, blank=True
+    )
+    fake_id = models.UUIDField(default=uuid.uuid4)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
+    original_id = models.TextField(null=True, blank=True, editable=True)
     status = models.ForeignKey(
         StatusType,
         null=True,
+        blank=True,
         on_delete=models.SET_NULL,
+    )
+    diameter = models.IntegerField(
+        default=None, null=True, blank=True, help_text="Diameter in mm"
     )
     cable_protection_type = models.ForeignKey(
         TubeCableProtectionType,
         null=True,
+        blank=True,
         on_delete=models.SET_NULL,
     )
-    cables = models.ManyToManyField(Cable)
-    # TODO: this should not be editable, but switching prevent from seeing it in admin
-    # TODO: this should not be nullable?
-    geom = models.LineStringField(srid=2056, dim=3, null=True)
-    sections = models.ManyToManyField(Section, through="TubeSection")
 
-    @transaction.atomic
-    def save(self, **kwargs):
-        # recalculate geom
+    @computed(
+        models.IntegerField(default=0, null=False, blank=False),
+        depends=[("cabletube_set", [])],
+    )
+    def cable_count(self):
+        return self.cabletube_set.count()
+
+    @computed(
+        models.LineStringField(srid=2056, dim=3, null=True, blank=True),
+        depends=[
+            ("tubesection_set", ["order_index", "offset_x", "offset_z"]),
+            ("tubesection_set.section", ["geom"]),
+        ],
+    )
+    def geom(self):
+        # TODO: this should not be editable, but switching prevent from seeing it in admin
+        # TODO: this should not be nullable?
+
         # TODO: check geometry exists + is coherent
         # TODO: check order_index is continuous
 
-        tube_line = []
+        # TODO recalculate cables on change
 
-        qs = self.tubesection_set.order_by("order_index").annotate(
-            azimuths=AzimuthAlongLine("section__geom")
+        agg = self.tubesection_set.order_by("order_index").aggregate(
+            geom=Union("section__geom"),
+            order_index=ArrayAgg("order_index"),
+            offset_x=ArrayAgg("offset_x"),
+            offset_z=ArrayAgg("offset_z"),
         )
-
-        max_order_index = qs.aggregate(max_order_index=Max("order_index"))[
-            "max_order_index"
-        ]
-        first_vertex = True
-
-        for tube_section in qs.all():
-            # TODO: this works when the tube already exists (i.e. we are adding section after it was created and saved)
-
-            last_section = tube_section.order_index == max_order_index
-            first_vertex_in_section = True
-
-            coords = tube_section.section.geom.coords
-            if tube_section.reversed:
-                coords.reverse()
-
-            for i, (point, azimuth) in enumerate(zip(coords, tube_section.azimuths)):
-                planimetric_offset_x = 0
-                planimetric_offset_y = 0
-
-                last_vertex_in_section = i == len(tube_section.section.geom.coords) - 1
-                last_vertex = last_section and last_vertex_in_section
-
-                if first_vertex:
-                    tube_line.append((point[0], point[1], point[2]))
-                    first_vertex = False
-
-                if first_vertex_in_section:
-                    # tube offset starts at a certain gap from first vertex
-                    # TODO: define app setting for offset + possibility to override per TubeSection (start + end)
-                    # planimetric offset is to start the offset away from the node to improve visualisation
-                    planimetric_offset_x = 0.5 * cos(radians(90 - azimuth))
-                    planimetric_offset_y = 0.5 * sin(radians(90 - azimuth))
-                    first_vertex_in_section = False
-
-                if last_vertex_in_section:
-                    # planimetric offset is to start the offset away from the node to improve visualisation
-                    planimetric_offset_x = 0.5 * cos(radians(90 - azimuth + 180))
-                    planimetric_offset_y = 0.5 * sin(radians(90 - azimuth + 180))
-
-                # segment_direction_angle = 90 - azimuth
-                # orthogonal_direction = segment_direction + 90
-                od = radians(90 - azimuth + 90)
-                x = (
-                    point[0]
-                    + planimetric_offset_x
-                    + cos(od) * tube_section.offset_x / 1000
+        geom = agg["geom"]
+        if geom:
+            geom = geodjango2shapely(geom)
+            srid = get_srid(geom)
+            parts = []
+            if geom.geom_type == "MultiLineString":
+                geoms = geom.geoms
+            else:
+                geoms = [geom]
+            for part, offset_x, offset_z in zip(
+                geoms, agg["offset_x"], agg["offset_z"]
+            ):
+                coords = list(part.coords)
+                original_start_point = (
+                    coords[0][0],
+                    coords[0][1],
+                    coords[0][2] + offset_z / 1000,
                 )
-                y = (
-                    point[1]
-                    + planimetric_offset_y
-                    + sin(od) * tube_section.offset_x / 1000
+                original_end_point = (
+                    coords[-1][0],
+                    coords[-1][1],
+                    coords[-1][2] + offset_z / 1000,
                 )
-                z = point[2] + tube_section.offset_z  # TODO: absolute vs relative Z
 
-                tube_line.append((x, y, z))
+                first_vertex_distance = distance(Point(coords[0]), Point(coords[-1]))
+                if first_vertex_distance > 1:
+                    coords[0] = part.interpolate(0.5).coords[0]
+                else:
+                    coords.pop(0)
 
-                if last_vertex:
-                    tube_line.append((point[0], point[1], point[2]))
+                last_vertex_distance = distance(Point(coords[-1]), Point(coords[-2]))
+                if last_vertex_distance > 1:
+                    coords[-1] = part.interpolate(-0.5).coords[0]
+                else:
+                    coords.pop(-1)
 
-        if len(tube_line) > 0:
-            self.geom = LineString(tube_line)
+                # forcing 2d: otherwise if offset=0, the original geometry
+                # is returned as is i.e. with z-dimension
+                part = force_2d(
+                    offset_curve(
+                        LineString(coords), distance=offset_x / 1000, join_style="mitre"
+                    )
+                )
 
-        super().save(**kwargs)
+                new_coords = []
+                for point_offset, point_z in zip(part.coords, coords):
+                    new_coords.append(point_offset + (point_z[2] + offset_z / 1000,))
+                part = LineString(
+                    [original_start_point] + new_coords + [original_end_point]
+                )
+                parts.append(part)
+            geom = set_srid(line_merge(MultiLineString(parts)), srid=srid)
+            geom = shapely2geodjango(geom)
+        return geom
 
 
+@register_oapif_viewset(geom_field=None)
 class TubeSection(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    tube = models.ForeignKey(Tube, on_delete=models.CASCADE)
-    section = models.ForeignKey(Section, on_delete=models.CASCADE)
-    order_index = models.IntegerField(default=1)
-    reversed = models.BooleanField(default=False, null=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
+    tube = models.ForeignKey(Tube, on_delete=models.CASCADE, null=False)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE, null=False)
+    order_index = models.IntegerField(default=0, null=False, blank=False)
     interpolated = models.BooleanField(default=False, null=False, blank=False)
     offset_x = models.IntegerField(null=False, blank=False, default=0)
     offset_z = models.IntegerField(null=False, blank=False, default=0)
@@ -263,24 +367,37 @@ class TubeSection(models.Model):
     class Meta:
         ordering = ["order_index"]
 
-    # TODO: recalculate tube geom when changed
 
-
-class CableTube(models.Model):
+@register_oapif_viewset(geom_field=None)
+class CableTube(ComputedFieldsModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
     tube = models.ForeignKey(Tube, on_delete=models.CASCADE)
     cable = models.ForeignKey(Cable, on_delete=models.CASCADE)
-    order_index = models.IntegerField(default=0)
+    order_index = models.IntegerField(default=0, null=False, blank=False)
+    display_offset = models.IntegerField(default=0, null=False, blank=False)
 
     class Meta:
         ordering = ["order_index"]
 
-    # TODO: recalculate tube geom when changed
+    @transaction.atomic
+    def save(self, **kwargs):
+        if self._state.adding:
+            self.display_offset = (
+                CableTube.objects.filter(tube=self.tube).aggregate(
+                    do=Coalesce(Max("display_offset"), -1)
+                )["do"]
+                + 1
+            )
+        super().save(**kwargs)
 
 
 @register_oapif_viewset(crs=2056)
 class Station(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
     original_id = models.TextField(null=True, editable=True)
     label = models.CharField(max_length=64, blank=True, null=True)
     geom = models.PointField(srid=2056, dim=3)
@@ -288,10 +405,14 @@ class Station(models.Model):
 
 class Node(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
 
 
 class Reach(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
     node_1 = models.ForeignKey(
         Node, related_name="node_1", blank=True, null=True, on_delete=models.SET_NULL
     )
