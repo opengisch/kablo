@@ -46,6 +46,7 @@ class StationAdminForm(forms.ModelForm):
         fields = "__all__"
 
 
+@admin.register(Station)
 class StationAdmin(admin.ModelAdmin):
     form = StationAdminForm
 
@@ -60,6 +61,7 @@ class NetworkNodeAdminForm(forms.ModelForm):
         fields = "__all__"
 
 
+@admin.register(NetworkNode)
 class NetworkNodeAdmin(admin.ModelAdmin):
     form = NetworkNodeAdminForm
 
@@ -74,6 +76,7 @@ class TrackAdminForm(forms.ModelForm):
         fields = "__all__"
 
 
+@admin.register(Track)
 class TrackAdmin(admin.ModelAdmin):
     form = TrackAdminForm
     inlines = [SectionInline]
@@ -93,6 +96,7 @@ class TubeSectionInline(admin.TabularInline):
     extra = 0
 
 
+@admin.register(Section)
 class SectionAdmin(admin.ModelAdmin):
     form = SectionAdminForm
     inlines = (TubeSectionInline,)
@@ -112,6 +116,7 @@ class TubeAdminForm(forms.ModelForm):
         fields = "__all__"
 
 
+@admin.register(Tube)
 class TubeAdmin(admin.ModelAdmin):
     form = TubeAdminForm
     model = Tube
@@ -142,6 +147,7 @@ class CableAdminForm(forms.ModelForm):
         fields = "__all__"
 
 
+@admin.register(Cable)
 class CableAdmin(admin.ModelAdmin):
     form = CableAdminForm
     model = Cable
@@ -159,14 +165,8 @@ class CableAdmin(admin.ModelAdmin):
     ]
 
 
-admin.site.register(Cable, CableAdmin)
-admin.site.register(NetworkNode, NetworkNodeAdmin)
-admin.site.register(Station, StationAdmin)
 admin.site.register(Switch)
 admin.site.register(Terminal)
-admin.site.register(Track, TrackAdmin)
-admin.site.register(Section, SectionAdmin)
-admin.site.register(Tube, TubeAdmin)
 admin.site.register(StatusType)
 admin.site.register(TubeCableProtectionType)
 admin.site.register(CableTensionType)

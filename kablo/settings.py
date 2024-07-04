@@ -243,7 +243,6 @@ if DEBUG and not CORS_ALLOWED_ORIGINS:
 LANGUAGE_CODE = "fr-CH"
 TIME_ZONE = "Europe/Zurich"
 USE_I18N = True
-USE_L10N = True
 USE_TZ = True
 
 gettext = lambda x: x
