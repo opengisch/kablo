@@ -114,7 +114,7 @@ djangorestframework==3.14.0
     #   django-oapif
     #   django-rest-knox
     #   djangorestframework-gis
-djangorestframework-gis @ git+https://github.com/openwisp/django-rest-framework-gis@4f244d5d8a7ad5b453fd04f64150818d15123e01
+djangorestframework-gis @ git+https://github.com/openwisp/django-rest-framework-gis@82d9f0aa2457bb695bce9514f4fb055ddaa6a688
     # via
     #   -r requirements.txt
     #   django-oapif
